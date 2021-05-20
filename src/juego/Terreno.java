@@ -1,19 +1,26 @@
 package juego;
 
 public class Terreno {
+	private final String CASTILLO = "castillo"
 	private String tipo;
 	private int cantCoronas;
 	
+	public boolean compararTerreno(Terreno terreno2) {
+		return terreno2 != null && this.tipo == terreno2.tipo || terreno2.tipo == CASTILLO;
+	}
+
 	public Terreno(String tipo, int cantCoronas) {
+		
 		this.tipo = tipo;
 		this.cantCoronas = cantCoronas;
 	}
-	
-	public int getCoronas() {
-		return this.cantCoronas;
+
+	public String getTipo() {
+		return tipo;
 	}
-	
-	public boolean compararTerreno(Terreno terreno2) {
-		return terreno2 != null && this.tipo == terreno2.tipo;
+
+
+	public int getCantCoronas() {
+		return cantCoronas;
 	}
 }
