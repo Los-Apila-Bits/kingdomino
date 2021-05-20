@@ -5,6 +5,6 @@ public class Terreno {
 	private int cantCoronas;
 	
 	public boolean compararTerreno(Terreno terreno2) {
-		return this.tipo == terreno2.tipo;
+		return terreno2 != null && this.tipo == terreno2.tipo;
 	}
 }
