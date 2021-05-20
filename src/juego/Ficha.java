@@ -12,4 +12,17 @@ public class Ficha {
 		public void compararNumFicha() {
 			return;
 		}
+		public Ficha(int numeroDeFicha, Terreno terreno1, Terreno terreno2) {
+			super();
+			this.numeroDeFicha = numeroDeFicha;
+			this.ficha[0] = terreno1;
+			this.ficha[1] = terreno2;
+			this.estado = true;
+		}
+		public Terreno getTerreno1() {
+			return this.ficha[0];
+		}
+		public Terreno getTerreno2() {
+			return this.ficha[0];
+		}
 }
