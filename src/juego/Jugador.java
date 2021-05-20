@@ -20,7 +20,7 @@ public class Jugador {
 		}
 		
 		public Ficha elegirFicha () {
-			return new Ficha();
+			return new Ficha(idJugador, null, null);
 		}
 		
 		public void ubicarFicha(Tablero tablero) {
