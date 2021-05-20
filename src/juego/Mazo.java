@@ -6,8 +6,8 @@ import java.util.List;
 public class Mazo {
 		private List<Ficha> fichas = new ArrayList<Ficha>();
 		
-		public void ezclar() {
-			return;
+		public Ficha sacarFicha() {
+			return fichas.remove(0);
 		}
 		
 		public void sacarFichas() {
