@@ -4,7 +4,7 @@ public class Ficha {
 	private int numeroDeFicha;
 	private Terreno[] ficha = new Terreno[2]; // terreno 1 es pivot por defecto 
 	private boolean estado;
-	private int[] dir = { 0, -1 }; // terreno 2 esta por defecto a la derecha
+	private int[] direccion = { 0, -1 }; // terreno 2 esta por defecto a la derecha
 	
 	public Ficha(int numeroDeFicha, Terreno terreno1, Terreno terreno2) {
 		super();
@@ -15,24 +15,24 @@ public class Ficha {
 	}
 
 	public int[] girarFicha() {
-		if (dir[0] == 0 && dir[1] == -1) {
-			dir[0] = -1;
-			dir[1] = 0;
+		if (direccion[0] == 0 && direccion[1] == -1) {
+			direccion[0] = -1;
+			direccion[1] = 0;
 		} else {
-			if (dir[0] == -1 && dir[1] == 0) {
-				dir[0] = 0;
-				dir[1] = 1;
+			if (direccion[0] == -1 && direccion[1] == 0) {
+				direccion[0] = 0;
+				direccion[1] = 1;
 			} else {
-				if (dir[0] == 0 && dir[1] == 1) {
-					dir[0] = 1;
-					dir[1] = 0;
+				if (direccion[0] == 0 && direccion[1] == 1) {
+					direccion[0] = 1;
+					direccion[1] = 0;
 				} else {
-					dir[0] = 0;
-					dir[1] = -1;
+					direccion[0] = 0;
+					direccion[1] = -1;
 				}
 			}
 		}
-		return dir;
+		return direccion;
 	}
 	public boolean getEstado() {
 		return this.estado;
@@ -55,5 +55,8 @@ public class Ficha {
 	}
 	public String toString() {
 		return numeroDeFicha+" "+this.ficha[0].getTipo()+" "+this.ficha[0].getCantCoronas()+" "+this.ficha[1].getTipo()+" "+this.ficha[1].getCantCoronas();
+	}
+	public int[] getDireccion() {
+		return this.direccion;
 	}
 }

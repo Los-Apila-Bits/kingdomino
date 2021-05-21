@@ -1,8 +1,6 @@
 package juego;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 
 public class Tablero {
 	private Terreno[][] tablero = new Terreno[5][5];
@@ -14,16 +12,6 @@ public class Tablero {
 	private ArrayList<CadenaTerrenos> bosque = new ArrayList<CadenaTerrenos>();
 	private ArrayList<CadenaTerrenos> pantano = new ArrayList<CadenaTerrenos>();
 
-	/*
-	 * private HashMap<Terreno, CadenaTerrenos> cadenasAgua = new HashMap<Terreno,
-	 * CadenaTerrenos>(); private HashMap<Terreno, CadenaTerrenos> cadenasDesierto =
-	 * new HashMap<Terreno, CadenaTerrenos>(); private HashMap<Terreno,
-	 * CadenaTerrenos> cadenasLlanura = new HashMap<Terreno, CadenaTerrenos>();
-	 * private HashMap<Terreno, CadenaTerrenos> cadenasMina = new HashMap<Terreno,
-	 * CadenaTerrenos>(); private HashMap<Terreno, CadenaTerrenos> cadenasBosque =
-	 * new HashMap<Terreno, CadenaTerrenos>(); private HashMap<Terreno,
-	 * CadenaTerrenos> cadenasYermo = new HashMap<Terreno, CadenaTerrenos>();
-	 */
 	public int contarPuntos() {
 		this.puntos = 0;
 		for (CadenaTerrenos cadenaTerrenos : rio) {
@@ -58,14 +46,13 @@ public class Tablero {
 		// ficha
 	}
 
-	public void insertarFicha(Ficha ficha, int posX, int posY, int[] direccion) {
-		boolean hayCadena = false;
-		int[] desplazamientoNulo = { 0, 0 };
+	public void insertarFicha(Ficha ficha, int posX, int posY) {
+
 		tablero[posX][posY] = ficha.getTerreno1();
-		tablero[posX + direccion[0]][posY + direccion[1]] = ficha.getTerreno2();
-		generarEntradasLista(ficha.getTerreno1(), posX, posY, direccion[0], direccion[1],
+		tablero[posX + ficha.getDireccion()[0]][posY + ficha.getDireccion()[1]] = ficha.getTerreno2();
+		generarEntradasLista(ficha.getTerreno1(), posX, posY, ficha.getDireccion()[0], ficha.getDireccion()[1],
 				selectList(ficha.getTerreno1()));
-		generarEntradasLista(ficha.getTerreno2(), posX + direccion[0], posY + direccion[1], 0, 0,
+		generarEntradasLista(ficha.getTerreno2(), posX + ficha.getDireccion()[0], posY + ficha.getDireccion()[1], 0, 0,
 				selectList(ficha.getTerreno2()));
 
 		// pasamos la ficha a insertar, la posicion donde la vamos a ubicar y un vector
