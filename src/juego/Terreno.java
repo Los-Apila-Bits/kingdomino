@@ -6,7 +6,9 @@ public class Terreno {
 	private int cantCoronas;
 	
 	public boolean compararTerreno(Terreno terreno2) {
-		return terreno2 != null && this.tipo == terreno2.tipo || terreno2.tipo == CASTILLO;
+		if(terreno2 == null)
+			return false;
+		return  this.tipo == terreno2.tipo || terreno2.tipo == CASTILLO;
 	}
 
 	public Terreno(String tipo, int cantCoronas) {
