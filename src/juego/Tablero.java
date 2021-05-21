@@ -25,32 +25,34 @@ public class Tablero {
 	 * CadenaTerrenos> cadenasYermo = new HashMap<Terreno, CadenaTerrenos>();
 	 */
 	public int contarPuntos() {
-		int puntosTotales = 0;
+		this.puntos = 0;
 		for (CadenaTerrenos cadenaTerrenos : agua) {
-			puntosTotales += cadenaTerrenos.getPuntos();
+			this.puntos += cadenaTerrenos.getPuntos();
 		}
 		for (CadenaTerrenos cadenaTerrenos : desierto) {
-			puntosTotales += cadenaTerrenos.getPuntos();
+			this.puntos += cadenaTerrenos.getPuntos();
 		}
 		for (CadenaTerrenos cadenaTerrenos : llanura) {
-			puntosTotales += cadenaTerrenos.getPuntos();
+			this.puntos += cadenaTerrenos.getPuntos();
 		}
 		for (CadenaTerrenos cadenaTerrenos : mina) {
-			puntosTotales += cadenaTerrenos.getPuntos();
+			this.puntos += cadenaTerrenos.getPuntos();
 		}
 		for (CadenaTerrenos cadenaTerrenos : bosque) {
-			puntosTotales += cadenaTerrenos.getPuntos();
+			this.puntos += cadenaTerrenos.getPuntos();
 		}
 		for (CadenaTerrenos cadenaTerrenos : yermo) {
-			puntosTotales += cadenaTerrenos.getPuntos();
+			this.puntos += cadenaTerrenos.getPuntos();
 		}
-		return puntosTotales;
+		return this.puntos;
 		
 		//recorro todas las listas y cuento los puntos de cada lista
 	}
 
 	public boolean puedeInsertar(int posX, int posY, Terreno terreno, int[] direccion) {
-		return (!fueraDeTablero(posX, posY, direccion[0], direccion[1]) && compararTerrenoAledanio(posX, posY, terreno))
+		if (fueraDeTablero(posX, posY, direccion[0], direccion[1]))
+			return false;
+		return (compararTerrenoAledanio(posX, posY, terreno))
 				&& (hayEspacioAledanio(posX, posY));
 		// tenemos que validar que haya espacio para el lado que tenemos que poner la
 		// ficha
@@ -98,8 +100,8 @@ public class Tablero {
 	}
 
 	private boolean compararTerrenoAledanio(int posX, int posY, Terreno terreno) {
-		return terreno.compararTerreno(tablero[posX + 1][posY]) || terreno.compararTerreno(tablero[posX - 1][posY])
-				|| terreno.compararTerreno(tablero[posX][posY + 1]) || terreno.compararTerreno(tablero[posX][posY - 1]);
+		return (posX == this.tablero.length)?false:terreno.compararTerreno(tablero[posX + 1][posY]) || (posX == 0)?false:terreno.compararTerreno(tablero[posX - 1][posY])
+				|| (posY == this.tablero[0].length)?false:terreno.compararTerreno(tablero[posX][posY + 1]) || (posY == 0)?true:terreno.compararTerreno(tablero[posX][posY - 1]);
 	}
 
 	private boolean fueraDeTablero(int posX, int posY, int direccionX, int direccionY) {
@@ -126,7 +128,7 @@ public class Tablero {
 		if (terreno.getTipo() == "desierto")
 			return this.desierto;
 		if (terreno.getTipo() == "yermo")
-			return this.agua;
+			return this.yermo;
 
 		return this.llanura;
 
@@ -168,5 +170,12 @@ public class Tablero {
 		// salimos del for
 		return cadena;
 	}
+
+	public Terreno[][] getTablero() {
+		return tablero;
+	}
+
+	
+	
 
 }
