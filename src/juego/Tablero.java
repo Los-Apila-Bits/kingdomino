@@ -39,4 +39,8 @@ public class Tablero {
 			return tablero[posX][posY - 1] == null || tablero[posX - 1][posY] == null || tablero[posX][posY + 1] == null
 					|| tablero[posX + 1][posY] == null;
 		}
+	
+		public Tablero() {
+			tablero[2][2] = new Terreno("castillo", 0);
+		}
 }
