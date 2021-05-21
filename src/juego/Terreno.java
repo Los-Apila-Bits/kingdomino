@@ -1,7 +1,7 @@
 package juego;
 
 public class Terreno {
-	private final String CASTILLO = "castillo"
+	private final String CASTILLO = "castillo";
 	private String tipo;
 	private int cantCoronas;
 	
