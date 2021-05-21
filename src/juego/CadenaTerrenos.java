@@ -12,20 +12,20 @@ public class CadenaTerrenos {
 		this.posiciones.add(posicion);
 	}
 	
-	public void sumarFicha (int coronas, Integer[] posicion) {
+	public CadenaTerrenos sumarFicha (int coronas, Integer[] posicion) {
 		this.posiciones.add(posicion);
 		this.coronas += coronas;
+		return this;
 	}
 	
 	public boolean contienePosicion (Integer[] posicion) {
 		return this.posiciones.contains(posicion);
 	}
 	
-	public void fusionarCadenas (ArrayList<CadenaTerrenos> cadenas) {
-		for (CadenaTerrenos cadena : cadenas) { 		      
-			this.coronas += cadena.getCoronas();
-			this.posiciones.addAll(cadena.getPosiciones());
-	    }
+	public void fusionarCadenas (CadenaTerrenos cadenas) {
+				      
+			this.coronas += cadenas.getCoronas();
+			this.posiciones.addAll(cadenas.getPosiciones());
 	}
 
 	public ArrayList<Integer[]> getPosiciones() {
