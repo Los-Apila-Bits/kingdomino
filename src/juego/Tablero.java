@@ -25,7 +25,28 @@ public class Tablero {
 	 * CadenaTerrenos> cadenasYermo = new HashMap<Terreno, CadenaTerrenos>();
 	 */
 	public int contarPuntos() {
-		return 1;
+		int puntosTotales = 0;
+		for (CadenaTerrenos cadenaTerrenos : agua) {
+			puntosTotales += cadenaTerrenos.getPuntos();
+		}
+		for (CadenaTerrenos cadenaTerrenos : desierto) {
+			puntosTotales += cadenaTerrenos.getPuntos();
+		}
+		for (CadenaTerrenos cadenaTerrenos : llanura) {
+			puntosTotales += cadenaTerrenos.getPuntos();
+		}
+		for (CadenaTerrenos cadenaTerrenos : mina) {
+			puntosTotales += cadenaTerrenos.getPuntos();
+		}
+		for (CadenaTerrenos cadenaTerrenos : bosque) {
+			puntosTotales += cadenaTerrenos.getPuntos();
+		}
+		for (CadenaTerrenos cadenaTerrenos : yermo) {
+			puntosTotales += cadenaTerrenos.getPuntos();
+		}
+		return puntosTotales;
+		
+		//recorro todas las listas y cuento los puntos de cada lista
 	}
 
 	public boolean puedeInsertar(int posX, int posY, Terreno terreno, int[] direccion) {
