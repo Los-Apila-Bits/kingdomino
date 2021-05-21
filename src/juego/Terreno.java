@@ -21,7 +21,6 @@ public class Terreno {
 		return tipo;
 	}
 
-
 	public int getCantCoronas() {
 		return cantCoronas;
 	}

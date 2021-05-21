@@ -53,4 +53,7 @@ public class Ficha {
 	public Terreno getTerreno2() {
 		return this.ficha[1];
 	}
+	public String toString() {
+		return numeroDeFicha+" "+this.ficha[0].getTipo()+" "+this.ficha[0].getCantCoronas()+" "+this.ficha[1].getTipo()+" "+this.ficha[1].getCantCoronas();
+	}
 }

@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Mazo {
-	private List<Ficha> fichas = new ArrayList<Ficha>();
+	public List<Ficha> fichas = new ArrayList<Ficha>();
 
 	public Mazo() throws FileNotFoundException {
 		Scanner entrada = new Scanner(new File("mazo.txt"));
+		int i = 1;
 		while (entrada.hasNext()) {
-			int i = 1;
 			fichas.add(new Ficha(i, new Terreno(entrada.next(), entrada.nextInt()),
-					new Terreno(entrada.next(), entrada.nextInt())));
+				new Terreno(entrada.next(), entrada.nextInt())));
 			i++;
 		}
 		entrada.close();

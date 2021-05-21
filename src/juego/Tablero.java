@@ -7,12 +7,12 @@ import java.util.Iterator;
 public class Tablero {
 	private Terreno[][] tablero = new Terreno[5][5];
 	private int puntos = 0;
-	private ArrayList<CadenaTerrenos> agua = new ArrayList<CadenaTerrenos>();
-	private ArrayList<CadenaTerrenos> desierto = new ArrayList<CadenaTerrenos>();
-	private ArrayList<CadenaTerrenos> llanura = new ArrayList<CadenaTerrenos>();
+	private ArrayList<CadenaTerrenos> rio = new ArrayList<CadenaTerrenos>();
+	private ArrayList<CadenaTerrenos> campo = new ArrayList<CadenaTerrenos>();
+	private ArrayList<CadenaTerrenos> pradera = new ArrayList<CadenaTerrenos>();
 	private ArrayList<CadenaTerrenos> mina = new ArrayList<CadenaTerrenos>();
 	private ArrayList<CadenaTerrenos> bosque = new ArrayList<CadenaTerrenos>();
-	private ArrayList<CadenaTerrenos> yermo = new ArrayList<CadenaTerrenos>();
+	private ArrayList<CadenaTerrenos> pantano = new ArrayList<CadenaTerrenos>();
 
 	/*
 	 * private HashMap<Terreno, CadenaTerrenos> cadenasAgua = new HashMap<Terreno,
@@ -26,13 +26,13 @@ public class Tablero {
 	 */
 	public int contarPuntos() {
 		this.puntos = 0;
-		for (CadenaTerrenos cadenaTerrenos : agua) {
+		for (CadenaTerrenos cadenaTerrenos : rio) {
 			this.puntos += cadenaTerrenos.getPuntos();
 		}
-		for (CadenaTerrenos cadenaTerrenos : desierto) {
+		for (CadenaTerrenos cadenaTerrenos : campo) {
 			this.puntos += cadenaTerrenos.getPuntos();
 		}
-		for (CadenaTerrenos cadenaTerrenos : llanura) {
+		for (CadenaTerrenos cadenaTerrenos : pradera) {
 			this.puntos += cadenaTerrenos.getPuntos();
 		}
 		for (CadenaTerrenos cadenaTerrenos : mina) {
@@ -41,7 +41,7 @@ public class Tablero {
 		for (CadenaTerrenos cadenaTerrenos : bosque) {
 			this.puntos += cadenaTerrenos.getPuntos();
 		}
-		for (CadenaTerrenos cadenaTerrenos : yermo) {
+		for (CadenaTerrenos cadenaTerrenos : pantano) {
 			this.puntos += cadenaTerrenos.getPuntos();
 		}
 		return this.puntos;
@@ -119,19 +119,18 @@ public class Tablero {
 	}
 
 	private ArrayList<CadenaTerrenos> selectList(Terreno terreno) {
-		if (terreno.getTipo() == "agua")
-			return this.agua;
+		if (terreno.getTipo() == "rio")
+			return this.rio;
 		if (terreno.getTipo() == "bosque")
 			return this.bosque;
 		if (terreno.getTipo() == "mina")
 			return this.mina;
-		if (terreno.getTipo() == "desierto")
-			return this.desierto;
-		if (terreno.getTipo() == "yermo")
-			return this.yermo;
-
-		return this.llanura;
-
+		if (terreno.getTipo() == "campo")
+			return this.campo;
+		if (terreno.getTipo() == "pantano")
+			return this.pantano;
+		
+		return this.pradera;
 	}
 
 	private CadenaTerrenos recorrerAgregarLista(Terreno terreno1, int posX, int posY, int desplazamientoX,
@@ -176,8 +175,5 @@ public class Tablero {
 	public Terreno[][] getTablero() {
 		return tablero;
 	}
-
-	
-	
 
 }
