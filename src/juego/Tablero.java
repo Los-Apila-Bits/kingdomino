@@ -1,4 +1,4 @@
-package juego;
+eeeeepackage juego;
 
 import java.util.ArrayList;
 import java.util.HashMap;
