@@ -138,9 +138,11 @@ public class Tablero {
 			int desplazamientoY, int posOtroTerrenoX, int posOtroTerrenoY, ArrayList<CadenaTerrenos> lista,
 			CadenaTerrenos cadena) {
 		Integer[] posicion = { posX, posY };
-		if ((posOtroTerrenoX != desplazamientoX || posOtroTerrenoY != desplazamientoY)
-				&& !fueraDeTablero(posX, posY, desplazamientoX, desplazamientoY)
-				&& terreno1.compararTerreno(tablero[posX + desplazamientoX][posY + desplazamientoY])) {
+		if ((posOtroTerrenoX != desplazamientoX || posOtroTerrenoY != desplazamientoY))
+			return cadena;
+		if (fueraDeTablero(posX, posY, desplazamientoX, desplazamientoY))
+				return cadena;
+		if (  terreno1.compararTerreno(tablero[posX + desplazamientoX][posY + desplazamientoY])) { 
 			Integer[] posicionBuscada = { posX + desplazamientoX, posY + desplazamientoY };
 			for (CadenaTerrenos cadenaTerrenos : lista) {
 				if (cadenaTerrenos.contienePosicion(posicionBuscada)) {
