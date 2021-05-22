@@ -1,6 +1,7 @@
 package juego;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Tablero {
 	private Terreno[][] tablero = new Terreno[5][5];
@@ -155,7 +156,19 @@ public class Tablero {
 		// salimos del for
 		return cadena;
 	}
-
+	
+	public void mostrarTablero() {
+		for (int i = 0; i < tablero.length; i++) {
+			for (int j = 0; j < tablero[0].length; j++) {
+				if(tablero[i][j]!=null)
+					System.out.print(String.format("%-10s", tablero[i][j].getTipo()));
+				else
+					System.out.print(String.format("%-10s","vacio"));
+			}
+			System.out.println();
+		}
+	}
+	
 	public Terreno[][] getTablero() {
 		return tablero;
 	}
