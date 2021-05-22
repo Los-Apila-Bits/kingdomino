@@ -16,7 +16,7 @@ public class Tablero {
 	public Tablero() {
 		tablero[2][2] = new Terreno("castillo", 0);
 	}
-	
+
 	public int contarPuntos() {
 		this.puntos = 0;
 		for (CadenaTerrenos cadenaTerrenos : rio) {
@@ -38,14 +38,18 @@ public class Tablero {
 			this.puntos += cadenaTerrenos.getPuntos();
 		}
 		return this.puntos;
-		
-		//recorro todas las listas y cuento los puntos de cada lista
+
+		// recorro todas las listas y cuento los puntos de cada lista
 	}
 
 	public boolean puedeInsertar(int posX, int posY, Ficha ficha) {
 		if (fueraDeTablero(posX, posY, ficha.getDireccion()[0], ficha.getDireccion()[1]))
 			return false;
-		if((compararTerrenoAledanio(posX, posY, ficha.getTerreno1())) && (hayEspacio(posX, posY) && hayEspacio(posX+ficha.getDireccion()[0], posY+ficha.getDireccion()[1])))
+		if ((compararTerrenoAledanio(posX, posY, ficha.getTerreno1()))
+				|| compararTerrenoAledanio(posX + ficha.getDireccion()[0], posY + ficha.getDireccion()[1],
+						ficha.getTerreno1())
+						&& (hayEspacio(posX, posY)
+								&& hayEspacio(posX + ficha.getDireccion()[0], posY + ficha.getDireccion()[1])))
 			return true;
 		return false;
 		// tenemos que validar que haya espacio para el lado que tenemos que poner la
@@ -53,11 +57,11 @@ public class Tablero {
 	}
 
 	public boolean insertarFicha(Ficha ficha, int posX, int posY) {
-		if(!puedeInsertar(posX, posY, ficha)) {
+		if (!puedeInsertar(posX, posY, ficha)) {
 			ficha.cambiarPivot();
-			if(!puedeInsertar(posX, posY, ficha))
+			if (!puedeInsertar(posX, posY, ficha))
 				return false;
-		}	
+		}
 		tablero[posX][posY] = ficha.getTerreno1();
 		tablero[posX + ficha.getDireccion()[0]][posY + ficha.getDireccion()[1]] = ficha.getTerreno2();
 		generarEntradasLista(ficha.getTerreno1(), posX, posY, ficha.getDireccion()[0], ficha.getDireccion()[1],
@@ -73,13 +77,13 @@ public class Tablero {
 
 	private void generarEntradasLista(Terreno terreno1, int posX, int posY, int posOtroTerrenoX, int posOtroTerrenoY,
 			ArrayList<CadenaTerrenos> lista) {
-		CadenaTerrenos cadena = null; 
+		CadenaTerrenos cadena = null;
 		Integer[] posicion = { posX, posY };
 		cadena = recorrerAgregarLista(terreno1, posX, posY, 1, 0, posOtroTerrenoX, posOtroTerrenoY, lista, cadena);
 		cadena = recorrerAgregarLista(terreno1, posX, posY, -1, 0, posOtroTerrenoX, posOtroTerrenoY, lista, cadena);
 		cadena = recorrerAgregarLista(terreno1, posX, posY, 0, 1, posOtroTerrenoX, posOtroTerrenoY, lista, cadena);
 		cadena = recorrerAgregarLista(terreno1, posX, posY, 0, -1, posOtroTerrenoX, posOtroTerrenoY, lista, cadena);
-		if(cadena==null) {
+		if (cadena == null) {
 			// en caso de que no tenga otros terrenos adyacentes del mismo tipo, generamos
 			// una nueva cadena de terrenos y lo agregamos a la lista de cadena de terrenos
 
@@ -89,35 +93,25 @@ public class Tablero {
 	}
 
 	public boolean compararTerrenoAledanio(int posX, int posY, Terreno terreno) {
-		if(posX == tablero.length -1)
-			return false;
-		else if(terreno.compararTerreno(tablero[posX + 1][posY]))
-			return true;
-		if(posX == 0)
-			return false;
-		else if(terreno.compararTerreno(tablero[posX - 1][posY]))
-			return true;
-		if(posY == tablero[0].length -1)
-			return false;
-		else if(terreno.compararTerreno(tablero[posX][posY + 1]))
-			return true;
-		if(posX == 0)
-			return false;
-		if(terreno.compararTerreno(tablero[posX][posY - 1]))
-			return true;
+		if (posX != tablero.length - 1 && terreno.compararTerreno(tablero[posX + 1][posY]))
+			return true;	
+		if (posX != 0 && terreno.compararTerreno(tablero[posX - 1][posY])) 
+				return true;
+		if (posY != tablero[0].length - 1 && terreno.compararTerreno(tablero[posX][posY + 1]))
+				return true;
+		if (posY != 0 && terreno.compararTerreno(tablero[posX][posY - 1]))
+				return true;
 		return false;
-
 	}
 
 	private boolean fueraDeTablero(int posX, int posY, int direccionX, int direccionY) {
-		return posX + direccionX < 0 || posY + direccionY < 0 || posX + direccionX == this.tablero.length
-				|| posX + direccionY == this.tablero.length;
+		return posX + direccionX < 0 || posY + direccionY < 0 || posX + direccionX > (this.tablero.length - 1)
+				|| posY + direccionY > (this.tablero[0].length - 1);
 	}
 
 	private boolean hayEspacio(int posX, int posY) {
-		return tablero[posX][posY]==null;
+		return tablero[posX][posY] == null;
 	}
-
 
 	private ArrayList<CadenaTerrenos> selectList(Terreno terreno) {
 		if (terreno.getTipo() == "rio")
@@ -130,7 +124,7 @@ public class Tablero {
 			return this.campo;
 		if (terreno.getTipo() == "pantano")
 			return this.pantano;
-		
+
 		return this.pradera;
 	}
 
@@ -141,8 +135,8 @@ public class Tablero {
 		if ((posOtroTerrenoX != desplazamientoX || posOtroTerrenoY != desplazamientoY))
 			return cadena;
 		if (fueraDeTablero(posX, posY, desplazamientoX, desplazamientoY))
-				return cadena;
-		if ( terreno1.compararTerreno(tablero[posX + desplazamientoX][posY + desplazamientoY])) { 
+			return cadena;
+		if (terreno1.compararTerreno(tablero[posX + desplazamientoX][posY + desplazamientoY])) {
 			Integer[] posicionBuscada = { posX + desplazamientoX, posY + desplazamientoY };
 			for (CadenaTerrenos cadenaTerrenos : lista) {
 				if (cadenaTerrenos.contienePosicion(posicionBuscada)) {
@@ -164,7 +158,7 @@ public class Tablero {
 		// todo cuando queres acceder a una posicion del tablero que esta fuera de
 		// limite, y por ultimo preguntamos si la posicion adyacente a la nuestra es de
 		// nuetro tipo
-		
+
 		// en caso de que la posicion este en una de las listas,agregamos la posicion y
 		// guardamos en
 		// "hayLista" la cadena de terrenos que la tiene, en caso de que tengamos que
@@ -172,19 +166,19 @@ public class Tablero {
 		// salimos del for
 		return cadena;
 	}
-	
+
 	public void mostrarTablero() {
 		for (int i = 0; i < tablero.length; i++) {
 			for (int j = 0; j < tablero[0].length; j++) {
-				if(tablero[i][j]!=null)
+				if (tablero[i][j] != null)
 					System.out.print(String.format("%-10s", tablero[i][j].getTipo()));
 				else
-					System.out.print(String.format("%-10s","vacio"));
+					System.out.print(String.format("%-10s", "vacio"));
 			}
 			System.out.println();
 		}
 	}
-	
+
 	public Terreno[][] getTablero() {
 		return tablero;
 	}
