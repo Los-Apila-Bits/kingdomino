@@ -12,6 +12,10 @@ public class Tablero {
 	private ArrayList<CadenaTerrenos> bosque = new ArrayList<CadenaTerrenos>();
 	private ArrayList<CadenaTerrenos> pantano = new ArrayList<CadenaTerrenos>();
 
+	public Tablero() {
+		tablero[2][2] = new Terreno("castillo", 0);
+	}
+	
 	public int contarPuntos() {
 		this.puntos = 0;
 		for (CadenaTerrenos cadenaTerrenos : rio) {
@@ -40,7 +44,7 @@ public class Tablero {
 	public boolean puedeInsertar(int posX, int posY, Ficha ficha) {
 		if (fueraDeTablero(posX, posY, ficha.getDireccion()[0], ficha.getDireccion()[1]))
 			return false;
-		if((compararTerrenoAledanio(posX, posY, ficha.getTerreno1())) && (hayEspacioAledanio(posX, posY)))
+		if((compararTerrenoAledanio(posX, posY, ficha.getTerreno1())) && (hayEspacio(posX, posY) && hayEspacio(posX+ficha.getDireccion()[0], posY+ficha.getDireccion()[1])))
 			return true;
 		return false;
 		// tenemos que validar que haya espacio para el lado que tenemos que poner la
@@ -83,14 +87,6 @@ public class Tablero {
 
 	}
 
-	public void actualizarTablero() {
-		return;
-	}
-
-	public boolean esBorde(int posX, int posY) {
-		return posX == 0 || posY == 0 || posX == this.tablero.length || posY == this.tablero[0].length;
-	}
-
 	private boolean compararTerrenoAledanio(int posX, int posY, Terreno terreno) {
 		return (posX == this.tablero.length)?false:terreno.compararTerreno(tablero[posX + 1][posY]) || (posX == 0)?false:terreno.compararTerreno(tablero[posX - 1][posY])
 				|| (posY == this.tablero[0].length)?false:terreno.compararTerreno(tablero[posX][posY + 1]) || (posY == 0)?true:terreno.compararTerreno(tablero[posX][posY - 1]);
@@ -101,14 +97,10 @@ public class Tablero {
 				|| posX + direccionY == this.tablero.length;
 	}
 
-	private boolean hayEspacioAledanio(int posX, int posY) {
-		return tablero[posX][posY - 1] == null || tablero[posX - 1][posY] == null || tablero[posX][posY + 1] == null
-				|| tablero[posX + 1][posY] == null;
+	private boolean hayEspacio(int posX, int posY) {
+		return tablero[posX][posY]==null;
 	}
 
-	public Tablero() {
-		tablero[2][2] = new Terreno("castillo", 0);
-	}
 
 	private ArrayList<CadenaTerrenos> selectList(Terreno terreno) {
 		if (terreno.getTipo() == "rio")
@@ -133,7 +125,7 @@ public class Tablero {
 			return cadena;
 		if (fueraDeTablero(posX, posY, desplazamientoX, desplazamientoY))
 				return cadena;
-		if (  terreno1.compararTerreno(tablero[posX + desplazamientoX][posY + desplazamientoY])) { 
+		if ( terreno1.compararTerreno(tablero[posX + desplazamientoX][posY + desplazamientoY])) { 
 			Integer[] posicionBuscada = { posX + desplazamientoX, posY + desplazamientoY };
 			for (CadenaTerrenos cadenaTerrenos : lista) {
 				if (cadenaTerrenos.contienePosicion(posicionBuscada)) {
