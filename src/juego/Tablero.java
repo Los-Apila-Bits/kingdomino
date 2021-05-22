@@ -45,15 +45,13 @@ public class Tablero {
 	public boolean puedeInsertar(int posX, int posY, Ficha ficha) {
 		if (fueraDeTablero(posX, posY, ficha.getDireccion()[0], ficha.getDireccion()[1]))
 			return false;
-		if ((compararTerrenoAledanio(posX, posY, ficha.getTerreno1()))
-				|| compararTerrenoAledanio(posX + ficha.getDireccion()[0], posY + ficha.getDireccion()[1],
-						ficha.getTerreno1())
-						&& (hayEspacio(posX, posY)
-								&& hayEspacio(posX + ficha.getDireccion()[0], posY + ficha.getDireccion()[1])))
-			return true;
+		if((hayEspacio(posX, posY)&& hayEspacio(posX + ficha.getDireccion()[0], posY + ficha.getDireccion()[1])))
+			if ((compararTerrenoAledanio(posX, posY, ficha.getTerreno1()))
+					|| compararTerrenoAledanio(posX + ficha.getDireccion()[0], posY + ficha.getDireccion()[1],ficha.getTerreno1()))
+				return true;
 		return false;
-		// tenemos que validar que haya espacio para el lado que tenemos que poner la
-		// ficha
+		// tenemos que validar que haya espacio donde tenemos que poner la
+		// ficha 
 	}
 
 	public boolean insertarFicha(Ficha ficha, int posX, int posY) {
