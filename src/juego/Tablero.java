@@ -88,9 +88,25 @@ public class Tablero {
 
 	}
 
-	private boolean compararTerrenoAledanio(int posX, int posY, Terreno terreno) {
-		return (posX == this.tablero.length)?false:terreno.compararTerreno(tablero[posX + 1][posY]) || (posX == 0)?false:terreno.compararTerreno(tablero[posX - 1][posY])
-				|| (posY == this.tablero[0].length)?false:terreno.compararTerreno(tablero[posX][posY + 1]) || (posY == 0)?true:terreno.compararTerreno(tablero[posX][posY - 1]);
+	public boolean compararTerrenoAledanio(int posX, int posY, Terreno terreno) {
+		if(posX == tablero.length -1)
+			return false;
+		else if(terreno.compararTerreno(tablero[posX + 1][posY]))
+			return true;
+		if(posX == 0)
+			return false;
+		else if(terreno.compararTerreno(tablero[posX - 1][posY]))
+			return true;
+		if(posY == tablero[0].length -1)
+			return false;
+		else if(terreno.compararTerreno(tablero[posX][posY + 1]))
+			return true;
+		if(posX == 0)
+			return false;
+		if(terreno.compararTerreno(tablero[posX][posY - 1]))
+			return true;
+		return false;
+
 	}
 
 	private boolean fueraDeTablero(int posX, int posY, int direccionX, int direccionY) {
