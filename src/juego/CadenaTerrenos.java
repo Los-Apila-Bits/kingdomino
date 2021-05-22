@@ -19,13 +19,19 @@ public class CadenaTerrenos {
 	}
 	
 	public boolean contienePosicion (Integer[] posicion) {
-		return this.posiciones.contains(posicion);
+		for (Integer[] integer : this.posiciones) {
+			if(posicion[0]== integer[0]&&posicion[1]==integer[1])
+				return true;
+		}
+		return false;
 	}
 	
 	public void fusionarCadenas (CadenaTerrenos cadenas) {
 				      
 			this.coronas += cadenas.getCoronas();
 			this.posiciones.addAll(cadenas.getPosiciones());
+			cadenas.getPosiciones().clear();
+			
 	}
 
 	public ArrayList<Integer[]> getPosiciones() {
