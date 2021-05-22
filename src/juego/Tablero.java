@@ -132,23 +132,30 @@ public class Tablero {
 			int desplazamientoY, int posOtroTerrenoX, int posOtroTerrenoY, ArrayList<CadenaTerrenos> lista,
 			CadenaTerrenos cadena) {
 		Integer[] posicion = { posX, posY };
-		if ((posOtroTerrenoX != desplazamientoX || posOtroTerrenoY != desplazamientoY))
+		if ((posOtroTerrenoX == desplazamientoX && posOtroTerrenoY == desplazamientoY)) {
+
 			return cadena;
-		if (fueraDeTablero(posX, posY, desplazamientoX, desplazamientoY))
+		}
+		if (fueraDeTablero(posX, posY, desplazamientoX, desplazamientoY)) {
 			return cadena;
+		}
+
+		
 		if (terreno1.compararTerreno(tablero[posX + desplazamientoX][posY + desplazamientoY])) {
 			Integer[] posicionBuscada = { posX + desplazamientoX, posY + desplazamientoY };
 			for (CadenaTerrenos cadenaTerrenos : lista) {
 				if (cadenaTerrenos.contienePosicion(posicionBuscada)) {
-					if (cadena != null)
+					if (cadena != null) {
 						cadena.fusionarCadenas(cadenaTerrenos);
-					else
+					} else {
 						cadena = cadenaTerrenos.sumarFicha(terreno1.getCantCoronas(), posicion);
+					}
 					break;
 				}
 
 			}
 		}
+		return cadena;
 		// creamos un objeto cadenaTerrenos al cual vamos a apuntar si hay mas de una
 		// cadena de terrenos
 		// casteamos las posiciones del terreno a un Integer[]
@@ -164,7 +171,7 @@ public class Tablero {
 		// "hayLista" la cadena de terrenos que la tiene, en caso de que tengamos que
 		// anexar mas listas a esa cadena
 		// salimos del for
-		return cadena;
+		
 	}
 
 	public void mostrarTablero() {
