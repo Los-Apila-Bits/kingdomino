@@ -34,6 +34,7 @@ public class Ficha {
 		}
 		return direccion;
 	}
+	
 	public boolean getEstado() {
 		return this.estado;
 	}
@@ -53,10 +54,18 @@ public class Ficha {
 	public Terreno getTerreno2() {
 		return this.ficha[1];
 	}
+	
 	public String toString() {
 		return numeroDeFicha+" "+this.ficha[0].getTipo()+" "+this.ficha[0].getCantCoronas()+" "+this.ficha[1].getTipo()+" "+this.ficha[1].getCantCoronas();
 	}
+	
 	public int[] getDireccion() {
 		return this.direccion;
+	}
+	
+	public void cambiarPivot( ) {
+		Terreno aux = this.ficha[0];
+		this.ficha[0] = this.ficha[1];
+		this.ficha[1] = aux;	
 	}
 }

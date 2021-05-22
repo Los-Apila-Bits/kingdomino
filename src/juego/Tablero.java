@@ -37,24 +37,29 @@ public class Tablero {
 		//recorro todas las listas y cuento los puntos de cada lista
 	}
 
-	public boolean puedeInsertar(int posX, int posY, Terreno terreno, int[] direccion) {
-		if (fueraDeTablero(posX, posY, direccion[0], direccion[1]))
+	public boolean puedeInsertar(int posX, int posY, Ficha ficha) {
+		if (fueraDeTablero(posX, posY, ficha.getDireccion()[0], ficha.getDireccion()[1]))
 			return false;
-		return (compararTerrenoAledanio(posX, posY, terreno))
-				&& (hayEspacioAledanio(posX, posY));
+		if((compararTerrenoAledanio(posX, posY, ficha.getTerreno1())) && (hayEspacioAledanio(posX, posY)))
+			return true;
+		return false;
 		// tenemos que validar que haya espacio para el lado que tenemos que poner la
 		// ficha
 	}
 
-	public void insertarFicha(Ficha ficha, int posX, int posY) {
-
+	public boolean insertarFicha(Ficha ficha, int posX, int posY) {
+		if(!puedeInsertar(posX, posY, ficha)) {
+			ficha.cambiarPivot();
+			if(!puedeInsertar(posX, posY, ficha))
+				return false;
+		}	
 		tablero[posX][posY] = ficha.getTerreno1();
 		tablero[posX + ficha.getDireccion()[0]][posY + ficha.getDireccion()[1]] = ficha.getTerreno2();
 		generarEntradasLista(ficha.getTerreno1(), posX, posY, ficha.getDireccion()[0], ficha.getDireccion()[1],
 				selectList(ficha.getTerreno1()));
 		generarEntradasLista(ficha.getTerreno2(), posX + ficha.getDireccion()[0], posY + ficha.getDireccion()[1], 0, 0,
 				selectList(ficha.getTerreno2()));
-
+		return true;
 		// pasamos la ficha a insertar, la posicion donde la vamos a ubicar y un vector
 		// de int que
 		// tiene en que posicion, si va hacia la izquierda los valores del vector serian
