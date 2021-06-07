@@ -43,9 +43,10 @@ public class Ficha {
 		this.estado = false;
 	}
 
-//	public void compararNumFicha() { //metodo duduso
-//		return;
-//	}
+	public int compararNumFicha(Ficha otra) {
+		return otra.numeroDeFicha-this.numeroDeFicha;
+	}
+	
 
 	public Terreno getTerreno1() {
 		return this.ficha[0];

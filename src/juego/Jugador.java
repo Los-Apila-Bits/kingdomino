@@ -18,7 +18,6 @@ public class Jugador {
 			
 		}
 		
-		
 		public void elegirFicha (Ficha ficha) {
 			this.ficha = ficha;
 		}
@@ -41,6 +40,10 @@ public class Jugador {
 		
 		public String getColor() {
 			return this.color;
+		}
+		
+		public Ficha getFicha() {
+			return this.ficha;
 		}
 		
 		
