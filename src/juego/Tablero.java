@@ -1,7 +1,6 @@
 package juego;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class Tablero {
 	private Terreno[][] tablero = new Terreno[5][5];
@@ -66,6 +65,7 @@ public class Tablero {
 				selectList(ficha.getTerreno1()));
 		generarEntradasLista(ficha.getTerreno2(), posX + ficha.getDireccion()[0], posY + ficha.getDireccion()[1], 0, 0,
 				selectList(ficha.getTerreno2()));
+		contarPuntos();
 		return true;
 		// pasamos la ficha a insertar, la posicion donde la vamos a ubicar y un vector
 		// de int que
@@ -186,6 +186,10 @@ public class Tablero {
 
 	public Terreno[][] getTablero() {
 		return tablero;
+	}
+	
+	public int getPuntos() {
+		return this.puntos;
 	}
 
 }

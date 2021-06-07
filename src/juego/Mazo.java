@@ -29,4 +29,8 @@ public class Mazo {
 	public Ficha sacarFicha() {
 		return fichas.remove(0);
 	}
+	
+	public boolean mazoVacio() {
+		return fichas.isEmpty();
+	}
 }

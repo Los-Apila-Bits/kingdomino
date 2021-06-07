@@ -1,7 +1,7 @@
 package juego;
 
 public class Jugador {
-		private int idJugador;
+		private final int idJugador;
 		private static int contJugadores = 1;
 		private String nombre;
 		private String color;
@@ -15,15 +15,18 @@ public class Jugador {
 			this.idJugador = contJugadores++;
 			this.tablero = new Tablero();
 			this.ficha = new Ficha(0, null, null);
-			
 		}
 		
 		public void elegirFicha (Ficha ficha) {
 			this.ficha = ficha;
 		}
 		
-		public void ubicarFicha(int x, int y) {
-			tablero.insertarFicha(ficha, x, y);
+		public boolean ubicarFicha(int x, int y) {
+			return tablero.insertarFicha(ficha, x, y);
+		}
+		
+		public Tablero getTablero() {
+			return this.tablero;
 		}
 		
 		public boolean getEstado() {
@@ -46,6 +49,9 @@ public class Jugador {
 			return this.ficha;
 		}
 		
+		public String toString() {
+			return "Nombre: "+this.nombre+ " Puntos: "+tablero.getPuntos();
+		}
 		
 //		public void crearSala(String nombreSala) {
 //			
