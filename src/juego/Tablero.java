@@ -44,9 +44,10 @@ public class Tablero {
 	public boolean puedeInsertar(int posX, int posY, Ficha ficha) {
 		if (fueraDeTablero(posX, posY, ficha.getDireccion()[0], ficha.getDireccion()[1]))
 			return false;
+		
 		if((hayEspacio(posX, posY)&& hayEspacio(posX + ficha.getDireccion()[0], posY + ficha.getDireccion()[1])))
 			if ((compararTerrenoAledanio(posX, posY, ficha.getTerreno1()))
-					|| compararTerrenoAledanio(posX + ficha.getDireccion()[0], posY + ficha.getDireccion()[1],ficha.getTerreno1()))
+					|| compararTerrenoAledanio(posX + ficha.getDireccion()[0], posY + ficha.getDireccion()[1],ficha.getTerreno2()))
 				return true;
 		return false;
 		// tenemos que validar que haya espacio donde tenemos que poner la
@@ -91,13 +92,15 @@ public class Tablero {
 	}
 
 	public boolean compararTerrenoAledanio(int posX, int posY, Terreno terreno) {
-		if (posX != tablero.length - 1 && terreno.compararTerreno(tablero[posX + 1][posY]))
+//		System.out.println("posx: "+posX+" posy: "+posY);
+//		System.out.println("Tam tablero: "+tablero.length);
+		if (posX < tablero.length - 1 && terreno.compararTerreno(tablero[posX + 1][posY]))
 			return true;	
-		if (posX != 0 && terreno.compararTerreno(tablero[posX - 1][posY])) 
+		if (posX > 0 && terreno.compararTerreno(tablero[posX - 1][posY])) 
 				return true;
-		if (posY != tablero[0].length - 1 && terreno.compararTerreno(tablero[posX][posY + 1]))
+		if (posY < tablero.length - 1 && terreno.compararTerreno(tablero[posX][posY + 1]))
 				return true;
-		if (posY != 0 && terreno.compararTerreno(tablero[posX][posY - 1]))
+		if (posY > 0 && terreno.compararTerreno(tablero[posX][posY - 1]))
 				return true;
 		return false;
 	}

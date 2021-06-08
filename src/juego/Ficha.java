@@ -55,11 +55,8 @@ public class Ficha {
 		return this.ficha[1];
 	}
 	
-//	public String toString() {
-//		return numeroDeFicha+" "+this.ficha[0].getTipo()+" "+this.ficha[0].getCantCoronas()+" "+this.ficha[1].getTipo()+" "+this.ficha[1].getCantCoronas();
-//	}
 	public String toString() {
-		return this.ficha[0].getTipo()+"  "+this.ficha[1].getTipo()+" "+this.getDireccion()[0]+" "+this.getDireccion()[1];
+		return this.ficha[0].getTipo()+" "+this.ficha[0].getCantCoronas()+" "+this.ficha[1].getTipo()+" "+this.ficha[1].getCantCoronas();
 	}
 	
 	public int[] getDireccion() {

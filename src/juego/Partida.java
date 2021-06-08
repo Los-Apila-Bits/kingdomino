@@ -1,6 +1,8 @@
 package juego;
 
 import java.io.FileNotFoundException;
+import java.io.IOError;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,6 +34,8 @@ public class Partida {
 					System.out.print("Elija Una Ficha: ");
 					eleccion = entrada.nextInt()-1;
 					jugador.elegirFicha(fichasRonda.get(eleccion));
+					//fichasRonda.get(eleccion).setEstado();
+					fichasRonda.remove(eleccion);
 					System.out.println("Ubique la ficha en el tablero");
 					System.out.print("pos x: ");
 					posx = entrada.nextInt();
@@ -46,7 +50,6 @@ public class Partida {
 						eleccion = entrada.nextInt();
 						System.out.println(jugador.getFicha());
 					}
-					System.out.println(jugador.getFicha());
 					while(!jugador.ubicarFicha(posx, posy) && cantIntentos++ < 3){ // parche provisorio (ver logica tablero)
 						System.out.println("Elija una ubicacion correcta\n");
 						System.out.print("pos x: ");
@@ -56,6 +59,7 @@ public class Partida {
 						System.out.println(jugador.getFicha());
 					}
 					System.out.println();
+					System.out.println(jugador.getTablero().getPuntos());
 					jugador.getTablero().mostrarTablero();
 					cantIntentos=0;
 					System.out.println("\n\n");
