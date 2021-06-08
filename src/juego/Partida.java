@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class Partida {
 //		private int rondasRestantes;
-//		private int numerMovimientos;
+//		private int numeroMovimientos;
 		private List<Jugador> jugadores;
 		private Mazo mazo;
 		private List<Ficha> fichasRonda;
@@ -29,12 +29,13 @@ public class Partida {
 			int posx,posy;
 			while(!mazo.mazoVacio()) {
 				fichasRonda = turno.sacarFichas(mazo);
+				Collections.sort(fichasRonda, (j1,j2)->j2.compararNumFicha(j2)); //Ordeno para que queden los numero de fichas más bajos adelante
 				for ( Jugador jugador : jugadores) {
 					System.out.println(fichasRonda);
 					System.out.print("Elija Una Ficha: ");
 					eleccion = entrada.nextInt()-1;
 					jugador.elegirFicha(fichasRonda.get(eleccion));
-					//fichasRonda.get(eleccion).setEstado();
+					fichasRonda.get(eleccion).setEstado();
 					fichasRonda.remove(eleccion);
 					System.out.println("Ubique la ficha en el tablero");
 					System.out.print("pos x: ");
@@ -67,15 +68,11 @@ public class Partida {
 				turno.ordenarTurnos(jugadores);
 				fichasRonda.clear();
 			}
-			Collections.sort(jugadores,(j1,j2)->j1.getTablero().getPuntos()-j2.getTablero().getPuntos());
-			System.out.println(jugadores);
+			Collections.sort(jugadores,(j1,j2)->compararPuntos(j1, j2));
+			System.out.println("Posiciones finales: " + jugadores);
 		}
 
-//		
-//		private void restarTurnos() {
-//			
-//		}
-//		private void compararPuntos() {
-//			
-//		}
+		private int compararPuntos(Jugador j1, Jugador j2) {
+			return j2.getTablero().getPuntos()-j1.getTablero().getPuntos();
+		}
 }
