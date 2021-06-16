@@ -13,7 +13,7 @@ public class Tablero {
 	private ArrayList<CadenaTerrenos> pantano = new ArrayList<CadenaTerrenos>();
 
 	public Tablero() {
-		tablero[2][2] = new Terreno("castillo", 0);
+		tablero[2][2] = new Terreno(Terreno.CASTILLO, 0);
 	}
 
 	public int contarPuntos() {
@@ -115,17 +115,16 @@ public class Tablero {
 	}
 
 	private ArrayList<CadenaTerrenos> selectList(Terreno terreno) {
-		if (terreno.getTipo() == "rio")
+		if (terreno.getTipo() == Terreno.RIO)
 			return this.rio;
-		if (terreno.getTipo() == "bosque")
+		if (terreno.getTipo() == Terreno.BOSQUE)
 			return this.bosque;
-		if (terreno.getTipo() == "mina")
+		if (terreno.getTipo() == Terreno.MINA)
 			return this.mina;
-		if (terreno.getTipo() == "campo")
+		if (terreno.getTipo() == Terreno.CAMPO)
 			return this.campo;
-		if (terreno.getTipo() == "pantano")
+		if (terreno.getTipo() == Terreno.PANTANO)
 			return this.pantano;
-
 		return this.pradera;
 	}
 

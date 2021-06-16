@@ -28,6 +28,8 @@ public class Partida {
 				fichasRonda = turno.sacarFichas(mazo);
 				Collections.sort(fichasRonda, (j1,j2)->j2.compararNumFicha(j2)); //Ordeno para que queden los numero de fichas más bajos adelante
 				for ( Jugador jugador : jugadores) {
+					System.out.println(jugador.getNombre()+"\n");
+					jugador.getTablero().mostrarTablero();
 					System.out.println(fichasRonda);
 					System.out.print("Elija Una Ficha: ");
 					eleccion = entrada.nextInt()-1;

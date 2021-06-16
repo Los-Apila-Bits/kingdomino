@@ -37,11 +37,10 @@ public class App {
 		
 		Jugador j1 = new juego.Jugador("Matias", "Negro");
 		List<Jugador> lista = new LinkedList<Jugador>();
-		lista.add(j1);
+		//lista.add(j1);
 		lista.add(new Jugador("Lea","Rosa"));
 		Partida partida = new Partida(lista);
 		partida.ejecutar();
-		
 		}
 }
 

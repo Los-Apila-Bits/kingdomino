@@ -14,8 +14,8 @@ public class Mazo {
 		Scanner entrada = new Scanner(new File("mazo.txt"));
 		int i = 1;
 		while (entrada.hasNext()) {
-			fichas.add(new Ficha(i, new Terreno(entrada.next(), entrada.nextInt()),
-				new Terreno(entrada.next(), entrada.nextInt())));
+			fichas.add(new Ficha(i, new Terreno(entrada.nextInt(), entrada.nextInt()),
+				new Terreno(entrada.nextInt(), entrada.nextInt())));
 			i++;
 		}
 		entrada.close();
@@ -33,4 +33,5 @@ public class Mazo {
 	public boolean mazoVacio() {
 		return fichas.isEmpty();
 	}
+	
 }
