@@ -1,13 +1,12 @@
 package components;
 
-import java.awt.event.MouseEvent;
-
 import javafx.scene.control.Label;
 
 public class Casilla extends Label {
 
 	Terreno terreno;
 	private int x, y;
+	int enabled = 0;
 
 	public Casilla(int x, int y) {
 		this.y = y;
@@ -20,12 +19,14 @@ public class Casilla extends Label {
 	}
 
 	private void onMouseClicked() {
-		System.out.println("Hola");
+		if(this.enabled < 2)
+			setCasilla(new Terreno(1));	
 	}
 
 	public void setCasilla(Terreno terreno) {
 		this.terreno = terreno;
 		setGraphic(terreno.getImageView());
+		this.enabled++;
 	}
 
 	public Terreno getTerreno() {

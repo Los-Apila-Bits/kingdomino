@@ -40,7 +40,6 @@ public class TableroKD extends GridPane{
 				int y = j;
 				setAlignment(Pos.CENTER);
 				Casilla casilla = new Casilla(x, y);
-//				casilla.addEventHandler(MouseEvent e, new EventHandler(e, getAccessibleRoleDescription(), getAccessibleRoleDescription(), getAccessibleHelp()));;
 				add(casilla, x, y);
 				casillas[i][j] = casilla;
 			}
