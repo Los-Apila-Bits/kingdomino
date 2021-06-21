@@ -64,11 +64,18 @@ public class Partida {
 					cantIntentos=0;
 					System.out.println("\n\n");
 				}
+				//Collections.sort(jugadores,(j1,j2)->compararPuntos(j1, j2));
 				turno.ordenarTurnos(jugadores);
 				fichasRonda.clear();
 			}
-			Collections.sort(jugadores,(j1,j2)->compararPuntos(j1, j2));
+			
 			System.out.println("Posiciones finales: " + jugadores);
+		}
+		
+		public String obtenerTablaPosiciones() {
+			Collections.sort(jugadores,(j1,j2)->compararPuntos(j1, j2));
+			return jugadores.get(0).getNombre();
+
 		}
 
 		private int compararPuntos(Jugador j1, Jugador j2) {
