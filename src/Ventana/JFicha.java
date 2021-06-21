@@ -28,6 +28,7 @@ public class JFicha extends JPanel{
 		this.add(terreno[0]);
 		this.add(terreno[1]);
 	}
+	
 	public void setFicha(Ficha ficha) {
 		
 		this.ficha = ficha;

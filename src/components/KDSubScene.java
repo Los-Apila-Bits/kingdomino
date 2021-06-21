@@ -1,5 +1,7 @@
 package components;
 
+import java.awt.*;
+
 import javafx.animation.TranslateTransition;
 import javafx.scene.SubScene;
 import javafx.scene.image.Image;
@@ -12,18 +14,27 @@ import javafx.util.Duration;
 
 public class KDSubScene extends SubScene{
 	
-	private final static String FONT_PATH = "/resources/kenvector_future.ttf";
-	private final static String BACKGROUND_IMAGE = "/resources/red_panel.png";
+	private final static String FONT_PATH = "/resources/morris_font.ttf";
+	private final static String BACKGROUND_IMAGE = "/resources/window.png";
 	
+	private double screenWidth;
+	private double screenHeight;
+	private double width;
+	private double height;
 	private  boolean isHidden;
 	
 	
-	public KDSubScene() {
-		super(new AnchorPane(), 600, 400);
-		prefWidth(600);
-		prefHeight(400);
+	public KDSubScene(double width, double height) {
+		super(new AnchorPane(), width, height);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		screenWidth = screenSize.getWidth();
+		screenHeight = screenSize.getHeight();
+		this.width = width;
+		this.height = height;
+		prefWidth(width);
+		prefHeight(height);
 		
-		BackgroundImage image = new BackgroundImage(new Image(BACKGROUND_IMAGE, 600, 400, false, true),
+		BackgroundImage image = new BackgroundImage(new Image(BACKGROUND_IMAGE, width, height, false, true),
 				BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, null);
 		
 		AnchorPane root2 = (AnchorPane) this.getRoot();
@@ -31,8 +42,8 @@ public class KDSubScene extends SubScene{
 		
 		isHidden = true ;
 		
-		setLayoutX(1024);
-		setLayoutY(180);
+		setLayoutX(screenWidth + width);
+		setLayoutY(screenHeight/2 - height/2);
 		
 	}
 	
@@ -42,12 +53,10 @@ public class KDSubScene extends SubScene{
 		transition.setNode(this);
 		
 		if (isHidden) {
-			
-			transition.setToX(-676);
+			transition.setToX(-screenWidth - width/2);
 			isHidden = false;
 			
 		} else {
-			
 			transition.setToX(0);
 			isHidden = true ;
 		}

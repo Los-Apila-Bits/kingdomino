@@ -10,14 +10,14 @@ import javafx.scene.text.Font;
 
 public class KDButton extends Button{
 	
-	private final String FONT_PATH = "/resources/kenvector_future.ttf";
-	private final String BUTTON_PRESSED_STYLE = "-fx-background-color: transparent; -fx-background-image: url('/resources/red_button_pressed.png');";
-	private final String BUTTON_FREE_STYLE = "-fx-background-color: transparent; -fx-background-image: url('/resources/red_button.png');";
+	private final String FONT_PATH = "/resources/morris_font.ttf";
+	private final String BUTTON_PRESSED_STYLE = "-fx-background-color: transparent; -fx-background-image: url('/resources/buttonLong_blue_pressed.png');";
+	private final String BUTTON_FREE_STYLE = "-fx-background-color: transparent; -fx-background-image: url('/resources/buttonLong_blue.png');";
 	
-	public KDButton(String text) {
+	public KDButton(String text, int width) {
 		setText(text);
 		setButtonFont();
-		setPrefWidth(190);
+		setPrefWidth(width);
 		setPrefHeight(49);
 		setStyle(BUTTON_FREE_STYLE);
 		initializeButtonListeners();
