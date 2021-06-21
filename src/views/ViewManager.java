@@ -2,6 +2,7 @@ package views;
 
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,7 +115,6 @@ public class ViewManager {
 		int cantButtons = menuButtons.size();
 		int offSet = (cantButtons * (BUTTON_WIDTH + MENU_BUTTON_START_X));
 		int maxWidth = ((MENU_BUTTON_START_X + BUTTON_WIDTH) * 5);
-		System.out.print((cantButtons > 0 ? MENU_BUTTON_START_X : 0));
 		button.setLayoutX(this.width/2 - maxWidth / 2 + offSet);
 		button.setLayoutY(this.height - MENU_BUTTON_START_Y);
 		menuButtons.add(button);
@@ -139,8 +139,13 @@ public class ViewManager {
 
 			@Override
 			public void handle(ActionEvent event) {
-				showSubScene(shipChooserSubscene);
-				
+//				showSubScene(shipChooserSubscene);
+				ViewPartida partida = new ViewPartida(height, width);
+				try {
+					partida.start(mainStage);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 	}
