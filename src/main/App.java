@@ -5,7 +5,6 @@ import javafx.stage.Stage;
 import views.ViewManager;
 
 
-
 public class App extends Application {
 	@Override
 	public void start(Stage primaryStage) {

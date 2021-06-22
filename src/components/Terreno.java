@@ -1,11 +1,13 @@
 package components;
 
+
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import views.ViewPartida;
 
 
-public class Terreno {
+public class Terreno extends Label {
 	int x, y = -1;
 	private int nombre;
 	Image imagen;
@@ -45,6 +47,10 @@ public class Terreno {
 			break;
 		}
 
+	}
+	
+	public Image getImage() {
+		return this.imagen;
 	}
 	
 	public ImageView getImageView() {

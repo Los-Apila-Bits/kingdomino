@@ -10,7 +10,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
-import juego.Ficha;
+import components.Ficha;
 import juego.Tablero;
 import juego.Terreno;
 import javafx.scene.Node;
@@ -42,7 +42,7 @@ public class ViewPartida {
 	private double height = 768;
 	public static final int TAM_CASILLA = 140;
 
-	private Label estadoCasilla;
+//	private Label estadoCasilla;
 	private TableroKD tablero;
 	private static ViewPartida instancia;
 	public ViewPartida(double h, double w) {
@@ -72,9 +72,9 @@ public class ViewPartida {
 		cuadroTablero.setMinWidth(700);
 		cuadroTablero.setGridLinesVisible(false);
 
-		estadoCasilla = new Label();
-		estadoCasilla.setAlignment(Pos.BOTTOM_LEFT);
-		estadoCasilla.setPadding(new Insets(10, 0, 10, 10));
+//		estadoCasilla = new Label();
+//		estadoCasilla.setAlignment(Pos.BOTTOM_LEFT);
+//		estadoCasilla.setPadding(new Insets(10, 0, 10, 10));
 		
 		//Panel de la derecha. Información de los jugadores, ficha a colocar y del turno
 		BorderPane info = new BorderPane();
@@ -89,12 +89,16 @@ public class ViewPartida {
 		//Panel para rotar ficha
 		StackPane previsualizacionFicha = new StackPane();
 //		previsualizacionFicha.setPadding(new Insets(30, 0, 10, 50));
-		Rectangle contenedorFicha = new Rectangle(TAM_CASILLA * 2, 150);
-		contenedorFicha.setFill(Color.BISQUE);
-		Label textoFichaEjemplo = new Label("TERRENO TERRENO");
-		textoFichaEjemplo.setMinSize(TAM_CASILLA*2, TAM_CASILLA);
-		previsualizacionFicha.getChildren().addAll(contenedorFicha, textoFichaEjemplo);
+//		Rectangle contenedorFicha = new Rectangle(TAM_CASILLA * 2, 150);
+//		contenedorFicha.setFill(Color.BISQUE);
+//		Label textoFichaEjemplo = new Label("TERRENO TERRENO");
+//		textoFichaEjemplo.setMinSize(TAM_CASILLA*2, TAM_CASILLA);
+//		previsualizacionFicha.getChildren().addAll(contenedorFicha, textoFichaEjemplo);
 //		infoPartida.getChildren().add(previsualizacionFicha);
+		
+		previsualizacionFicha.setMinHeight(TAM_CASILLA*4);
+		previsualizacionFicha.setMinWidth(TAM_CASILLA*4);
+		previsualizacionFicha.getChildren().add(new Ficha(1,2));
 		
 		GridPane fichasTurno = new GridPane();
 
