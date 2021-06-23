@@ -105,7 +105,7 @@ public class TableroKD extends GridPane{
 	   
 	    	        Ficha ficha = new Ficha(Integer.parseInt(newFicha[0]),Integer.parseInt(newFicha[1]));
 	    	        // TODO: set image size; use correct column/row span
-	    	        target.add(ficha, x, y, 1, 1);
+	    	        target.add(ficha, x, y, 2, 2);
 	    	        success = true;
 	    	    }
 	    	    //let the source know whether the image was successfully transferred and used
@@ -162,13 +162,6 @@ public class TableroKD extends GridPane{
         System.out.println("Fila" + row + "Columna" + column );
 	}
     //----------------------------------------------------
-	
-	//returns a NEW INSTANCE of the figure that was serialized on the Dragboard
-	private Ficha deserializeFigure(Dragboard db) {
-		Ficha source = (Ficha) db.getContent(Ficha.FICHA_FIGURE);
-		//source.setField(ChessGame.getBoard().getField(source.getX(), source.getY()));
-		return source;
-	}
 	
 	public void addFicha(Ficha ficha) {
 		this.fichaDinamica = ficha;	

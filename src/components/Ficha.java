@@ -26,54 +26,17 @@ import javafx.scene.layout.Pane;
 import javafx.scene.transform.Rotate;
 import views.ViewPartida;
 
-public class Ficha extends Pane implements Serializable {
-
-	public transient final static DataFormat FICHA_FIGURE = new DataFormat("ficha.figure");
-	
+public class Ficha extends Pane {
 	private final int ANCHO = ViewPartida.TAM_CASILLA;
 	private final int ALTO = ViewPartida.TAM_CASILLA;
 	private Pane imageContainer = new Pane();
 	private Rotate rotate;
 	private ImageView imageView;
 	private ImageView imageView2;
-	
-//	private transient Pane imageContainer = new Pane();
-//	private transient Rotate rotate;
-//	private transient ImageView imageView;
-//	private transient ImageView imageView2;
-
 	private int cantRotaciones;
 	
-	private transient Terreno terreno1;
-	private transient Terreno terreno2;
-//	public Ficha(String terreno1, String terreno2) {
-//		try {
-//			image1 = new Image(new FileInputStream(terreno1 + ".jpeg"));
-//			image2 = new Image(new FileInputStream(terreno2 + ".jpeg"));
-//		} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		imageView = new ImageView(image1); 
-//		imageView2 = new ImageView(image2); 
-//		imageView.setX(0); 
-//        imageView.setY(0); 
-//        imageView2.setX(0); 
-//        imageView2.setY(ALTO); 
-//        //setting the fit height and width of the image view 
-//        imageView.setFitHeight(ALTO); 
-//        imageView.setFitWidth(ANCHO); 
-//        imageView2.setFitHeight(ALTO); 
-//        imageView2.setFitWidth(ANCHO);
-//		imageContainer.getChildren().add(imageView);
-//	    imageContainer.getChildren().add(imageView2);
-//	    rotate = new Rotate();
-//	    rotate.setPivotX(ANCHO/2);
-//	    rotate.setPivotY(ALTO);
-//	    imageContainer.getTransforms().add(rotate);
-//	    this.enableDragging();
-//	    this.enableRotate();
-//	}
+	private Terreno terreno1;
+	private Terreno terreno2;
 
 	public Ficha(int t1, int t2) {
 		this.terreno1 = new Terreno(t1);
@@ -140,9 +103,6 @@ public class Ficha extends Pane implements Serializable {
 		return this.cantRotaciones;
 	}
 	
-//	public void setCantidadRotaciones(int i) {
-//		this.cantRotaciones= +i ;
-//	}
 	public Terreno getTerrenoFicha() {
 		return this.terreno1;
 	}
@@ -161,58 +121,9 @@ public class Ficha extends Pane implements Serializable {
 		});
 	}
 	
-//	public void enableDragging() {
-//		makeDraggable(imageContainer);
-//	}
-
 	public void rotate() {
 		this.rotate.setAngle(rotate.getAngle() + 90);
 		this.cantRotaciones++;
 		System.out.println("CantRotaciones  " + this.cantRotaciones);
 	}
-	
-//    private void makeDraggable(Node node) {
-//        final Delta dragDelta = new Delta();
-//        
-//        double posIniX = node.getLayoutX();
-//        double posIniY = node.getLayoutY();
-//
-//        node.setOnMouseEntered(me -> {
-//            if (!me.isPrimaryButtonDown()) {
-//                node.getScene().setCursor(Cursor.HAND);
-//            }
-//        });
-//        node.setOnMouseExited(me -> {
-//            if (!me.isPrimaryButtonDown()) {
-//                node.getScene().setCursor(Cursor.DEFAULT);
-//
-//                node.setLayoutX(posIniX);
-//                node.setLayoutY(posIniY);
-//            }
-//        });
-//        node.setOnMousePressed(me -> {
-//            if (me.isPrimaryButtonDown()) {
-//                node.getScene().setCursor(Cursor.DEFAULT);
-//            }
-//            dragDelta.x = me.getX();
-//            dragDelta.y = me.getY();
-//            node.getScene().setCursor(Cursor.MOVE);
-//        });
-//        node.setOnMouseReleased(me -> {
-//            if (!me.isPrimaryButtonDown()) {
-//                node.getScene().setCursor(Cursor.DEFAULT);
-//            }
-//        });
-//        node.setOnMouseDragged(me -> {
-//            node.setLayoutX(node.getLayoutX() + me.getX() - dragDelta.x);
-//            node.setLayoutY(node.getLayoutY() + me.getY() - dragDelta.y);
-//        });
-//    }
-//    
-//    
-//
-//    private class Delta {
-//        public double x;
-//        public double y;
-//    }
 }
