@@ -27,9 +27,10 @@ import javafx.scene.transform.Rotate;
 import views.ViewPartida;
 
 public class Ficha extends Pane {
+	
+	private int width = 140;
+	private int height = 140;
 
-	private final int ANCHO = ViewPartida.TAM_CASILLA;
-	private final int ALTO = ViewPartida.TAM_CASILLA;
 	private Pane imageContainer = new Pane();
 	private Rotate rotate;
 	private ImageView imageView;
@@ -39,32 +40,31 @@ public class Ficha extends Pane {
 
 	private Terreno terreno1;
 	private Terreno terreno2;
-
-	public Ficha(int t1, int t2) {
+	
+	public Ficha(int t1, int t2, int tam) {
 		this.terreno1 = new Terreno(t1);
 		this.terreno2 = new Terreno(t2);
 		cantRotaciones = 0;
-
+		width = height = tam;
 		imageView = this.terreno1.getImageView();
 		imageView2 = this.terreno2.getImageView();
 		imageView.setX(0);
 		imageView.setY(0);
 		imageView2.setX(0);
-		imageView2.setY(ALTO);
+		imageView2.setY(height);
 		// setting the fit height and width of the image view
-		imageView.setFitHeight(ALTO);
-		imageView.setFitWidth(ANCHO);
-		imageView2.setFitHeight(ALTO);
-		imageView2.setFitWidth(ANCHO);
+		imageView.setFitHeight(height);
+		imageView.setFitWidth(width);
+		imageView2.setFitHeight(height);
+		imageView2.setFitWidth(width);
 
 		rotate = new Rotate();
-		rotate.setPivotX(ANCHO / 2);
-		rotate.setPivotY(ALTO);
+		rotate.setPivotX(width / 2);
+		rotate.setPivotY(height);
 
 		imageContainer.getChildren().add(imageView);
 		imageContainer.getChildren().add(imageView2);
 		this.enableRotate();
-		// this.enableDragging();
 		getTransforms().add(rotate);
 		getChildren().add(imageContainer);
 
@@ -81,7 +81,6 @@ public class Ficha extends Pane {
 				ClipboardContent cbContent = new ClipboardContent();
 				cbContent.putString(terreno1.getNombre() + " " + terreno2.getNombre() + " " + cantRotaciones);
 				db.setContent(cbContent);
-				source.setVisible(false);
 				event.consume();
 			}
 		});
@@ -96,7 +95,6 @@ public class Ficha extends Pane {
 				event.consume();
 			}
 		});
-
 	}
 
 	public int getCantidadRotaciones() {
@@ -124,48 +122,5 @@ public class Ficha extends Pane {
 	public void rotate() {
 		this.rotate.setAngle(rotate.getAngle() + 90);
 		this.cantRotaciones++;
-	}
-
-	private void makeDraggable(Node node) {
-		final Delta dragDelta = new Delta();
-
-		double posIniX = node.getLayoutX();
-		double posIniY = node.getLayoutY();
-
-		node.setOnMouseEntered(me -> {
-			if (!me.isPrimaryButtonDown()) {
-				node.getScene().setCursor(Cursor.HAND);
-			}
-		});
-		node.setOnMouseExited(me -> {
-			if (!me.isPrimaryButtonDown()) {
-				node.getScene().setCursor(Cursor.DEFAULT);
-
-				node.setLayoutX(posIniX);
-				node.setLayoutY(posIniY);
-			}
-		});
-		node.setOnMousePressed(me -> {
-			if (me.isPrimaryButtonDown()) {
-				node.getScene().setCursor(Cursor.DEFAULT);
-			}
-			dragDelta.x = me.getX();
-			dragDelta.y = me.getY();
-			node.getScene().setCursor(Cursor.MOVE);
-		});
-		node.setOnMouseReleased(me -> {
-			if (!me.isPrimaryButtonDown()) {
-				node.getScene().setCursor(Cursor.DEFAULT);
-			}
-		});
-		node.setOnMouseDragged(me -> {
-			node.setLayoutX(node.getLayoutX() + me.getX() - dragDelta.x);
-			node.setLayoutY(node.getLayoutY() + me.getY() - dragDelta.y);
-		});
-	}
-
-	private class Delta {
-		public double x;
-		public double y;
 	}
 }

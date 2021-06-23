@@ -43,6 +43,7 @@ public class ViewPartida{
 	private double width = 1024;
 	private double height = 768;
 	public static final int TAM_CASILLA = 140;
+	public static final int TAM_PREV = 70;
 	
 	private Ficha ficha;
 
@@ -91,20 +92,15 @@ public class ViewPartida{
 		infoPartida.getChildren().add(new Label("Información de los Jugadores"));
 		infoPartida.getChildren().add(new Label("Jugador 1: 34 puntos"));
 		infoPartida.getChildren().add(new Label("Jugador 2: 20 puntos"));
-		
 		//Panel para rotar ficha
 		StackPane previsualizacionFicha = new StackPane();
-//		previsualizacionFicha.setPadding(new Insets(30, 0, 10, 50));
-//		Rectangle contenedorFicha = new Rectangle(TAM_CASILLA * 2, 150);
-//		contenedorFicha.setFill(Color.BISQUE);
-//		Label textoFichaEjemplo = new Label("TERRENO TERRENO");
-//		textoFichaEjemplo.setMinSize(TAM_CASILLA*2, TAM_CASILLA);
-//		previsualizacionFicha.getChildren().addAll(contenedorFicha, textoFichaEjemplo);
-//		infoPartida.getChildren().add(previsualizacionFicha);
-		
-		previsualizacionFicha.setMinHeight(TAM_CASILLA*3);
+		previsualizacionFicha.setAlignment(Pos.CENTER);
+		previsualizacionFicha.setBackground(new Background(new BackgroundFill(Color.CORAL, CornerRadii.EMPTY, Insets.EMPTY)));
+		previsualizacionFicha.setMaxHeight(TAM_CASILLA*3);
 		previsualizacionFicha.setMinWidth(TAM_CASILLA*3);
-		previsualizacionFicha.getChildren().add(new Ficha(1,2));
+		Ficha fichaAInsertar = new Ficha(1,2, TAM_CASILLA);
+		previsualizacionFicha.getChildren().add(fichaAInsertar);
+		previsualizacionFicha.setPadding(new Insets(TAM_CASILLA/2, 0, 10, previsualizacionFicha.getMinWidth()/3));
 		
 		GridPane fichasTurno = new GridPane();
 
@@ -114,12 +110,12 @@ public class ViewPartida{
 		fichasTurno.setAlignment(Pos.CENTER);
 		fichasTurno.setVgap(15);
 		fichasTurno.setPadding(new Insets(0, 0, 30, 0));
-		fichasTurno.add(new Label("Ficha 1"), 0, 0);
-		fichasTurno.add(new Label("Ficha 2"), 0, 1);
-		fichasTurno.add(new Label("Ficha 3"), 0, 2);
-		fichasTurno.add(new Label("Ficha 4"), 1, 0);
-		fichasTurno.add(new Label("Ficha 5"), 1, 1);
-		fichasTurno.add(new Label("Ficha 6"), 1, 2);
+		fichasTurno.add(new Ficha(3,4, TAM_PREV), 0, 0);
+		fichasTurno.add(new Ficha(2,4, TAM_PREV), 0, 1);
+		fichasTurno.add(new Ficha(3,5, TAM_PREV), 0, 2);
+		fichasTurno.add(new Ficha(3,2, TAM_PREV), 1, 0);
+		fichasTurno.add(new Ficha(2,2, TAM_PREV), 1, 1);
+		fichasTurno.add(new Ficha(1,2, TAM_PREV), 1, 2);
 		
 		info.setTop(infoPartida);
 		info.setCenter(previsualizacionFicha);

@@ -12,15 +12,9 @@ public class Casilla extends Label {
 		this.x = x;
 		this.terreno = new Terreno(-1);
 		// EVENTOS
-		//setOnMouseClicked(e->onMouseClicked());
 		setCasilla(this.terreno);
 
 	}
-
-//	private void onMouseClicked() {
-//		if(this.enabled < 2)
-//			setCasilla(new Terreno(1));	
-//	}
 
 	public void setCasilla(Terreno terreno) {
 		this.terreno = terreno;
