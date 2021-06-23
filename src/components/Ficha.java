@@ -2,6 +2,7 @@ package components;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 
 import com.sun.javafx.geom.Rectangle;
 
@@ -15,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
@@ -24,23 +26,26 @@ import javafx.scene.layout.Pane;
 import javafx.scene.transform.Rotate;
 import views.ViewPartida;
 
-public class Ficha extends Pane {
+public class Ficha extends Pane implements Serializable {
 
-//	private final int ANCHO = 100;
-//	private final int ALTO =100;
-
+	public transient final static DataFormat FICHA_FIGURE = new DataFormat("ficha.figure");
+	
 	private final int ANCHO = ViewPartida.TAM_CASILLA;
 	private final int ALTO = ViewPartida.TAM_CASILLA;
-	private Image image1;
-	private Image image2;
 	private Pane imageContainer = new Pane();
 	private Rotate rotate;
-	// Setting the image view
 	private ImageView imageView;
 	private ImageView imageView2;
+	
+//	private transient Pane imageContainer = new Pane();
+//	private transient Rotate rotate;
+//	private transient ImageView imageView;
+//	private transient ImageView imageView2;
 
-	Terreno terreno1;
-	Terreno terreno2;
+	int cantRotaciones;
+	
+	private transient Terreno terreno1;
+	private transient Terreno terreno2;
 //	public Ficha(String terreno1, String terreno2) {
 //		try {
 //			image1 = new Image(new FileInputStream(terreno1 + ".jpeg"));
@@ -73,6 +78,7 @@ public class Ficha extends Pane {
 	public Ficha(int terreno1, int terreno2) {
 		this.terreno1 = new Terreno(terreno1);
 		this.terreno2 = new Terreno(terreno2);
+		cantRotaciones = 0;
 
 		imageView = this.terreno1.getImageView();
 		imageView2 = this.terreno2.getImageView();
@@ -89,63 +95,59 @@ public class Ficha extends Pane {
 		rotate = new Rotate();
 		rotate.setPivotX(ANCHO / 2);
 		rotate.setPivotY(ALTO);
-
-//    imageView.getTransforms().add(rotate);
-//    imageView2.getTransforms().add(rotate);
-
+		
 		imageContainer.getChildren().add(imageView);
 		imageContainer.getChildren().add(imageView2);
-		this.enableDragging();
 		this.enableRotate();
-		imageContainer.getTransforms().add(rotate);
+		this.enableDragging();
+		getTransforms().add(rotate);
 		getChildren().add(imageContainer);
-		// getTransforms().add(rotate);
 		
-		/////////////////
+//		Pane source = this;
+//		
+//		source.setOnDragDetected(new EventHandler<MouseEvent>() {
+//	        public void handle(MouseEvent event) {
+//	            //Drag was detected, start drap-and-drop gesture
+//	            //Allow any transfer node
+//	            Dragboard db = source.startDragAndDrop(TransferMode.ANY);
+//
+//	            //Put ImageView on dragboard
+//	            ClipboardContent cbContent = new ClipboardContent();
+//	            cbContent.put(FICHA_FIGURE, source);
+//	            //cbContent.putImage(source.getImage());
+//	            //cbContent.put(DataFormat.)
+//	            db.setContent(cbContent);
+//	            source.setVisible(false);
+//	            event.consume();
+//	        }
+//	    });
+//
+//	    source.setOnDragDone(new EventHandler<DragEvent>() {
+//	        public void handle(DragEvent event) {
+//	            //the drag and drop gesture has ended
+//	            //if the data was successfully moved, clear it
+//	            if(event.getTransferMode() == TransferMode.MOVE){
+//	                source.setVisible(false);
+//	            }
+//	            event.consume();
+//	        }
+//	    });
 		
-		
-		//----------- Mueve bien la ficha-------
-		//makeDraggable(imageContainer);
-		//------------------------------------
-		
-		
-		//-----------Drag and Drop Ficha---------------
-		ImageView source = imageView;
-		
-	    source.setOnDragDetected(new EventHandler<MouseEvent>() {
-	        public void handle(MouseEvent event) {
-	            //Drag was detected, start drap-and-drop gesture
-	            //Allow any transfer node
-	            Dragboard db = source.startDragAndDrop(TransferMode.ANY);
-
-	            //Put ImageView on dragboard
-	            ClipboardContent cbContent = new ClipboardContent();
-	            //cbContent.putImage(source.getImage());
-	            cbContent.putImage(source.getImage());
-	            //cbContent.put(DataFormat.)
-	            db.setContent(cbContent);
-	            source.setVisible(false);
-	            event.consume();
-	        }
-	    });
-	    
-	    source.setOnDragDone(new EventHandler<DragEvent>() {
-	        public void handle(DragEvent event) {
-	            //the drag and drop gesture has ended
-	            //if the data was successfully moved, clear it
-	            if(event.getTransferMode() == TransferMode.MOVE){
-	                source.setVisible(false);
-	            }
-	            event.consume();
-	        }
-	    });
-		
-
-	    //---------------------------------------------------
 	}
 	
+	public int getCantidadRotaciones() {
+		return this.cantRotaciones;
+	}
+	
+	public void setCantidadRotaciones(int i) {
+		this.cantRotaciones= +i ;
+	}
 	public Terreno getTerrenoFicha() {
 		return this.terreno1;
+	}
+	
+	public Terreno getTerreno2Ficha() {
+		return this.terreno2;
 	}
 
 	public Pane getImageContainer() {
@@ -153,36 +155,13 @@ public class Ficha extends Pane {
 	}
 
 	public void enableRotate() {
-		this.imageContainer.setOnMouseClicked(event -> {
+		this.setOnMouseClicked(event -> {
 			this.rotate();
 		});
-//        this.imageView.setOnMouseClicked( event -> {
-//            this.rotate();   
-//        });
-		// imageView2.setRotate(90);
-		// Acá iría la lógica de girar las imagenes
 	}
-
+	
 	public void enableDragging() {
-		final ObjectProperty<Point2D> mouseAnchor = new SimpleObjectProperty<>();
-//        this.imageContainer.setOnMousePressed( event -> {mouseAnchor.set(new Point2D(event.getSceneX(), event.getSceneY()));
-//        this.rotate.setAngle(rotate.getAngle()-90);});
-
-		this.imageContainer.setOnMousePressed(event -> {
-			event.setDragDetect(true);
-		});
-		this.imageContainer.setOnDragOver(event -> {
-			event.acceptTransferModes(TransferMode.MOVE);
-			event.consume();
-		});
-
-//        this.imageContainer.setOnMousePressed( event -> {mouseAnchor.set(new Point2D(event.getSceneX(), event.getSceneY()));});
-//        this.imageContainer.setOnMouseDragged( event -> {
-//            double deltaX = event.getSceneX() - mouseAnchor.get().getX();
-//            double deltaY = event.getSceneY() - mouseAnchor.get().getY();
-//            this.imageContainer.relocate(this.imageContainer.getLayoutX()-deltaX, this.imageContainer.getLayoutY()-deltaY);
-//            mouseAnchor.set(new Point2D(event.getSceneX(), event.getSceneY()));;
-//        });
+		makeDraggable(imageContainer);
 	}
 
 	public void rotate() {
@@ -191,6 +170,9 @@ public class Ficha extends Pane {
 	
     private void makeDraggable(Node node) {
         final Delta dragDelta = new Delta();
+        
+        double posIniX = node.getLayoutX();
+        double posIniY = node.getLayoutY();
 
         node.setOnMouseEntered(me -> {
             if (!me.isPrimaryButtonDown()) {
@@ -200,6 +182,9 @@ public class Ficha extends Pane {
         node.setOnMouseExited(me -> {
             if (!me.isPrimaryButtonDown()) {
                 node.getScene().setCursor(Cursor.DEFAULT);
+
+                node.setLayoutX(posIniX);
+                node.setLayoutY(posIniY);
             }
         });
         node.setOnMousePressed(me -> {
@@ -220,6 +205,8 @@ public class Ficha extends Pane {
             node.setLayoutY(node.getLayoutY() + me.getY() - dragDelta.y);
         });
     }
+    
+    
 
     private class Delta {
         public double x;

@@ -1,7 +1,6 @@
 package components;
 
 import javafx.scene.control.Label;
-
 public class Casilla extends Label {
 
 	Terreno terreno;
@@ -41,3 +40,4 @@ public class Casilla extends Label {
 		return y;
 	}
 }
+
