@@ -25,6 +25,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import settings.Settings;
 import javafx.scene.paint.Color;  
 import components.KDSubScene;
 import components.KDButton;
@@ -51,16 +52,18 @@ public class ViewManager {
 	private KDSubScene helpSubscene;
 	private KDSubScene optionsSubscene;
 	
+	private Settings settings;
+	
 	private KDSubScene sceneToHide;
 	private boolean fullScreen = true;
 	public MediaPlayer themeSong;
 	
 	List<KDButton> menuButtons;
 	
-	public ViewManager() {
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		this.width = screenSize.getWidth();
-		this.height = screenSize.getHeight();
+	public ViewManager(Settings settings) {
+		this.settings = settings;
+		width = settings.getWidth();
+		height = settings.getHeight();
 		this.buttonWidth = this.width * 0.12;
 		menuButtons = new ArrayList<>();
 		mainPane = new AnchorPane();
@@ -68,7 +71,7 @@ public class ViewManager {
 		mainStage = new Stage();
 		mainStage.getIcons().add(new Image("/resources/icon.png"));
 		mainStage.setScene(mainScene);
-		mainStage.setFullScreen(fullScreen);
+		mainStage.setFullScreen(settings.isFullScreen());
 		createBackground();
 		createLogo();
 		createSubScenes();
@@ -76,7 +79,7 @@ public class ViewManager {
 		Media sound = new Media(getClass().getResource(THEME).toExternalForm());
 		themeSong = new MediaPlayer(sound);
 		themeSong.setAutoPlay(true);
-		themeSong.setVolume(0.5);
+		themeSong.setVolume(settings.getMusicVolume());
 		themeSong.setOnEndOfMedia(new Runnable() {
 	        @Override
 	        public void run() {

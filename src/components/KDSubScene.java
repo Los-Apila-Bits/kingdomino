@@ -60,7 +60,6 @@ public class KDSubScene extends SubScene{
 			isHidden = false;
 			
 		} else {
-			System.out.println("hola");
 			transition.setToX(0);
 			isHidden = true ;
 		}
