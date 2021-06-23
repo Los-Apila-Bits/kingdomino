@@ -58,7 +58,7 @@ public class TableroKD extends GridPane{
 	        public void handle(DragEvent event) {
 	            //The drag-and-drop gesture entered the target
 	            //show the user that it is an actual gesture target
-	            if(event.getGestureSource() != target && event.getDragboard().hasContent(Ficha.FICHA_FIGURE)){
+	            if(event.getGestureSource() != target && event.getDragboard().hasString()){
 	                //source.setVisible(false);
 	                target.setOpacity(0.7);
 	                System.out.println("Drag entered");
@@ -86,7 +86,7 @@ public class TableroKD extends GridPane{
 	    	    Dragboard db = event.getDragboard();
 	    	    boolean success = false;
 	    	    Node node = event.getPickResult().getIntersectedNode();
-	    	    if(node != target && db.hasContent(Ficha.FICHA_FIGURE)){
+	    	    if(node != target && db.hasString()){
 	    	    
 
 	    	        Integer cIndex = GridPane.getColumnIndex(node);
@@ -99,7 +99,11 @@ public class TableroKD extends GridPane{
 //	    	        ImageView image = new ImageView(db.getImage());
 //	    	        image.setFitHeight(ViewPartida.TAM_CASILLA);
 //	    	        image.setFitWidth(ViewPartida.TAM_CASILLA);
-	    	        Ficha ficha = deserializeFigure(db);
+	    	        
+	    	        String[] newFicha = new String[2];
+	    	        newFicha = db.getString().split(" ");
+	   
+	    	        Ficha ficha = new Ficha(Integer.parseInt(newFicha[0]),Integer.parseInt(newFicha[1]));
 	    	        // TODO: set image size; use correct column/row span
 	    	        target.add(ficha, x, y, 1, 1);
 	    	        success = true;
@@ -117,7 +121,7 @@ public class TableroKD extends GridPane{
 	            //data is dragged over to target
 	            //accept it only if it is not dragged from the same node
 	            //and if it has image data
-	            if(event.getGestureSource() != target && event.getDragboard().hasImage()){
+	            if(event.getGestureSource() != target && event.getDragboard().hasString()){
 	                //allow for moving
 	                event.acceptTransferModes(TransferMode.MOVE);
 	            }

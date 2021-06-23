@@ -61,6 +61,10 @@ public class Terreno extends Label {
 		return img;
 	}
 	
+	public String getNombre() {
+		return this.nombre + "";
+	}
+	
 	public int getX() {
 		return x;
 	}
