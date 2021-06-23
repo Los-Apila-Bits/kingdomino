@@ -106,9 +106,6 @@ public class ViewPartida{
 		previsualizacionFicha.setMinWidth(TAM_CASILLA*3);
 		previsualizacionFicha.getChildren().add(new Ficha(1,2));
 		
-		ficha = new Ficha(1,2);
-		this.tablero.addFicha(ficha);
-		
 		GridPane fichasTurno = new GridPane();
 
 		ColumnConstraints columnas = new ColumnConstraints();

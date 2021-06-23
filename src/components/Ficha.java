@@ -27,14 +27,16 @@ import javafx.scene.transform.Rotate;
 import views.ViewPartida;
 
 public class Ficha extends Pane {
+
 	private final int ANCHO = ViewPartida.TAM_CASILLA;
 	private final int ALTO = ViewPartida.TAM_CASILLA;
 	private Pane imageContainer = new Pane();
 	private Rotate rotate;
 	private ImageView imageView;
 	private ImageView imageView2;
+
 	private int cantRotaciones;
-	
+
 	private Terreno terreno1;
 	private Terreno terreno2;
 
@@ -58,47 +60,45 @@ public class Ficha extends Pane {
 		rotate = new Rotate();
 		rotate.setPivotX(ANCHO / 2);
 		rotate.setPivotY(ALTO);
-		
+
 		imageContainer.getChildren().add(imageView);
 		imageContainer.getChildren().add(imageView2);
 		this.enableRotate();
-		//this.enableDragging();
+		// this.enableDragging();
 		getTransforms().add(rotate);
 		getChildren().add(imageContainer);
-		
+
 		Pane source = this;
-		
+
 		source.setOnDragDetected(new EventHandler<MouseEvent>() {
-	        public void handle(MouseEvent event) {
-	            //Drag was detected, start drap-and-drop gesture
-	            //Allow any transfer node
-	            Dragboard db = source.startDragAndDrop(TransferMode.ANY);
+			public void handle(MouseEvent event) {
+				// Drag was detected, start drap-and-drop gesture
+				// Allow any transfer node
+				// TransferMode.
+				Dragboard db = source.startDragAndDrop(TransferMode.ANY);
 
-	            //Put ImageView on dragboard
-	            ClipboardContent cbContent = new ClipboardContent();
-	            //cbContent.put(FICHA_FIGURE, source);
-	            //cbContent.putImage(source.getImage());
-	            //cbContent.put(DataFormat.)
-	            cbContent.putString(terreno1.getNombre() + " " + terreno2.getNombre());
-	            db.setContent(cbContent);
-	            source.setVisible(false);
-	            event.consume();
-	        }
-	    });
+				// Put ImageView on dragboard
+				ClipboardContent cbContent = new ClipboardContent();
+				cbContent.putString(terreno1.getNombre() + " " + terreno2.getNombre() + " " + cantRotaciones);
+				db.setContent(cbContent);
+				source.setVisible(false);
+				event.consume();
+			}
+		});
 
-	    source.setOnDragDone(new EventHandler<DragEvent>() {
-	        public void handle(DragEvent event) {
-	            //the drag and drop gesture has ended
-	            //if the data was successfully moved, clear it
-	            if(event.getTransferMode() == TransferMode.MOVE){
-	               source.setVisible(false);
-	            }
-	            event.consume();
-	        }
-	    });
-		
+		source.setOnDragDone(new EventHandler<DragEvent>() {
+			public void handle(DragEvent event) {
+				// the drag and drop gesture has ended
+				// if the data was successfully moved, clear it
+				if (event.getTransferMode() == TransferMode.MOVE) {
+					source.setVisible(false);
+				}
+				event.consume();
+			}
+		});
+
 	}
-	
+
 	public int getCantidadRotaciones() {
 		return this.cantRotaciones;
 	}
@@ -106,7 +106,7 @@ public class Ficha extends Pane {
 	public Terreno getTerrenoFicha() {
 		return this.terreno1;
 	}
-	
+
 	public Terreno getTerreno2Ficha() {
 		return this.terreno2;
 	}
@@ -124,6 +124,48 @@ public class Ficha extends Pane {
 	public void rotate() {
 		this.rotate.setAngle(rotate.getAngle() + 90);
 		this.cantRotaciones++;
-		System.out.println("CantRotaciones  " + this.cantRotaciones);
+	}
+
+	private void makeDraggable(Node node) {
+		final Delta dragDelta = new Delta();
+
+		double posIniX = node.getLayoutX();
+		double posIniY = node.getLayoutY();
+
+		node.setOnMouseEntered(me -> {
+			if (!me.isPrimaryButtonDown()) {
+				node.getScene().setCursor(Cursor.HAND);
+			}
+		});
+		node.setOnMouseExited(me -> {
+			if (!me.isPrimaryButtonDown()) {
+				node.getScene().setCursor(Cursor.DEFAULT);
+
+				node.setLayoutX(posIniX);
+				node.setLayoutY(posIniY);
+			}
+		});
+		node.setOnMousePressed(me -> {
+			if (me.isPrimaryButtonDown()) {
+				node.getScene().setCursor(Cursor.DEFAULT);
+			}
+			dragDelta.x = me.getX();
+			dragDelta.y = me.getY();
+			node.getScene().setCursor(Cursor.MOVE);
+		});
+		node.setOnMouseReleased(me -> {
+			if (!me.isPrimaryButtonDown()) {
+				node.getScene().setCursor(Cursor.DEFAULT);
+			}
+		});
+		node.setOnMouseDragged(me -> {
+			node.setLayoutX(node.getLayoutX() + me.getX() - dragDelta.x);
+			node.setLayoutY(node.getLayoutY() + me.getY() - dragDelta.y);
+		});
+	}
+
+	private class Delta {
+		public double x;
+		public double y;
 	}
 }
