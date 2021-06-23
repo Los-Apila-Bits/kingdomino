@@ -40,9 +40,9 @@ public class JFicha extends JPanel{
 		add(terreno[1]);
 	}
 	
-	public void rotarFicha() {
-		ficha.girarFicha();
-	}
+//	public void rotarFicha() {
+//		ficha.girarFicha();
+//	}
 	
 	public int[] getDireccion() {
 		return this.ficha.getDireccion();
