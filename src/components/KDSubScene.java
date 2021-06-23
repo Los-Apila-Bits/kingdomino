@@ -19,32 +19,35 @@ public class KDSubScene extends SubScene{
 	
 	private double screenWidth;
 	private double screenHeight;
-	private double width;
-	private double height;
-	private  boolean isHidden;
+	private boolean isHidden;
 	
 	
-	public KDSubScene(double width, double height) {
-		super(new AnchorPane(), width, height);
+	public KDSubScene(double scale) {
+		super(new AnchorPane(), 0, 0);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		screenWidth = screenSize.getWidth();
 		screenHeight = screenSize.getHeight();
-		this.width = width;
-		this.height = height;
+		scaleScene(scale);
+		isHidden = true ;
+	}
+	
+	public void scaleScene(double scale) {
+		Image backgroundImage = new Image(BACKGROUND_IMAGE);
+		double imageWidth = backgroundImage.getWidth();
+		double imageHeight = backgroundImage.getHeight();
+		double width = screenWidth * scale;
+		double height = width * imageHeight / imageWidth;
 		prefWidth(width);
 		prefHeight(height);
-		
+		setWidth(width);
+		setHeight(height);
 		BackgroundImage image = new BackgroundImage(new Image(BACKGROUND_IMAGE, width, height, false, true),
 				BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, null);
-		
 		AnchorPane root2 = (AnchorPane) this.getRoot();
 		root2.setBackground(new Background(image));
-		
 		isHidden = true ;
-		
-		setLayoutX(screenWidth + width);
-		setLayoutY(screenHeight/2 - height/2);
-		
+		setLayoutX(screenWidth + screenWidth/2 - width/2);
+		setLayoutY(screenHeight/1.9 - height/2);;
 	}
 	
 	public void moveSubScene() {
@@ -53,14 +56,14 @@ public class KDSubScene extends SubScene{
 		transition.setNode(this);
 		
 		if (isHidden) {
-			transition.setToX(-screenWidth - width/2);
+			transition.setToX(-screenWidth);
 			isHidden = false;
 			
 		} else {
+			System.out.println("hola");
 			transition.setToX(0);
 			isHidden = true ;
 		}
-		
 		
 		transition.play();
 	}

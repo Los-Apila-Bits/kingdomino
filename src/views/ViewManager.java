@@ -7,11 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -20,11 +19,14 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import components.InfoLabel;
+import javafx.scene.paint.Color;  
 import components.KDSubScene;
 import components.KDButton;
+import components.KDCheckBox;
 
 
 public class ViewManager {
@@ -35,20 +37,20 @@ public class ViewManager {
 	
 	private final static int MENU_BUTTON_START_X = 25;
 	private final static int MENU_BUTTON_START_Y = 100;
-	private final static int BUTTON_WIDTH = 190;
+	private final String FONT_PATH = "/resources/playfair_font.ttf";
 	
 	private double height;
 	private double width;
 	
+	private double buttonWidth;
+	
 	private KDSubScene creditsSubscene;
 	private KDSubScene helpSubscene;
-	private KDSubScene scoreSubscene;
+	private KDSubScene optionsSubscene;
 	private KDSubScene shipChooserSubscene;
 	
 	private KDSubScene sceneToHide;
-	
-	
-	
+	private boolean fullScreen = true;
 	
 	List<KDButton> menuButtons;
 	
@@ -56,17 +58,18 @@ public class ViewManager {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.width = screenSize.getWidth();
 		this.height = screenSize.getHeight();
+		this.buttonWidth = this.width * 0.12;
 		menuButtons = new ArrayList<>();
 		mainPane = new AnchorPane();
 		mainScene = new Scene(mainPane, this.width, this.height );
 		mainStage = new Stage();
 		mainStage.getIcons().add(new Image("/resources/icon.png"));
 		mainStage.setScene(mainScene);
-		mainStage.setFullScreen(true);
+		mainStage.setFullScreen(fullScreen);
 		createBackground();
 		createLogo();
 		createSubScenes();
-		CreateButtons();
+		createButtons();
 	}
 	
 	
@@ -81,17 +84,52 @@ public class ViewManager {
 	
 	private void createSubScenes() {
 		
-		creditsSubscene = new KDSubScene(width/2, height/2);
+		creditsSubscene = new KDSubScene(0.45);
 		mainPane.getChildren().add(creditsSubscene);
-		helpSubscene = new KDSubScene(width/2, height/2);
+		helpSubscene = new KDSubScene(0.45);
 		mainPane.getChildren().add(helpSubscene);
-		scoreSubscene = new KDSubScene(width/2, height/2);
-		mainPane.getChildren().add(scoreSubscene);
+		createOptionsSubScene();
+	}
 	
+	public void createOptionsSubScene() {
+		optionsSubscene = new KDSubScene(0.45);
+		mainPane.getChildren().add(optionsSubscene);
+		boolean fullScreenOption = fullScreen;
+		double panelWidth = optionsSubscene.getWidth();
+		double panelHeight = optionsSubscene.getHeight();
+		Text text = new Text();  
+        text.setText("OPCIONES");
+        text.setY(panelHeight * 0.15);  
+        text.setFont(Font.loadFont(getClass().getResourceAsStream(FONT_PATH), 40));
+        double textWidth = text.getLayoutBounds().getWidth();
+        text.setX(panelWidth/2 - textWidth/2);
+        text.setFill(Color.YELLOW);  
+        GaussianBlur g = new GaussianBlur();  
+        g.setRadius(1);  
+        text.setEffect(g);
+        double checkBoxSize = panelWidth * .05;
+        KDCheckBox resolutionCheckbox = new KDCheckBox(checkBoxSize);
+        resolutionCheckbox.setLayoutY(panelHeight * 0.35);
+        resolutionCheckbox.setLayoutX(panelWidth * .1);
+        KDButton acceptButton = new KDButton("ACEPTAR", buttonWidth, "green");
+        KDButton cancelButton = new KDButton("CANCELAR", buttonWidth, "green");
+        double offSet = buttonWidth * 0.05;
+        cancelButton.setLayoutX(panelWidth/2 + offSet);
+        cancelButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				optionsSubscene.moveSubScene();
+				sceneToHide = null;
+			}
+		});
+        acceptButton.setLayoutX(panelWidth/2 - buttonWidth - offSet);
+        acceptButton.setLayoutY(panelHeight * 0.8);
+        cancelButton.setLayoutY(panelHeight * 0.8);
+		optionsSubscene.getPane().getChildren().addAll(text, resolutionCheckbox, acceptButton, cancelButton);
 	}
 	
 	private KDButton createButtonToStart() {
-		KDButton startButton = new KDButton("START", BUTTON_WIDTH);
+		KDButton startButton = new KDButton("START", buttonWidth, "yellow");
 		startButton.setLayoutX(350);
 		startButton.setLayoutY(300);
 		
@@ -113,26 +151,24 @@ public class ViewManager {
 	
 	private void AddMenuButtons(KDButton button) {
 		int cantButtons = menuButtons.size();
-		int offSet = (cantButtons * (BUTTON_WIDTH + MENU_BUTTON_START_X));
-		int maxWidth = ((MENU_BUTTON_START_X + BUTTON_WIDTH) * 5);
+		double offSet = (cantButtons * (buttonWidth + MENU_BUTTON_START_X));
+		double maxWidth = ((MENU_BUTTON_START_X + buttonWidth) * 5);
 		button.setLayoutX(this.width/2 - maxWidth / 2 + offSet);
 		button.setLayoutY(this.height - MENU_BUTTON_START_Y);
 		menuButtons.add(button);
 		mainPane.getChildren().add(button);
 	}
 	
-	
-	
-	private void CreateButtons() {
+	private void createButtons() {
 		createStartButton();
-		createScoresButton();
+		createOptionsButton();
 		createHelpButton();
 		createCreditsButton();
 		createExitButton();
 	}
 	
 	private void createStartButton() {
-		KDButton startButton = new KDButton("PLAY", BUTTON_WIDTH);
+		KDButton startButton = new KDButton("PLAY", buttonWidth, "yellow");
 		AddMenuButtons(startButton);
 		
 		startButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -150,22 +186,22 @@ public class ViewManager {
 		});
 	}
 	
-	private void createScoresButton() {
-		KDButton scoresButton = new KDButton("OPTIONS", BUTTON_WIDTH);
+	private void createOptionsButton() {
+		KDButton scoresButton = new KDButton("OPTIONS", buttonWidth, "yellow");
 		AddMenuButtons(scoresButton);
 		
 		scoresButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				showSubScene(scoreSubscene);
+				showSubScene(optionsSubscene);
 				
 			}
 		});
 	}
 	
 	private void createHelpButton() {
-		KDButton helpButton = new KDButton("HELP", BUTTON_WIDTH);
+		KDButton helpButton = new KDButton("HELP", buttonWidth, "yellow");
 		AddMenuButtons(helpButton);
 		
 		helpButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -180,7 +216,7 @@ public class ViewManager {
 	
 	private void createCreditsButton() {
 		
-		KDButton creditsButton = new KDButton("CREDITS", BUTTON_WIDTH);
+		KDButton creditsButton = new KDButton("CREDITS", buttonWidth, "yellow");
 		AddMenuButtons(creditsButton);
 		
 		creditsButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -194,7 +230,7 @@ public class ViewManager {
 	}
 	
 	private void createExitButton() {
-		KDButton exitButton = new KDButton("EXIT", BUTTON_WIDTH);
+		KDButton exitButton = new KDButton("EXIT", buttonWidth, "yellow");
 		AddMenuButtons(exitButton);
 		
 		exitButton.setOnAction(new EventHandler<ActionEvent>() {

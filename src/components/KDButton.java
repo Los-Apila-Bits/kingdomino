@@ -4,42 +4,48 @@ package components;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import static utils.ButtonsPaths.*;
 
 public class KDButton extends Button{
 	
-	private final String FONT_PATH = "/resources/morris_font.ttf";
-	private final String BUTTON_PRESSED_STYLE = "-fx-background-color: transparent; -fx-background-image: url('/resources/buttonLong_blue_pressed.png');";
-	private final String BUTTON_FREE_STYLE = "-fx-background-color: transparent; -fx-background-image: url('/resources/buttonLong_blue.png');";
+	private final String FONT_PATH = "/resources/playfair_font.ttf";
+	private String color;
 	
-	public KDButton(String text, int width) {
+	public KDButton(String text, double width, String color) {
+		this.color = color;
+		Image backgroundImage = new Image(BUTTONS.get(color));
+		double imageWidth = backgroundImage.getWidth();
+		double imageHeight = backgroundImage.getHeight();
+		double height = width * imageHeight / imageWidth;
 		setText(text);
 		setButtonFont();
 		setPrefWidth(width);
-		setPrefHeight(49);
-		setStyle(BUTTON_FREE_STYLE);
+		setPrefHeight(height);
+		setTextFill(Color.WHITE);
+		setStyle("-fx-background-color: transparent; -fx-background-size: cover; -fx-background-image: url('"+BUTTONS.get(color)+"');");
 		initializeButtonListeners();
 		
 	}
 
 	private void setButtonFont() {
 		
-		setFont(Font.loadFont(getClass().getResourceAsStream(FONT_PATH), 23));
+		setFont(Font.loadFont(getClass().getResourceAsStream(FONT_PATH), 30));
 		
 	}
 	
 	private void setButtonPressedStyle() {
-		setStyle(BUTTON_PRESSED_STYLE);
-		setPrefHeight(45);
+		setStyle("-fx-background-color: transparent; -fx-background-size: cover; -fx-background-image: url('"+BUTTONS.get(color+"Pressed")+"');");
 		setLayoutY(getLayoutY() + 4);
 		
 	}
 	
 	private void setButtonReleasedStyle() {
-		setStyle(BUTTON_FREE_STYLE);
-		setPrefHeight(45);
+		setStyle("-fx-background-color: transparent; -fx-background-size: cover; -fx-background-image: url('"+BUTTONS.get(color)+"');");
 		setLayoutY(getLayoutY() - 4);
 		
 	}
