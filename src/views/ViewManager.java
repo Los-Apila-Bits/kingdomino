@@ -19,14 +19,17 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javafx.scene.paint.Color;  
 import components.KDSubScene;
 import components.KDButton;
 import components.KDCheckBox;
+import static utils.Sounds.*;
 
 
 public class ViewManager {
@@ -47,10 +50,10 @@ public class ViewManager {
 	private KDSubScene creditsSubscene;
 	private KDSubScene helpSubscene;
 	private KDSubScene optionsSubscene;
-	private KDSubScene shipChooserSubscene;
 	
 	private KDSubScene sceneToHide;
 	private boolean fullScreen = true;
+	public MediaPlayer themeSong;
 	
 	List<KDButton> menuButtons;
 	
@@ -70,6 +73,18 @@ public class ViewManager {
 		createLogo();
 		createSubScenes();
 		createButtons();
+		Media sound = new Media(getClass().getResource(THEME).toExternalForm());
+		themeSong = new MediaPlayer(sound);
+		themeSong.setAutoPlay(true);
+		themeSong.setVolume(0.5);
+		themeSong.setOnEndOfMedia(new Runnable() {
+	        @Override
+	        public void run() {
+	        	themeSong.seek(Duration.ZERO);
+	        	themeSong.play();
+	        }
+	    }); 
+		themeSong.play();
 	}
 	
 	
@@ -124,7 +139,11 @@ public class ViewManager {
 		});
         acceptButton.setLayoutX(panelWidth/2 - buttonWidth - offSet);
         acceptButton.setLayoutY(panelHeight * 0.8);
+        acceptButton.setClickSound(CONFIRM_SOUND);
+        acceptButton.setHoverSound(HOVER_SOUND);
         cancelButton.setLayoutY(panelHeight * 0.8);
+        cancelButton.setClickSound(CANCEL_SOUND);
+        cancelButton.setHoverSound(HOVER_SOUND);
 		optionsSubscene.getPane().getChildren().addAll(text, resolutionCheckbox, acceptButton, cancelButton);
 	}
 	
@@ -155,6 +174,8 @@ public class ViewManager {
 		double maxWidth = ((MENU_BUTTON_START_X + buttonWidth) * 5);
 		button.setLayoutX(this.width/2 - maxWidth / 2 + offSet);
 		button.setLayoutY(this.height - MENU_BUTTON_START_Y);
+		button.setClickSound(CLICK_SOUND);
+		button.setHoverSound(HOVER_SOUND);
 		menuButtons.add(button);
 		mainPane.getChildren().add(button);
 	}
