@@ -1,10 +1,12 @@
 package views;
 
+import java.awt.Frame;
 import java.io.IOException;
 
 import components.TableroKD;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -37,10 +39,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class ViewPartida {
+public class ViewPartida{
 	private double width = 1024;
 	private double height = 768;
 	public static final int TAM_CASILLA = 140;
+	
+	private Ficha ficha;
 
 //	private Label estadoCasilla;
 	private TableroKD tablero;
@@ -78,6 +82,8 @@ public class ViewPartida {
 		
 		//Panel de la derecha. Información de los jugadores, ficha a colocar y del turno
 		BorderPane info = new BorderPane();
+		
+		info.setMaxWidth(400);
 
 		//Contenedor vertical con información de jugadores
 		VBox infoPartida = new VBox();
@@ -96,8 +102,8 @@ public class ViewPartida {
 //		previsualizacionFicha.getChildren().addAll(contenedorFicha, textoFichaEjemplo);
 //		infoPartida.getChildren().add(previsualizacionFicha);
 		
-		previsualizacionFicha.setMinHeight(TAM_CASILLA*4);
-		previsualizacionFicha.setMinWidth(TAM_CASILLA*4);
+		previsualizacionFicha.setMinHeight(TAM_CASILLA*3);
+		previsualizacionFicha.setMinWidth(TAM_CASILLA*3);
 		previsualizacionFicha.getChildren().add(new Ficha(1,2));
 		
 		GridPane fichasTurno = new GridPane();
@@ -125,8 +131,9 @@ public class ViewPartida {
 		Scene scene = new Scene(root, width, height);
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		
 	}
-
+	
 //	public static void main(String[] args) {
 //		launch(args);
 //	}
