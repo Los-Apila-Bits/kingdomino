@@ -1,30 +1,15 @@
 package components;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.Serializable;
 
-import com.sun.javafx.geom.Rectangle;
-
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.EventHandler;
-import javafx.geometry.Point2D;
-import javafx.scene.Cursor;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DataFormat;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.transform.Rotate;
-import views.ViewPartida;
 
 public class Ficha extends Pane {
 	
@@ -41,9 +26,9 @@ public class Ficha extends Pane {
 	private Terreno terreno1;
 	private Terreno terreno2;
 	
-	public Ficha(int t1, int t2, int tam) {
-		this.terreno1 = new Terreno(t1);
-		this.terreno2 = new Terreno(t2);
+	public Ficha(int t1, int t2, int c1, int c2, int tam) {
+		this.terreno1 = new Terreno(t1,c1);
+		this.terreno2 = new Terreno(t2,c2);
 		cantRotaciones = 0;
 		width = height = tam;
 		imageView = this.terreno1.getImageView();
@@ -79,7 +64,7 @@ public class Ficha extends Pane {
 
 				// Put ImageView on dragboard
 				ClipboardContent cbContent = new ClipboardContent();
-				cbContent.putString(terreno1.getNombre() + " " + terreno2.getNombre() + " " + cantRotaciones);
+				cbContent.putString(terreno1.getNombre() + " " + terreno2.getNombre() + " " + cantRotaciones + " " + terreno1.getCantCoronas() + " " + terreno2.getCantCoronas());
 				db.setContent(cbContent);
 				event.consume();
 			}

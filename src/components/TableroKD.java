@@ -1,26 +1,17 @@
 package components;
 
-import java.awt.event.ActionListener;
-//import java.beans.EventHandler;
-
 import javafx.event.EventHandler;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
 import juego.Tablero;
-import components.Terreno;
 import views.ViewPartida;
-import components.Ficha;
+
 
 public class TableroKD extends GridPane {
 
@@ -28,7 +19,7 @@ public class TableroKD extends GridPane {
 	private Casilla[][] casillas = new Casilla[5][5];
 	private int turnoActual = 1;
 
-	public TableroKD() {
+	public TableroKD(String colorCastillo) {
 		
 		this.tableroLogico = new Tablero();
 
@@ -61,7 +52,7 @@ public class TableroKD extends GridPane {
 				casillas[i][j] = casilla;
 			}
 		}
-		casillas[2][2].setCasilla(new Terreno(0));
+		casillas[2][2].setCasilla(new Terreno(colorCastillo));
 
 		GridPane target = this;
 
@@ -75,7 +66,7 @@ public class TableroKD extends GridPane {
 				if (event.getGestureSource() != target && event.getDragboard().hasString()) {
 					// source.setVisible(false);
 					target.setOpacity(0.7);
-					System.out.println("Drag entered");
+					//System.out.println("Drag entered");
 				}
 				event.consume();
 			}
@@ -114,12 +105,12 @@ public class TableroKD extends GridPane {
 					int cantRotaciones = Integer.parseInt(newFicha[2]);
 					int pos = cantRotaciones % 4;
 					
-					juego.Ficha fichaLogica = new juego.Ficha(1, new juego.Terreno(Integer.parseInt(newFicha[0]),0), new juego.Terreno(Integer.parseInt(newFicha[1]),1));
+					juego.Ficha fichaLogica = new juego.Ficha(1, new juego.Terreno(Integer.parseInt(newFicha[0]),Integer.parseInt(newFicha[3])), new juego.Terreno(Integer.parseInt(newFicha[1]),Integer.parseInt(newFicha[4])));
 					
 					
 					//----------Inserta en el tablero visual-------------------
-					Terreno terreno1 = new Terreno(Integer.parseInt(newFicha[0]));
-					Terreno terreno2 = new Terreno(Integer.parseInt(newFicha[1]));
+					Terreno terreno1 = new Terreno(Integer.parseInt(newFicha[0]),Integer.parseInt(newFicha[3]));
+					Terreno terreno2 = new Terreno(Integer.parseInt(newFicha[1]),Integer.parseInt(newFicha[4]));
 					// TODO: set image size; use correct column/row span
 					switch (pos) {
 					case 0:
@@ -161,6 +152,7 @@ public class TableroKD extends GridPane {
 					if(success) {
 						ViewPartida.actualizarPuntos();
 					}
+					
 					tableroLogico.mostrarTablero();
 
 					//success = true;
@@ -195,26 +187,6 @@ public class TableroKD extends GridPane {
 	public Tablero getTableroLogico() {
 		return this.tableroLogico;
 	}
-			
-	private void actualizarPuntos() {
-		
-	}
-	
-//	private int getX(int index) {
-//		return index % 5;
-//	}
-//	
-//	private int getY(int index) {
-//		return (index - getX(index)) / 5;
-//	}
-
-//	public Casilla getCasilla(int x, int y) {
-//		return x < 0 || x > 4 || y < 0 || y > 4 ? null : casillas[y * 5 + x];
-//	}
-//	
-//	public void setTerreno(Terreno terreno) {
-//		getCasilla(terreno.getX(), terreno.getY()).setCasilla(terreno);
-//	}
 
 	public int obtenerTurnoActual() {
 		return this.turnoActual;

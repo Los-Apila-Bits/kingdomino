@@ -1,47 +1,27 @@
 package views;
 
-import java.awt.Frame;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import components.TableroKD;
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.Event;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
 import components.Ficha;
 import components.Jugador;
-import juego.Tablero;
-import juego.Terreno;
 import settings.Settings;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+
 import static utils.Sounds.*;
 
 public class ViewPartida{
@@ -52,7 +32,6 @@ public class ViewPartida{
 	
 	private static ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
 
-	
 	private Settings settings;
 	
 	public ViewPartida(Settings settings) {
@@ -61,12 +40,11 @@ public class ViewPartida{
 		this.height = settings.getHeight();
 		int cantJugadores = 2;
 		for(int i =0 ; i< cantJugadores;i++) {
-			jugadores.add(new Jugador(i+1));			
+			jugadores.add(new Jugador(i+1, "AMARILLO"));			
 		}
 	}
 
 	public void start(Stage primaryStage) throws IOException {
-//		instancia = this;
 		primaryStage.setTitle("KingDomino");
 
 		BorderPane root = new BorderPane(); // Contenedor principal de la vista
@@ -83,7 +61,6 @@ public class ViewPartida{
 
 		GridPane cuadroTablero = new GridPane(); // Tablero de kingdomino
 		cuadroTablero.setStyle("-fx-background-color:#FFFF7A;");
-		//cuadroTablero.setBackground(new Background(new BackgroundFill(Color.DARKBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
 		//cuadroTablero.add(tablero = new TableroKD(), 0, 0, 5, 5);
 		cuadroTablero.add(jugadores.get(0).getTablero(), 0, 0, 5, 5);
 		cuadroTablero.setAlignment(Pos.CENTER);
@@ -99,16 +76,20 @@ public class ViewPartida{
 		//Contenedor vertical con informaci�n de jugadores
 		VBox infoPartida = new VBox();
 		infoPartida.setPadding(new Insets(10, 50, 10, 10));
-		infoPartida.getChildren().add(new Label("Informaci�n de los Jugadores"));
+		
+		Text infoJugadoresText = new Text("Informacion de los jugadores");
+		infoJugadoresText.setFont(Font.font("Consolas",25));
+		infoPartida.getChildren().add(infoJugadoresText);
 		infoPartida.getChildren().add(jugadores.get(0).getLabelPuntos());
 		//Panel para rotar ficha
 		StackPane previsualizacionFicha = new StackPane();
 		previsualizacionFicha.setAlignment(Pos.CENTER);
 		previsualizacionFicha.setStyle("-fx-background-color:#F9C112;");
-		//previsualizacionFicha.setBackground(new Background(new BackgroundFill(Color.CORAL, CornerRadii.EMPTY, Insets.EMPTY)));
 		previsualizacionFicha.setMaxHeight(TAM_CASILLA*3);
 		previsualizacionFicha.setMinWidth(TAM_CASILLA*3);
-		Ficha fichaAInsertar = new Ficha(1,2, TAM_CASILLA);
+		
+		Ficha fichaAInsertar = new Ficha(1,2,1,0, TAM_CASILLA);
+		
 		previsualizacionFicha.getChildren().add(fichaAInsertar);
 		previsualizacionFicha.setPadding(new Insets(TAM_CASILLA/2, 0, 10, previsualizacionFicha.getMinWidth()/3));
 		
@@ -120,19 +101,23 @@ public class ViewPartida{
 		fichasTurno.setHgap(25);
 		fichasTurno.setPadding(new Insets(0, 0, 30, 0));
 		
+		List<String> fuentes = javafx.scene.text.Font.getFamilies();
+		List<String> fuentesFantasia = javafx.scene.text.Font.getFontNames("Fantasy");
+ 		
+		System.out.println(fuentes);
+		System.out.println(fuentesFantasia);
+		
+	
+		fichasTurno.add(new Ficha(3,4,0,1, TAM_PREV), 0, 0);
+		fichasTurno.add(new Ficha(2,4,0,1, TAM_PREV), 0, 1);
+		fichasTurno.add(new Ficha(3,5,0,1, TAM_PREV), 1, 0);
+		fichasTurno.add(new Ficha(3,2,0,1, TAM_PREV), 1, 1);
+		fichasTurno.add(new Ficha(2,2,0,1, TAM_PREV), 2, 0);
+		fichasTurno.add(new Ficha(1,2,0,1, TAM_PREV), 2, 1);
 		
 		
-		fichasTurno.add(new Ficha(3,4, TAM_PREV), 0, 0);
-		fichasTurno.add(new Ficha(2,4, TAM_PREV), 0, 1);
-		fichasTurno.add(new Ficha(3,5, TAM_PREV), 1, 0);
-		fichasTurno.add(new Ficha(3,2, TAM_PREV), 1, 1);
-		fichasTurno.add(new Ficha(2,2, TAM_PREV), 2, 0);
-		fichasTurno.add(new Ficha(1,2, TAM_PREV), 2, 1);
 		
-		
-		
-		fichasTurno.setDisable(true);
-		//fichasTurno.getChildren();
+		//fichasTurno.setDisable(true);
 		
 		info.setTop(infoPartida);
 		info.setCenter(previsualizacionFicha);

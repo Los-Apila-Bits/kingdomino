@@ -30,7 +30,6 @@ public class Mazo {
 		return fichas;
 	}
 
-
 	private void mezclar() {
 		Collections.shuffle(fichas);
 	}
@@ -46,5 +45,4 @@ public class Mazo {
 	public int comparador(int[] ficha1, int[] ficha2) {
 		return ficha1[0]-ficha2[0];
 	}
-	
 }

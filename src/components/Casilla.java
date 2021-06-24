@@ -1,29 +1,26 @@
 package components;
 
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import views.ViewPartida;
+
 public class Casilla extends Label {
 
-	Terreno terreno;
 	private int x, y;
-	int enabled = 0;
 
 	public Casilla(int x, int y) {
 		this.y = y;
 		this.x = x;
-		this.terreno = new Terreno(-1);
-		// EVENTOS
-		setCasilla(this.terreno);
-
+		ImageView img = new ImageView(new Image(getClass().getResource("../resources/casillaVacia.jpg").toExternalForm()));
+		img.setFitHeight(ViewPartida.TAM_CASILLA);
+		img.setFitWidth(ViewPartida.TAM_CASILLA);
+		img.setPreserveRatio(true);
+		setGraphic(img);
 	}
 
 	public void setCasilla(Terreno terreno) {
-		this.terreno = terreno;
 		setGraphic(terreno.getImageView());
-		this.enabled++;
-	}
-
-	public Terreno getTerreno() {
-		return terreno;
 	}
 
 	public int getX() {

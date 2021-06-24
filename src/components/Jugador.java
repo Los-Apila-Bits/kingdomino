@@ -9,9 +9,9 @@ public class Jugador {
 	Ficha fichaSeleccionada;
 	int id;
 	
-	public Jugador(int id) {
+	public Jugador(int id, String color) {
 		this.id = id;
-		this.tablero = new TableroKD();
+		this.tablero = new TableroKD(color);
 		this.puntosLabel = new Label("Jugador " + this.id + ": 0");
 	}
 	
