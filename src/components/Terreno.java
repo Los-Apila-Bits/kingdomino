@@ -17,6 +17,10 @@ public class Terreno extends Label {
 		setTerreno(this.nombre);
 	}
 	
+	Terreno(String colorCastillo){
+		this.imagen = new Image(getClass().getResource("../resources/"+ colorCastillo + ".jpg").toExternalForm());
+	}
+	
 	public void setTerreno(int terreno) {
 		switch (terreno) {
 		case -1: //Casilla con terreno vacio

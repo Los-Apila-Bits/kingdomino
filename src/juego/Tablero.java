@@ -42,19 +42,28 @@ public class Tablero {
 	}
 
 	public boolean puedeInsertar(int posX, int posY, Ficha ficha) {
-		if (fueraDeTablero(posX, posY, ficha.getDireccion()[0], ficha.getDireccion()[1]))
+		if (fueraDeTablero(posX, posY, ficha.getDireccion()[0], ficha.getDireccion()[1])) {
+			System.out.println("Ficha fuera del tablero");
 			return false;
+		}
 		
-		if((hayEspacio(posX, posY)&& hayEspacio(posX + ficha.getDireccion()[0], posY + ficha.getDireccion()[1])))
+		if((hayEspacio(posX, posY)&& hayEspacio(posX + ficha.getDireccion()[0], posY + ficha.getDireccion()[1]))) {
+			System.out.println("Hay espacio en el tablero");
 			if ((compararTerrenoAledanio(posX, posY, ficha.getTerreno1()))
-					|| compararTerrenoAledanio(posX + ficha.getDireccion()[0], posY + ficha.getDireccion()[1],ficha.getTerreno2()))
+				|| compararTerrenoAledanio(posX + ficha.getDireccion()[0], posY + ficha.getDireccion()[1],ficha.getTerreno2())) {
+				System.out.println("Los terrenos aledanios coinciden");
 				return true;
+			}
+		}
 		return false;
 		// tenemos que validar que haya espacio donde tenemos que poner la
 		// ficha 
 	}
 
 	public boolean insertarFicha(Ficha ficha, int posX, int posY) {
+		
+		System.out.println("posX: " + posX + " posY: " + posY + " puedaInsertar: " + puedeInsertar(posX,posY,ficha));
+		System.out.println("dir0: " + ficha.getDireccion()[0] + " dir1: " + ficha.getDireccion()[1]);
 		if (!puedeInsertar(posX, posY, ficha)) {
 			ficha.cambiarPivot();
 			if (!puedeInsertar(posX, posY, ficha))

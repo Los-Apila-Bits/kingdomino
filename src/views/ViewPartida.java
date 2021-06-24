@@ -2,6 +2,8 @@ package views;
 
 import java.awt.Frame;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import components.TableroKD;
 import javafx.application.Application;
@@ -13,6 +15,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
 import components.Ficha;
+import components.Jugador;
 import juego.Tablero;
 import juego.Terreno;
 import settings.Settings;
@@ -45,12 +48,10 @@ public class ViewPartida{
 	private double width = 1024;
 	private double height = 768;
 	public static final int TAM_CASILLA = 140;
+	public static final int TAM_PREV = 70;
 	
-	private Ficha ficha;
+	private static ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
 
-//	private Label estadoCasilla;
-	private TableroKD tablero;
-	private static ViewPartida instancia;
 	
 	private Settings settings;
 	
@@ -58,10 +59,14 @@ public class ViewPartida{
 		this.settings = settings;
 		this.width = settings.getWidth();
 		this.height = settings.getHeight();
+		int cantJugadores = 2;
+		for(int i =0 ; i< cantJugadores;i++) {
+			jugadores.add(new Jugador(i+1));			
+		}
 	}
 
 	public void start(Stage primaryStage) throws IOException {
-		instancia = this;
+//		instancia = this;
 		primaryStage.setTitle("KingDomino");
 
 		BorderPane root = new BorderPane(); // Contenedor principal de la vista
@@ -77,57 +82,57 @@ public class ViewPartida{
 		settings.applySettings(primaryStage, INGAME_THEME);
 
 		GridPane cuadroTablero = new GridPane(); // Tablero de kingdomino
-		cuadroTablero.setBackground(new Background(new BackgroundFill(Color.DARKBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
-		cuadroTablero.add(tablero = new TableroKD(), 0, 0, 5, 5);
+		cuadroTablero.setStyle("-fx-background-color:#FFFF7A;");
+		//cuadroTablero.setBackground(new Background(new BackgroundFill(Color.DARKBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
+		//cuadroTablero.add(tablero = new TableroKD(), 0, 0, 5, 5);
+		cuadroTablero.add(jugadores.get(0).getTablero(), 0, 0, 5, 5);
 		cuadroTablero.setAlignment(Pos.CENTER);
 		cuadroTablero.setMinHeight(100);
 		cuadroTablero.setMinWidth(700);
 		cuadroTablero.setGridLinesVisible(false);
-
-//		estadoCasilla = new Label();
-//		estadoCasilla.setAlignment(Pos.BOTTOM_LEFT);
-//		estadoCasilla.setPadding(new Insets(10, 0, 10, 10));
 		
-		//Panel de la derecha. Información de los jugadores, ficha a colocar y del turno
+		//Panel de la derecha. Informaciï¿½n de los jugadores, ficha a colocar y del turno
 		BorderPane info = new BorderPane();
 		
 		info.setMaxWidth(400);
 
-		//Contenedor vertical con información de jugadores
+		//Contenedor vertical con informaciï¿½n de jugadores
 		VBox infoPartida = new VBox();
 		infoPartida.setPadding(new Insets(10, 50, 10, 10));
-		infoPartida.getChildren().add(new Label("Información de los Jugadores"));
-		infoPartida.getChildren().add(new Label("Jugador 1: 34 puntos"));
-		infoPartida.getChildren().add(new Label("Jugador 2: 20 puntos"));
-		
+		infoPartida.getChildren().add(new Label("Informaciï¿½n de los Jugadores"));
+		infoPartida.getChildren().add(jugadores.get(0).getLabelPuntos());
 		//Panel para rotar ficha
 		StackPane previsualizacionFicha = new StackPane();
-//		previsualizacionFicha.setPadding(new Insets(30, 0, 10, 50));
-//		Rectangle contenedorFicha = new Rectangle(TAM_CASILLA * 2, 150);
-//		contenedorFicha.setFill(Color.BISQUE);
-//		Label textoFichaEjemplo = new Label("TERRENO TERRENO");
-//		textoFichaEjemplo.setMinSize(TAM_CASILLA*2, TAM_CASILLA);
-//		previsualizacionFicha.getChildren().addAll(contenedorFicha, textoFichaEjemplo);
-//		infoPartida.getChildren().add(previsualizacionFicha);
-		
-		previsualizacionFicha.setMinHeight(TAM_CASILLA*3);
+		previsualizacionFicha.setAlignment(Pos.CENTER);
+		previsualizacionFicha.setStyle("-fx-background-color:#F9C112;");
+		//previsualizacionFicha.setBackground(new Background(new BackgroundFill(Color.CORAL, CornerRadii.EMPTY, Insets.EMPTY)));
+		previsualizacionFicha.setMaxHeight(TAM_CASILLA*3);
 		previsualizacionFicha.setMinWidth(TAM_CASILLA*3);
-		previsualizacionFicha.getChildren().add(new Ficha(1,2));
+		Ficha fichaAInsertar = new Ficha(1,2, TAM_CASILLA);
+		previsualizacionFicha.getChildren().add(fichaAInsertar);
+		previsualizacionFicha.setPadding(new Insets(TAM_CASILLA/2, 0, 10, previsualizacionFicha.getMinWidth()/3));
 		
 		GridPane fichasTurno = new GridPane();
-
-		ColumnConstraints columnas = new ColumnConstraints();
-		columnas.setPercentWidth(50);
-		fichasTurno.getColumnConstraints().add(columnas);
+		
+		fichasTurno.setMinHeight(300);
 		fichasTurno.setAlignment(Pos.CENTER);
 		fichasTurno.setVgap(15);
+		fichasTurno.setHgap(25);
 		fichasTurno.setPadding(new Insets(0, 0, 30, 0));
-		fichasTurno.add(new Label("Ficha 1"), 0, 0);
-		fichasTurno.add(new Label("Ficha 2"), 0, 1);
-		fichasTurno.add(new Label("Ficha 3"), 0, 2);
-		fichasTurno.add(new Label("Ficha 4"), 1, 0);
-		fichasTurno.add(new Label("Ficha 5"), 1, 1);
-		fichasTurno.add(new Label("Ficha 6"), 1, 2);
+		
+		
+		
+		fichasTurno.add(new Ficha(3,4, TAM_PREV), 0, 0);
+		fichasTurno.add(new Ficha(2,4, TAM_PREV), 0, 1);
+		fichasTurno.add(new Ficha(3,5, TAM_PREV), 1, 0);
+		fichasTurno.add(new Ficha(3,2, TAM_PREV), 1, 1);
+		fichasTurno.add(new Ficha(2,2, TAM_PREV), 2, 0);
+		fichasTurno.add(new Ficha(1,2, TAM_PREV), 2, 1);
+		
+		
+		
+		fichasTurno.setDisable(true);
+		//fichasTurno.getChildren();
 		
 		info.setTop(infoPartida);
 		info.setCenter(previsualizacionFicha);
@@ -142,12 +147,8 @@ public class ViewPartida{
 		
 	}
 	
-//	public static void main(String[] args) {
-//		launch(args);
-//	}
-
-	public static TableroKD getTablero() {
-		return instancia.tablero;
+	public static void actualizarPuntos() {
+		jugadores.get(0).getLabelPuntos().setText("Jugador 1: " + jugadores.get(0).getTablero().getTableroLogico().getPuntos());
 	}
 
 }

@@ -17,16 +17,20 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
+import juego.Tablero;
 import components.Terreno;
 import views.ViewPartida;
 import components.Ficha;
 
 public class TableroKD extends GridPane {
 
+	private Tablero tableroLogico;
 	private Casilla[][] casillas = new Casilla[5][5];
 	private int turnoActual = 1;
 
 	public TableroKD() {
+		
+		this.tableroLogico = new Tablero();
 
 		setMinHeight(700);
 		setMinWidth(700);
@@ -106,37 +110,67 @@ public class TableroKD extends GridPane {
 
 					String[] newFicha = new String[3];
 					newFicha = db.getString().split(" ");
-
+					
+					int cantRotaciones = Integer.parseInt(newFicha[2]);
+					int pos = cantRotaciones % 4;
+					
+					juego.Ficha fichaLogica = new juego.Ficha(1, new juego.Terreno(Integer.parseInt(newFicha[0]),0), new juego.Terreno(Integer.parseInt(newFicha[1]),1));
+					
+					
+					//----------Inserta en el tablero visual-------------------
 					Terreno terreno1 = new Terreno(Integer.parseInt(newFicha[0]));
 					Terreno terreno2 = new Terreno(Integer.parseInt(newFicha[1]));
 					// TODO: set image size; use correct column/row span
-					int cantRotaciones = Integer.parseInt(newFicha[2]);
-					int pos = cantRotaciones % 4;
-					casillas[x][y].setCasilla(terreno1);
 					switch (pos) {
 					case 0:
-						casillas[x][y + 1].setCasilla(terreno2);
+						fichaLogica.setDireccion(1,0);
+						if(tableroLogico.insertarFicha(fichaLogica, y, x)) {
+							casillas[x][y].setCasilla(terreno1);
+							casillas[x][y + 1].setCasilla(terreno2);
+							success = true;
+						}
 						break;
 					case 1:
-						casillas[x - 1][y].setCasilla(terreno2);
+						fichaLogica.setDireccion(0, -1);
+						if(tableroLogico.insertarFicha(fichaLogica, y, x)) {	
+							casillas[x][y].setCasilla(terreno1);
+							casillas[x - 1][y].setCasilla(terreno2);
+							success = true;
+						}
 						break;
 					case 2:
+						fichaLogica.setDireccion(-1, 0);
+						if(tableroLogico.insertarFicha(fichaLogica, y, x)) {	
+						casillas[x][y].setCasilla(terreno1);
 						casillas[x][y - 1].setCasilla(terreno2);
+						success = true;
+						}
 						break;
 					case 3:
+						fichaLogica.setDireccion(0, 1);
+						if(tableroLogico.insertarFicha(fichaLogica, y, x)) {	
+						casillas[x][y].setCasilla(terreno1);
 						casillas[x + 1][y].setCasilla(terreno2);
+						success = true;
+						}
 						break;
 					default:
 						break;
 					}
+					
+					if(success) {
+						ViewPartida.actualizarPuntos();
+					}
+					tableroLogico.mostrarTablero();
 
-					success = true;
+					//success = true;
 				}
 
 				// let the source know whether the image was successfully transferred and used
 				event.setDropCompleted(success);
 				event.consume();
 			}
+
 		});
 
 		// Drag over event handler is used for the receiving node to allow movement
@@ -157,7 +191,15 @@ public class TableroKD extends GridPane {
 
 
 	}
+	
+	public Tablero getTableroLogico() {
+		return this.tableroLogico;
+	}
 			
+	private void actualizarPuntos() {
+		
+	}
+	
 //	private int getX(int index) {
 //		return index % 5;
 //	}
