@@ -6,6 +6,7 @@ import java.util.List;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import components.Ficha;
 import components.Jugador;
@@ -37,7 +38,8 @@ public class ViewPartida{
 	public ViewPartida(Settings settings) {
 		this.settings = settings;
 		this.width = settings.getWidth();
-		this.height = settings.getHeight();
+//		this.height = settings.getHeight();
+		this.height = Screen.getPrimary().getVisualBounds().getHeight(); //Ajusta el alto a la pantalla principal, sin dejar contenido bajo la barra de inicio
 		int cantJugadores = 2;
 		for(int i =0 ; i< cantJugadores;i++) {
 			jugadores.add(new Jugador(i+1, "AMARILLO"));			
@@ -46,7 +48,7 @@ public class ViewPartida{
 
 	public void start(Stage primaryStage) throws IOException {
 		primaryStage.setTitle("KingDomino");
-
+		primaryStage.setMaximized(true);
 		BorderPane root = new BorderPane(); // Contenedor principal de la vista
 		root.setPrefSize(width, height);
 		MenuBar mb = new MenuBar(); // Barra de opciones
