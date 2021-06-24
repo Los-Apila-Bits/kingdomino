@@ -148,7 +148,7 @@ public class Tablero {
 		if (terreno1.compararTerreno(tablero[posX + desplazamientoX][posY + desplazamientoY])) {
 			Integer[] posicionBuscada = { posX + desplazamientoX, posY + desplazamientoY };
 			for (CadenaTerrenos cadenaTerrenos : lista) {
-				if (cadenaTerrenos.contienePosicion(posicionBuscada)) {
+				if (cadenaTerrenos.contienePosicion(posicionBuscada)&& !cadenaTerrenos.contienePosicion(posicion)) {
 					if (cadena != null) {
 						cadena.fusionarCadenas(cadenaTerrenos);
 					} else {
