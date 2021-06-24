@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import components.Ficha;
 import juego.Tablero;
 import juego.Terreno;
+import settings.Settings;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -38,6 +39,7 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import static utils.Sounds.*;
 
 public class ViewPartida{
 	private double width = 1024;
@@ -49,9 +51,13 @@ public class ViewPartida{
 //	private Label estadoCasilla;
 	private TableroKD tablero;
 	private static ViewPartida instancia;
-	public ViewPartida(double h, double w) {
-		this.width = w;
-		this.height = h;
+	
+	private Settings settings;
+	
+	public ViewPartida(Settings settings) {
+		this.settings = settings;
+		this.width = settings.getWidth();
+		this.height = settings.getHeight();
 	}
 
 	public void start(Stage primaryStage) throws IOException {
@@ -67,6 +73,8 @@ public class ViewPartida{
 		salir.setOnAction(e -> primaryStage.close());
 		jugar.getItems().addAll(nuevaSala, salir);
 		mb.getMenus().addAll(jugar);
+
+		settings.applySettings(primaryStage, INGAME_THEME);
 
 		GridPane cuadroTablero = new GridPane(); // Tablero de kingdomino
 		cuadroTablero.setBackground(new Background(new BackgroundFill(Color.DARKBLUE, CornerRadii.EMPTY, Insets.EMPTY)));

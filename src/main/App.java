@@ -11,7 +11,7 @@ import views.ViewManager;
 
 public class App extends Application {
 	 
-	private static final double INITIAL_MUSICVOLUME = 0.1;
+	private static final double INITIAL_MUSICVOLUME = 0.5;
 	private static final boolean INITIAL_FULLSCREEN = true;
 	
 	@Override

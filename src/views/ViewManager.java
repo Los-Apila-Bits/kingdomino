@@ -1,7 +1,6 @@
 package views;
 
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,17 +18,16 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import settings.Settings;
 import javafx.scene.paint.Color;  
 import components.KDSubScene;
 import components.KDButton;
 import components.KDCheckBox;
+import components.KDSlider;
+
 import static utils.Sounds.*;
 
 
@@ -55,8 +53,6 @@ public class ViewManager {
 	private Settings settings;
 	
 	private KDSubScene sceneToHide;
-	private boolean fullScreen = true;
-	public MediaPlayer themeSong;
 	
 	List<KDButton> menuButtons;
 	
@@ -71,23 +67,11 @@ public class ViewManager {
 		mainStage = new Stage();
 		mainStage.getIcons().add(new Image("/resources/icon.png"));
 		mainStage.setScene(mainScene);
-		mainStage.setFullScreen(settings.isFullScreen());
 		createBackground();
 		createLogo();
 		createSubScenes();
 		createButtons();
-		Media sound = new Media(getClass().getResource(THEME).toExternalForm());
-		themeSong = new MediaPlayer(sound);
-		themeSong.setAutoPlay(true);
-		themeSong.setVolume(settings.getMusicVolume());
-		themeSong.setOnEndOfMedia(new Runnable() {
-	        @Override
-	        public void run() {
-	        	themeSong.seek(Duration.ZERO);
-	        	themeSong.play();
-	        }
-	    }); 
-		themeSong.play();
+		settings.applySettings(mainStage, THEME);
 	}
 	
 	
@@ -112,27 +96,49 @@ public class ViewManager {
 	public void createOptionsSubScene() {
 		optionsSubscene = new KDSubScene(0.45);
 		mainPane.getChildren().add(optionsSubscene);
-		boolean fullScreenOption = fullScreen;
 		double panelWidth = optionsSubscene.getWidth();
 		double panelHeight = optionsSubscene.getHeight();
-		Text text = new Text();  
-        text.setText("OPCIONES");
-        text.setY(panelHeight * 0.15);  
-        text.setFont(Font.loadFont(getClass().getResourceAsStream(FONT_PATH), 40));
-        double textWidth = text.getLayoutBounds().getWidth();
-        text.setX(panelWidth/2 - textWidth/2);
-        text.setFill(Color.YELLOW);  
+		Text optionsText = new Text();  
+		optionsText.setText("OPCIONES");
+		optionsText.setY(panelHeight * 0.12);  
+		optionsText.setFont(Font.loadFont(getClass().getResourceAsStream(FONT_PATH), 40));
+        double textWidth = optionsText.getLayoutBounds().getWidth();
+        optionsText.setX(panelWidth/2 - textWidth/2);
+        optionsText.setFill(Color.YELLOW);  
         GaussianBlur g = new GaussianBlur();  
         g.setRadius(1);  
-        text.setEffect(g);
+        optionsText.setEffect(g);
+        Text musicText = new Text();  
+        musicText.setText("MUSICA");
+        musicText.setFont(Font.loadFont(getClass().getResourceAsStream(FONT_PATH), 26));
+        double musicTextWidth = musicText.getLayoutBounds().getWidth();
+        musicText.setX(panelWidth/2 - musicTextWidth/2);
+        musicText.setY(panelHeight * 0.25);  
+        musicText.setFill(Color.YELLOW);
+        musicText.setEffect(g);
+        double sliderWidth = panelWidth/3;
+        KDSlider musicSlider = new KDSlider(sliderWidth,panelHeight * 0.02);
+        musicSlider.setLayoutY(panelHeight * 0.28);
+        musicSlider.setLayoutX(panelWidth /2 - sliderWidth/2);
+        musicSlider.setMin(0);
+        musicSlider.setMax(1);
+        musicSlider.setValue(settings.getMusicVolume());
         double checkBoxSize = panelWidth * .05;
-        KDCheckBox resolutionCheckbox = new KDCheckBox(checkBoxSize);
-        resolutionCheckbox.setLayoutY(panelHeight * 0.35);
+        KDCheckBox resolutionCheckbox = new KDCheckBox(checkBoxSize, "Pantalla Completa");
+        resolutionCheckbox.setLayoutY(panelHeight * 0.45);
         resolutionCheckbox.setLayoutX(panelWidth * .1);
+        resolutionCheckbox.setChecked(settings.isFullScreen());
+        KDCheckBox mouseCheckbox = new KDCheckBox(checkBoxSize, "Cursor Personalizado");
+        mouseCheckbox.setLayoutY(panelHeight * 0.55);
+        mouseCheckbox.setLayoutX(panelWidth * .1);
+        mouseCheckbox.setChecked(settings.isCursorEnabled());
         KDButton acceptButton = new KDButton("ACEPTAR", buttonWidth, "green");
         KDButton cancelButton = new KDButton("CANCELAR", buttonWidth, "green");
         double offSet = buttonWidth * 0.05;
         cancelButton.setLayoutX(panelWidth/2 + offSet);
+        cancelButton.setLayoutY(panelHeight * 0.8);
+        cancelButton.setClickSound(CANCEL_SOUND);
+        cancelButton.setHoverSound(HOVER_SOUND);
         cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -144,10 +150,21 @@ public class ViewManager {
         acceptButton.setLayoutY(panelHeight * 0.8);
         acceptButton.setClickSound(CONFIRM_SOUND);
         acceptButton.setHoverSound(HOVER_SOUND);
-        cancelButton.setLayoutY(panelHeight * 0.8);
-        cancelButton.setClickSound(CANCEL_SOUND);
-        cancelButton.setHoverSound(HOVER_SOUND);
-		optionsSubscene.getPane().getChildren().addAll(text, resolutionCheckbox, acceptButton, cancelButton);
+        acceptButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				boolean isResolutionChecked = resolutionCheckbox.isChecked();
+				boolean isCursorEnabled = mouseCheckbox.isChecked();
+				double newMusicVolume = musicSlider.getValue();
+				settings.setFullScreen(isResolutionChecked);
+				settings.setCursorEnabled(isCursorEnabled);
+				settings.setMusicVolume(newMusicVolume);
+				settings.applySettings(mainStage, THEME);
+				optionsSubscene.moveSubScene();
+				sceneToHide = null;
+			}
+		});
+		optionsSubscene.getPane().getChildren().addAll(optionsText, musicText, musicSlider, resolutionCheckbox, mouseCheckbox, acceptButton, cancelButton);
 	}
 	
 	private KDButton createButtonToStart() {
@@ -192,7 +209,7 @@ public class ViewManager {
 	}
 	
 	private void createStartButton() {
-		KDButton startButton = new KDButton("PLAY", buttonWidth, "yellow");
+		KDButton startButton = new KDButton("JUGAR", buttonWidth, "yellow");
 		AddMenuButtons(startButton);
 		
 		startButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -200,7 +217,7 @@ public class ViewManager {
 			@Override
 			public void handle(ActionEvent event) {
 //				showSubScene(shipChooserSubscene);
-				ViewPartida partida = new ViewPartida(height, width);
+				ViewPartida partida = new ViewPartida(settings);
 				try {
 					partida.start(mainStage);
 				} catch (IOException e) {
@@ -211,7 +228,7 @@ public class ViewManager {
 	}
 	
 	private void createOptionsButton() {
-		KDButton scoresButton = new KDButton("OPTIONS", buttonWidth, "yellow");
+		KDButton scoresButton = new KDButton("OPCIONES", buttonWidth, "yellow");
 		AddMenuButtons(scoresButton);
 		
 		scoresButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -225,7 +242,7 @@ public class ViewManager {
 	}
 	
 	private void createHelpButton() {
-		KDButton helpButton = new KDButton("HELP", buttonWidth, "yellow");
+		KDButton helpButton = new KDButton("AYUDA", buttonWidth, "yellow");
 		AddMenuButtons(helpButton);
 		
 		helpButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -240,7 +257,7 @@ public class ViewManager {
 	
 	private void createCreditsButton() {
 		
-		KDButton creditsButton = new KDButton("CREDITS", buttonWidth, "yellow");
+		KDButton creditsButton = new KDButton("CREDITOS", buttonWidth, "yellow");
 		AddMenuButtons(creditsButton);
 		
 		creditsButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -254,7 +271,7 @@ public class ViewManager {
 	}
 	
 	private void createExitButton() {
-		KDButton exitButton = new KDButton("EXIT", buttonWidth, "yellow");
+		KDButton exitButton = new KDButton("SALIR", buttonWidth, "yellow");
 		AddMenuButtons(exitButton);
 		
 		exitButton.setOnAction(new EventHandler<ActionEvent>() {

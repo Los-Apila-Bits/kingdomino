@@ -1,0 +1,9 @@
+#color-slider .track{
+    -fx-background-color: linear-gradient(to left, #7ee8fa 0%, #80ff72 74%);
+}
+
+#color-slider .thumb{
+	-fx-pref-height: 30px;
+	-fx-pref-width: 10px;
+    -fx-background-color: linear-gradient(to top, #9eabe4 0%, #77eed8 74%);
+}
