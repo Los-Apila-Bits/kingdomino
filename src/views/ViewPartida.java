@@ -2,6 +2,8 @@ package views;
 
 import java.awt.Frame;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import components.TableroKD;
 import javafx.application.Application;
@@ -13,9 +15,9 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
 import components.Ficha;
+import components.Jugador;
 import juego.Tablero;
 import juego.Terreno;
-import juego.Mazo;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -46,21 +48,20 @@ public class ViewPartida{
 	public static final int TAM_CASILLA = 140;
 	public static final int TAM_PREV = 70;
 	
-	private Ficha ficha;
-	
-	private GridPane fichasTurno = new GridPane();
+	private static ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
 
-	private Mazo mazo;
-//	private Label estadoCasilla;
-	private TableroKD tablero;
-	private static ViewPartida instancia;
+	
 	public ViewPartida(double h, double w) {
 		this.width = w;
 		this.height = h;
+		int cantJugadores = 2;
+		for(int i =0 ; i< cantJugadores;i++) {
+			jugadores.add(new Jugador(i+1));			
+		}
 	}
 
 	public void start(Stage primaryStage) throws IOException {
-		instancia = this;
+//		instancia = this;
 		primaryStage.setTitle("KingDomino");
 
 		BorderPane root = new BorderPane(); // Contenedor principal de la vista
@@ -76,27 +77,23 @@ public class ViewPartida{
 		GridPane cuadroTablero = new GridPane(); // Tablero de kingdomino
 		cuadroTablero.setStyle("-fx-background-color:#FFFF7A;");
 		//cuadroTablero.setBackground(new Background(new BackgroundFill(Color.DARKBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
-		cuadroTablero.add(tablero = new TableroKD(), 0, 0, 5, 5);
+		//cuadroTablero.add(tablero = new TableroKD(), 0, 0, 5, 5);
+		cuadroTablero.add(jugadores.get(0).getTablero(), 0, 0, 5, 5);
 		cuadroTablero.setAlignment(Pos.CENTER);
 		cuadroTablero.setMinHeight(100);
 		cuadroTablero.setMinWidth(700);
 		cuadroTablero.setGridLinesVisible(false);
-
-//		estadoCasilla = new Label();
-//		estadoCasilla.setAlignment(Pos.BOTTOM_LEFT);
-//		estadoCasilla.setPadding(new Insets(10, 0, 10, 10));
 		
-		//Panel de la derecha. InformaciÃ³n de los jugadores, ficha a colocar y del turno
+		//Panel de la derecha. Información de los jugadores, ficha a colocar y del turno
 		BorderPane info = new BorderPane();
 		
 		info.setMaxWidth(400);
 
-		//Contenedor vertical con informaciÃ³n de jugadores
+		//Contenedor vertical con información de jugadores
 		VBox infoPartida = new VBox();
 		infoPartida.setPadding(new Insets(10, 50, 10, 10));
-		infoPartida.getChildren().add(new Label("InformaciÃ³n de los Jugadores"));
-		infoPartida.getChildren().add(new Label("Jugador 1: 34 puntos"));
-		infoPartida.getChildren().add(new Label("Jugador 2: 20 puntos"));
+		infoPartida.getChildren().add(new Label("Información de los Jugadores"));
+		infoPartida.getChildren().add(jugadores.get(0).getLabelPuntos());
 		//Panel para rotar ficha
 		StackPane previsualizacionFicha = new StackPane();
 		previsualizacionFicha.setAlignment(Pos.CENTER);
@@ -108,17 +105,27 @@ public class ViewPartida{
 		previsualizacionFicha.getChildren().add(fichaAInsertar);
 		previsualizacionFicha.setPadding(new Insets(TAM_CASILLA/2, 0, 10, previsualizacionFicha.getMinWidth()/3));
 		
-		
+		GridPane fichasTurno = new GridPane();
 		
 		fichasTurno.setMinHeight(300);
-
-//		ColumnConstraints columnas = new ColumnConstraints();
-//		columnas.setPercentWidth(33);
-//		fichasTurno.getColumnConstraints().add(columnas);
 		fichasTurno.setAlignment(Pos.CENTER);
 		fichasTurno.setVgap(15);
 		fichasTurno.setHgap(25);
 		fichasTurno.setPadding(new Insets(0, 0, 30, 0));
+		
+		
+		
+		fichasTurno.add(new Ficha(3,4, TAM_PREV), 0, 0);
+		fichasTurno.add(new Ficha(2,4, TAM_PREV), 0, 1);
+		fichasTurno.add(new Ficha(3,5, TAM_PREV), 1, 0);
+		fichasTurno.add(new Ficha(3,2, TAM_PREV), 1, 1);
+		fichasTurno.add(new Ficha(2,2, TAM_PREV), 2, 0);
+		fichasTurno.add(new Ficha(1,2, TAM_PREV), 2, 1);
+		
+		
+		
+		fichasTurno.setDisable(true);
+		//fichasTurno.getChildren();
 		
 		info.setTop(infoPartida);
 		info.setCenter(previsualizacionFicha);
@@ -131,23 +138,10 @@ public class ViewPartida{
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
-		while(!mazo.mazoVacio()) {
-			//aca tendria que ir la logica donde sacamos las fichas y hacemos el curso de la partida
-		}
-		
 	}
 	
-//	public static void main(String[] args) {
-//		launch(args);
-//	}
-
-	public static TableroKD getTablero() {
-		return instancia.tablero;
-	}
-	
-	public void setFichas(int terreno1, int terreno2, int val1 , int val2) {
-		this.fichasTurno.add(new Ficha(terreno1,terreno2, TAM_PREV), val1, val2);
+	public static void actualizarPuntos() {
+		jugadores.get(0).getLabelPuntos().setText("Jugador 1: " + jugadores.get(0).getTablero().getTableroLogico().getPuntos());
 	}
 
-	
 }

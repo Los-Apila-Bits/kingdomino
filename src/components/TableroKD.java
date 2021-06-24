@@ -158,6 +158,9 @@ public class TableroKD extends GridPane {
 						break;
 					}
 					
+					if(success) {
+						ViewPartida.actualizarPuntos();
+					}
 					tableroLogico.mostrarTablero();
 
 					//success = true;
@@ -167,6 +170,7 @@ public class TableroKD extends GridPane {
 				event.setDropCompleted(success);
 				event.consume();
 			}
+
 		});
 
 		// Drag over event handler is used for the receiving node to allow movement
@@ -187,7 +191,15 @@ public class TableroKD extends GridPane {
 
 
 	}
+	
+	public Tablero getTableroLogico() {
+		return this.tableroLogico;
+	}
 			
+	private void actualizarPuntos() {
+		
+	}
+	
 //	private int getX(int index) {
 //		return index % 5;
 //	}
