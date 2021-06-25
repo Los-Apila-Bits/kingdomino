@@ -90,12 +90,12 @@ public class ViewPartida{
 		previsualizacionFicha.setMaxHeight(TAM_CASILLA*3);
 		previsualizacionFicha.setMinWidth(TAM_CASILLA*3);
 		
-		Ficha fichaAInsertar = new Ficha(1,2,1,0, TAM_CASILLA);
+			Ficha fichaAInsertar = new Ficha(1,2,1,0, TAM_CASILLA);
 		
 		previsualizacionFicha.getChildren().add(fichaAInsertar);
 		previsualizacionFicha.setPadding(new Insets(TAM_CASILLA/2, 0, 10, previsualizacionFicha.getMinWidth()/3));
 		
-		GridPane fichasTurno = new GridPane();
+		
 		
 		fichasTurno.setMinHeight(300);
 		fichasTurno.setAlignment(Pos.CENTER);
@@ -110,12 +110,7 @@ public class ViewPartida{
 		System.out.println(fuentesFantasia);
 		
 	
-		fichasTurno.add(new Ficha(3,4,0,1, TAM_PREV), 0, 0);
-		fichasTurno.add(new Ficha(2,4,0,1, TAM_PREV), 0, 1);
-		fichasTurno.add(new Ficha(3,5,0,1, TAM_PREV), 1, 0);
-		fichasTurno.add(new Ficha(3,2,0,1, TAM_PREV), 1, 1);
-		fichasTurno.add(new Ficha(2,2,0,1, TAM_PREV), 2, 0);
-		fichasTurno.add(new Ficha(1,2,0,1, TAM_PREV), 2, 1);
+		
 		
 		
 		
@@ -131,7 +126,40 @@ public class ViewPartida{
 		Scene scene = new Scene(root, width, height);
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		jugar();
 		
+	}
+	
+	private void jugar() {
+		try {
+			mazo = new Mazo();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		List<int[]> fichas = new ArrayList<int[]>();
+		while (!mazo.mazoVacio()) {
+			for (int i = 0; i < 4; i++) {
+				
+				fichas.add(mazo.sacarFicha());
+			}
+			addFichas(fichas);
+			System.out.println(jugadores.size());
+			for (Jugador jugador : this.jugadores) {
+				jugador.jugar();
+			}
+			fichas.clear();
+		}
+	}
+	
+	private void addFichas(List<int[]> fichas) {
+		fichas.sort((ficha1,ficha2)->ficha1[0] - ficha2[0]);
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < 2; j++) {
+			int[] vec = fichas.get(i+i+j);
+			this.fichasTurno.add(new Ficha(vec[1], vec[2], vec[3], vec[4], TAM_PREV), j, i);
+			}
+		}
 	}
 	
 	public static void actualizarPuntos() {
