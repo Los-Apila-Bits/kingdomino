@@ -12,12 +12,12 @@ import javafx.scene.layout.RowConstraints;
 import juego.Tablero;
 import views.ViewPartida;
 
-
 public class TableroKD extends GridPane {
 
 	private Tablero tableroLogico;
 	private Casilla[][] casillas = new Casilla[5][5];
 	private int turnoActual = 1;
+	private boolean updated = true;
 
 	public TableroKD(String colorCastillo) {
 		
@@ -55,7 +55,6 @@ public class TableroKD extends GridPane {
 		casillas[2][2].setCasilla(new Terreno(colorCastillo));
 
 		GridPane target = this;
-
 
 		// Drag entered changes the appearance of the receiving node to indicate to the
 		// player that they can place there
@@ -112,6 +111,7 @@ public class TableroKD extends GridPane {
 					Terreno terreno1 = new Terreno(Integer.parseInt(newFicha[0]),Integer.parseInt(newFicha[3]));
 					Terreno terreno2 = new Terreno(Integer.parseInt(newFicha[1]),Integer.parseInt(newFicha[4]));
 					// TODO: set image size; use correct column/row span
+					System.out.println("posicion: "+pos);
 					switch (pos) {
 					case 0:
 						fichaLogica.setDireccion(1,0);
@@ -138,6 +138,10 @@ public class TableroKD extends GridPane {
 						}
 						break;
 					case 3:
+						System.out.println("terreno1: "+ terreno1);
+						System.out.println("terreno2: "+ terreno2);
+						System.out.println("posx: "+x);
+						System.out.println("posy: "+y);
 						fichaLogica.setDireccion(0, 1);
 						if(tableroLogico.insertarFicha(fichaLogica, y, x)) {	
 						casillas[x][y].setCasilla(terreno1);
@@ -148,16 +152,15 @@ public class TableroKD extends GridPane {
 					default:
 						break;
 					}
-					
 					if(success) {
 						ViewPartida.actualizarPuntos();
+						updated = false;
 					}
-					
+					System.out.println("-------------------------------");
 					tableroLogico.mostrarTablero();
-
+				
 					//success = true;
 				}
-
 				// let the source know whether the image was successfully transferred and used
 				event.setDropCompleted(success);
 				event.consume();
@@ -196,4 +199,10 @@ public class TableroKD extends GridPane {
 		this.turnoActual = turnoActual;
 	}
 
+	public boolean isUpdated() {
+		return updated;
+	}
+	public void setUpdate(boolean valor) {
+			this.updated = valor;
+	}
 }
