@@ -12,6 +12,7 @@ public class Jugador {
 	public Jugador(int id, String color) {
 		this.id = id;
 		this.tablero = new TableroKD(color);
+		this.tablero.setDisable(true);
 		this.puntosLabel = new Label("Jugador " + this.id + ": 0");
 	}
 	
@@ -25,6 +26,14 @@ public class Jugador {
 	
 	public Label getLabelPuntos() {
 		return this.puntosLabel;
+	}
+
+	public void jugar() {
+		this.tablero.setDisable(false);
+		while(!this.tablero.isUpdated()) {
+			
+		}
+		this.tablero.setUpdate(true);
 	}
 
 }
