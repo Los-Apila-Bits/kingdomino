@@ -56,6 +56,7 @@ public class ViewManager {
 	
 	List<KDButton> menuButtons;
 	
+	
 	public ViewManager(Settings settings) {
 		this.settings = settings;
 		width = settings.getWidth();
