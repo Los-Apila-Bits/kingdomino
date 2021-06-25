@@ -20,7 +20,7 @@ public class Mazo {
 				vec[j]= entrada.nextInt();
 			}
 			i++;
-			fichas.add(vec);
+			fichas.add(vec.clone());
 		}
 		entrada.close();
 		mezclar();
