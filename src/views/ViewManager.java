@@ -86,13 +86,75 @@ public class ViewManager {
 	
 	private void createSubScenes() {
 		
-		creditsSubscene = new KDSubScene(0.45);
-		mainPane.getChildren().add(creditsSubscene);
-		helpSubscene = new KDSubScene(0.45);
-		mainPane.getChildren().add(helpSubscene);
+		createCreditsSubScene();
+		helpCreditsSubScene();
 		createOptionsSubScene();
 	}
+	public void helpCreditsSubScene() {
+		helpSubscene = new KDSubScene(0.45);
+		mainPane.getChildren().add(helpSubscene);
+		double panelWidth = helpSubscene.getWidth();
+		double panelHeight = helpSubscene.getHeight();
+		Text helpText = new Text();
+		GaussianBlur g = new GaussianBlur();  
+        g.setRadius(1); 
+		helpText.setText("AYUDA");
+		helpText.setY(panelHeight * 0.12);  
+		helpText.setFont(Font.loadFont(getClass().getResourceAsStream(FONT_PATH), 40));
+        double textWidth = helpText.getLayoutBounds().getWidth();
+        helpText.setX(panelWidth/2 - textWidth/2);
+        helpText.setFill(Color.YELLOW);
+        helpText.setEffect(g);
+        
+        
+        KDButton exitButton = new KDButton("SALIR", buttonWidth, "green");
+        double buttonWidth = exitButton.getLayoutBounds().getWidth();
+        exitButton.setLayoutX(panelWidth/2 - buttonWidth/2);
+        exitButton.setLayoutY(panelHeight * 0.8);
+        exitButton.setClickSound(CANCEL_SOUND);
+        exitButton.setHoverSound(HOVER_SOUND);
+        exitButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				creditsSubscene.moveSubScene();
+				sceneToHide = null;
+			}
+		});
+        helpSubscene.getPane().getChildren().addAll(helpText, exitButton);
+	}
 	
+	public void createCreditsSubScene() {
+		creditsSubscene = new KDSubScene(0.45);
+		mainPane.getChildren().add(creditsSubscene);
+		double panelWidth = creditsSubscene.getWidth();
+		double panelHeight = creditsSubscene.getHeight();
+		Text creditsText = new Text();
+		GaussianBlur g = new GaussianBlur();  
+        g.setRadius(1); 
+		creditsText.setText("CREDITOS");
+		creditsText.setY(panelHeight * 0.12);  
+		creditsText.setFont(Font.loadFont(getClass().getResourceAsStream(FONT_PATH), 40));
+        double textWidth = creditsText.getLayoutBounds().getWidth();
+        creditsText.setX(panelWidth/2 - textWidth/2);
+        creditsText.setFill(Color.YELLOW);
+        creditsText.setEffect(g);
+        
+        
+        KDButton exitButton = new KDButton("SALIR", buttonWidth, "green");
+        double buttonWidth = exitButton.getLayoutBounds().getWidth();
+        exitButton.setLayoutX(panelWidth/2 - buttonWidth/2);
+        exitButton.setLayoutY(panelHeight * 0.8);
+        exitButton.setClickSound(CANCEL_SOUND);
+        exitButton.setHoverSound(HOVER_SOUND);
+        exitButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				creditsSubscene.moveSubScene();
+				sceneToHide = null;
+			}
+		});
+        creditsSubscene.getPane().getChildren().addAll(creditsText, exitButton);
+	}
 	public void createOptionsSubScene() {
 		optionsSubscene = new KDSubScene(0.45);
 		mainPane.getChildren().add(optionsSubscene);
