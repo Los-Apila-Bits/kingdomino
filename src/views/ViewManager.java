@@ -156,7 +156,7 @@ public class ViewManager {
 			public void handle(ActionEvent event) {
 				String pathRules = "";
 				try {
-					System.out.println(new File(".").getCanonicalPath());
+//					System.out.println(new File(".").getCanonicalPath());
 					String path = new File(".").getCanonicalPath();
 					pathRules = path + "\\src\\resources\\kingdomino_eng.pdf";
 				} catch (IOException e1) {
