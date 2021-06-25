@@ -60,8 +60,8 @@ public class Tablero {
 	public boolean insertarFicha(Ficha ficha, int posX, int posY) {
 		
 		if (!puedeInsertar(posX, posY, ficha)) {
-			ficha.cambiarPivot();
-			if (!puedeInsertar(posX, posY, ficha))
+			//ficha.cambiarPivot();
+			//if (!puedeInsertar(posX, posY, ficha))
 				return false;
 		}
 		tablero[posX][posY] = ficha.getTerreno1();
