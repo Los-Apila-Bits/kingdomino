@@ -108,7 +108,6 @@ public class ViewManager {
         
         
         KDButton exitButton = new KDButton("SALIR", buttonWidth, "green");
-        double buttonWidth = exitButton.getLayoutBounds().getWidth();
         exitButton.setLayoutX(panelWidth/2 - buttonWidth/2);
         exitButton.setLayoutY(panelHeight * 0.8);
         exitButton.setClickSound(CANCEL_SOUND);
@@ -121,6 +120,27 @@ public class ViewManager {
 			}
 		});
         helpSubscene.getPane().getChildren().addAll(helpText, exitButton);
+	}
+	
+	
+	
+	public Text createCreditsText(String name, double panelWidth, double panelHeight, GaussianBlur g,
+			double heightMultiplier, String align) {
+
+		Text creditsText = new Text();
+		creditsText.setText(name);
+		creditsText.setFont(Font.loadFont(getClass().getResourceAsStream(FONT_PATH), 26));
+		double creditsTextWidth = creditsText.getLayoutBounds().getWidth();
+        if(align == "LEFT")
+		creditsText.setX(panelWidth * 0.25 - creditsTextWidth/2);
+        else if(align == "RIGHT")
+        creditsText.setX(panelWidth * 0.75 - creditsTextWidth/2);
+        
+		creditsText.setY(panelHeight * heightMultiplier);
+		creditsText.setFill(Color.YELLOW);
+		creditsText.setEffect(g);
+
+		return creditsText;
 	}
 	
 	public void createCreditsSubScene() {
@@ -139,10 +159,64 @@ public class ViewManager {
         creditsText.setFill(Color.YELLOW);
         creditsText.setEffect(g);
         
+        Text creditsTextTitle = new Text();  
+        creditsTextTitle.setText("LOS APILA BITS");
+        creditsTextTitle.setFont(Font.loadFont(getClass().getResourceAsStream(FONT_PATH), 26));
+        double creditsTextWidth = creditsTextTitle.getLayoutBounds().getWidth();
+        creditsTextTitle.setX(panelWidth/2 - creditsTextWidth/2);
+        creditsTextTitle.setY(panelHeight * 0.20);  
+        creditsTextTitle.setFill(Color.YELLOW);
+        creditsTextTitle.setEffect(g);
+        
+        
+        List<Text> textList = new ArrayList<Text>();
+        
+        Text creditsTextNorman = createCreditsText("FUNES NORMAN", panelWidth, panelHeight, g, 0.35, "LEFT");
+        textList.add(creditsTextNorman);
+        
+        Text creditsTextColo = createCreditsText("PAJOT GONZALO", panelWidth, panelHeight, g, 0.45, "LEFT");
+        textList.add(creditsTextColo);
+        
+        Text creditsTextAgata = createCreditsText("AGATA ROCIO", panelWidth, panelHeight, g, 0.55, "LEFT");
+        textList.add(creditsTextAgata);
+        
+        Text creditsTextAgus = createCreditsText("GONZALEZ AGUSTIN", panelWidth, panelHeight, g, 0.65, "LEFT");
+        textList.add(creditsTextAgus);
+        
+        Text creditsTextAlba = createCreditsText("ALBANESI MATIAS", panelWidth, panelHeight, g, 0.35, "RIGHT");
+        textList.add(creditsTextAlba);
+        
+        Text creditsTextLean = createCreditsText("FIORITA LEANDRO", panelWidth, panelHeight, g, 0.45, "RIGHT");
+        textList.add(creditsTextLean);
+        
+        Text creditsTextAilen = createCreditsText("PADILLA AILEN", panelWidth, panelHeight, g, 0.55, "RIGHT");
+        textList.add(creditsTextAilen);
+        
+        Text creditsTextMati = createCreditsText("GALLUÉS MATIAS", panelWidth, panelHeight, g, 0.65, "RIGHT");
+        textList.add(creditsTextMati);
+        
+        for (Text text : textList) {
+        	text.setOnMouseEntered(new EventHandler<MouseEvent>() {
+
+    			@Override
+    			public void handle(MouseEvent event) {
+    				text.setEffect(new DropShadow());
+    				
+    			}
+    		});
+            
+        	text.setOnMouseExited(new EventHandler<MouseEvent>() {
+
+    			@Override
+    			public void handle(MouseEvent event) {
+    				text.setEffect(null);
+    				
+    			}
+    		});
+		}
         
         KDButton exitButton = new KDButton("SALIR", buttonWidth, "green");
-        double buttonWidth = exitButton.getLayoutBounds().getWidth();
-        exitButton.setLayoutX(panelWidth/2 - buttonWidth/2);
+        exitButton.setLayoutX(panelWidth/2 - buttonWidth/2); 
         exitButton.setLayoutY(panelHeight * 0.8);
         exitButton.setClickSound(CANCEL_SOUND);
         exitButton.setHoverSound(HOVER_SOUND);
@@ -153,8 +227,10 @@ public class ViewManager {
 				sceneToHide = null;
 			}
 		});
-        creditsSubscene.getPane().getChildren().addAll(creditsText, exitButton);
+        creditsSubscene.getPane().getChildren().addAll(creditsText, creditsTextTitle, creditsTextAlba, creditsTextMati, creditsTextAilen,
+        		creditsTextLean, creditsTextNorman, creditsTextColo, creditsTextAgata, creditsTextAgus, exitButton);
 	}
+	
 	public void createOptionsSubScene() {
 		optionsSubscene = new KDSubScene(0.45);
 		mainPane.getChildren().add(optionsSubscene);
