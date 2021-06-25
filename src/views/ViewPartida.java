@@ -1,5 +1,6 @@
 package views;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import juego.Mazo;
 import components.Ficha;
 import components.Jugador;
 import settings.Settings;
@@ -34,6 +36,9 @@ public class ViewPartida{
 	private static ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
 
 	private Settings settings;
+	
+	private Mazo mazo;
+	private GridPane fichasTurno = new GridPane();
 	
 	public ViewPartida(Settings settings) {
 		this.settings = settings;
