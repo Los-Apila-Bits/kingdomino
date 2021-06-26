@@ -63,9 +63,8 @@ public class ViewManager {
 		this.buttonWidth = this.width * 0.12;
 		menuButtons = new ArrayList<>();
 		mainPane = new AnchorPane();
-		mainScene = new Scene(mainPane, this.width, this.height );
+		mainScene = new Scene(mainPane, this.width, this.height);
 		mainStage = new Stage();
-		mainStage.getIcons().add(new Image("/resources/icon.png"));
 		mainStage.setScene(mainScene);
 		createBackground();
 		createLogo();
@@ -216,13 +215,9 @@ public class ViewManager {
 
 			@Override
 			public void handle(ActionEvent event) {
-//				showSubScene(shipChooserSubscene);
 				ViewPartida partida = new ViewPartida(settings);
-				try {
-					partida.start(mainStage);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				partida.createNewGame(mainStage);
+	
 			}
 		});
 	}

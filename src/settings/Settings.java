@@ -35,6 +35,7 @@ public class Settings {
 	}
 	
 	public void applySettings(Stage stage, String musicPath) {
+		stage.getIcons().add(new Image(GAME_ICON));
 		Scene scene = stage.getScene();
 		if (cursorClicked != null && cursorReleased != null) {
 			scene.removeEventFilter(MouseEvent.MOUSE_PRESSED, cursorClicked);

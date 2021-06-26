@@ -14,45 +14,42 @@ import views.ViewPartida;
 
 
 public class TableroKD extends GridPane {
+	
+	private static final int TAM_TABLERO = 5;
 
 	private Tablero tableroLogico;
-	private Casilla[][] casillas = new Casilla[5][5];
+	private Casilla[][] casillas = new Casilla[TAM_TABLERO][TAM_TABLERO];
 	private int turnoActual = 1;
 
-	public TableroKD(String colorCastillo) {
-		
+	public TableroKD(double tam, String colorCastillo) {
+		double tamCasilla = tam / TAM_TABLERO;
+		setGridLinesVisible(false);
+		setMaxHeight(tam);
+		setMinHeight(tam);
+		setMaxWidth(tam);
+		setMinWidth(tam);
 		this.tableroLogico = new Tablero();
-
-		setMinHeight(700);
-		setMinWidth(700);
-		ColumnConstraints columnas = new ColumnConstraints();
-		columnas.setPercentWidth(20);
-		RowConstraints filas = new RowConstraints();
-		filas.setPercentHeight(20);
-		getColumnConstraints().add(columnas);
-		getRowConstraints().add(filas);
-		getColumnConstraints().add(columnas);
-		getRowConstraints().add(filas);
-		getColumnConstraints().add(columnas);
-		getRowConstraints().add(filas);
-		getColumnConstraints().add(columnas);
-		getRowConstraints().add(filas);
-		getColumnConstraints().add(columnas);
-		getRowConstraints().add(filas);
+		ColumnConstraints columnas = new ColumnConstraints(tamCasilla);
+		RowConstraints filas = new RowConstraints(tamCasilla);
+		for (int i = 0; i<=TAM_TABLERO - 1; i++) {	
+			getColumnConstraints().add(columnas);
+			getRowConstraints().add(filas);
+		}
 		setAlignment(Pos.CENTER);
 		setGridLinesVisible(true);
-		
-		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 5; j++) {
+				
+		for (int i = 0; i < TAM_TABLERO; i++) {
+			for (int j = 0; j < TAM_TABLERO; j++) {
 				int x = i;
 				int y = j;
 				setAlignment(Pos.CENTER);
-				Casilla casilla = new Casilla(x, y);
+				Casilla casilla = new Casilla(x, y, tamCasilla);
 				add(casilla, x, y);
 				casillas[i][j] = casilla;
 			}
 		}
-		casillas[2][2].setCasilla(new Terreno(colorCastillo));
+		
+		casillas[2][2].setCasilla(new Terreno(colorCastillo, tamCasilla));
 
 		GridPane target = this;
 

@@ -19,8 +19,12 @@ public class Terreno extends Label {
 		setTerreno(this.nombre, cantCoronas);
 	}
 	
-	Terreno(String colorCastillo){
-		this.imagen = new Image(getClass().getResource("../resources/"+ colorCastillo + ".png").toExternalForm());
+	Terreno(String colorCastillo, double tam){
+		this.imagen = new Image("/resources/"+ colorCastillo + ".png");
+		ImageView view = new ImageView(this.imagen);
+		view.setFitHeight(tam);
+		view.setFitWidth(tam);
+		setGraphic(view);
 	}
 	
 	public void setTerreno(int terreno, int cantCoronas) {
