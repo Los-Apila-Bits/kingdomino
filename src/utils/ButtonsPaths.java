@@ -14,6 +14,10 @@ public class ButtonsPaths {
 		 BUTTONS.put("yellowPressed", "/resources/buttonYellowPressed.png");
 		 BUTTONS.put("greenPressed", "/resources/buttonGreenPressed.png");
 		 BUTTONS.put("green", "/resources/buttonGreen.png");
+		 BUTTONS.put("red", "/resources/buttonRed.png");
+		 BUTTONS.put("redPressed", "/resources/buttonRedPressed.png");
+		 BUTTONS.put("violet", "/resources/buttonViolet.png");
+		 BUTTONS.put("violetPressed", "/resources/buttonVioletPressed.png");
 	 }
 
 }

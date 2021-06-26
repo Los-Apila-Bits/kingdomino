@@ -15,6 +15,7 @@ public class Materials {
 	 public static final String BOARD_MAP = "/resources/board_map.png";
 	 public static final String CASILLA = "/resources/casilla.png";
 	 public static final String LABEL = "/resources/label.png";
+	 public static final String FICHA_PAPER = "/resources/ficha_paper.png";
 	 public static final Map<Integer, String> PLAYER_BADGES = new HashMap<>();
 	 public static final Map<Integer, String> PLAYER_POINTS = new HashMap<>();
 	 

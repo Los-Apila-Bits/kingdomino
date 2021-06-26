@@ -8,6 +8,7 @@ public class Jugador {
 	private Label puntosLabel;
 	private int id;
 	private String color;
+	Ficha fichaSeleccionada;
 	
 	public Jugador(int id, String color) {
 		this.id = id;
@@ -34,5 +35,21 @@ public class Jugador {
 	public Label getLabelPuntos() {
 		return this.puntosLabel;
 	}
+	
+	public Ficha getFichaSeleccionada() {
+		return this.fichaSeleccionada;
+	}
+	
+	public void setFichaSeleccionada(Ficha f) {
+		this.fichaSeleccionada = f;
+	}
+
+//	public void jugar() {
+//		this.tablero.setDisable(false);
+//		while(!this.tablero.isUpdated()) {
+//			
+//		}
+//		this.tablero.setUpdate(true);
+//	}
 
 }

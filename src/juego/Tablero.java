@@ -60,8 +60,8 @@ public class Tablero {
 	public boolean insertarFicha(Ficha ficha, int posX, int posY) {
 		
 		if (!puedeInsertar(posX, posY, ficha)) {
-			ficha.cambiarPivot();
-			if (!puedeInsertar(posX, posY, ficha))
+			//ficha.cambiarPivot();
+			//if (!puedeInsertar(posX, posY, ficha))
 				return false;
 		}
 		tablero[posX][posY] = ficha.getTerreno1();
@@ -148,7 +148,7 @@ public class Tablero {
 		if (terreno1.compararTerreno(tablero[posX + desplazamientoX][posY + desplazamientoY])) {
 			Integer[] posicionBuscada = { posX + desplazamientoX, posY + desplazamientoY };
 			for (CadenaTerrenos cadenaTerrenos : lista) {
-				if (cadenaTerrenos.contienePosicion(posicionBuscada)) {
+				if (cadenaTerrenos.contienePosicion(posicionBuscada)&& !cadenaTerrenos.contienePosicion(posicion)) {
 					if (cadena != null) {
 						cadena.fusionarCadenas(cadenaTerrenos);
 					} else {

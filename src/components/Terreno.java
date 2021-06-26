@@ -11,15 +11,18 @@ public class Terreno extends Label {
 
 	private int cantCoronas = 0;
 	private int nombre;
+	private double tam;
 	Image imagen;
 	
-	Terreno(int nombre, int cantCoronas){
+	Terreno(int nombre, int cantCoronas,double tam){
+		this.tam = tam;
 		this.nombre = nombre;
 		this.cantCoronas = cantCoronas;
 		setTerreno(this.nombre, cantCoronas);
 	}
 	
 	Terreno(String colorCastillo, double tam){
+		this.tam = tam;
 		this.imagen = new Image("/resources/"+ colorCastillo + ".png");
 		ImageView view = new ImageView(this.imagen);
 		view.setFitHeight(tam);
@@ -37,8 +40,8 @@ public class Terreno extends Label {
 	
 	public ImageView getImageView() {
 		ImageView img = new ImageView(imagen);
-		img.setFitHeight(ViewPartida.TAM_CASILLA);
-		img.setFitWidth(ViewPartida.TAM_CASILLA);
+		img.setFitHeight(tam);
+		img.setFitWidth(tam);
 		img.setPreserveRatio(true);
 		return img;
 	}

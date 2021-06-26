@@ -12,7 +12,6 @@ import javafx.scene.layout.RowConstraints;
 import juego.Tablero;
 import views.ViewPartida;
 
-
 public class TableroKD extends GridPane {
 	
 	private static final int TAM_TABLERO = 5;
@@ -20,9 +19,12 @@ public class TableroKD extends GridPane {
 	private Tablero tableroLogico;
 	private Casilla[][] casillas = new Casilla[TAM_TABLERO][TAM_TABLERO];
 	private int turnoActual = 1;
+	private boolean isFichaColocada = true;
+	private double tamCasilla;
+//	private boolean updated = true;
 
 	public TableroKD(double tam, String colorCastillo) {
-		double tamCasilla = tam / TAM_TABLERO;
+		tamCasilla = tam / TAM_TABLERO;
 		setGridLinesVisible(false);
 		setMaxHeight(tam);
 		setMinHeight(tam);
@@ -52,7 +54,6 @@ public class TableroKD extends GridPane {
 		casillas[2][2].setCasilla(new Terreno(colorCastillo, tamCasilla));
 
 		GridPane target = this;
-
 
 		// Drag entered changes the appearance of the receiving node to indicate to the
 		// player that they can place there
@@ -96,7 +97,8 @@ public class TableroKD extends GridPane {
 					int x = cIndex == null ? 0 : cIndex;
 					int y = rIndex == null ? 0 : rIndex;
 
-					String[] newFicha = new String[3];
+					//Si se rompe pasar a 3
+					String[] newFicha = new String[5];
 					newFicha = db.getString().split(" ");
 					
 					int cantRotaciones = Integer.parseInt(newFicha[2]);
@@ -106,9 +108,10 @@ public class TableroKD extends GridPane {
 					
 					
 					//----------Inserta en el tablero visual-------------------
-					Terreno terreno1 = new Terreno(Integer.parseInt(newFicha[0]),Integer.parseInt(newFicha[3]));
-					Terreno terreno2 = new Terreno(Integer.parseInt(newFicha[1]),Integer.parseInt(newFicha[4]));
+					Terreno terreno1 = new Terreno(Integer.parseInt(newFicha[0]),Integer.parseInt(newFicha[3]), tamCasilla);
+					Terreno terreno2 = new Terreno(Integer.parseInt(newFicha[1]),Integer.parseInt(newFicha[4]), tamCasilla);
 					// TODO: set image size; use correct column/row span
+					System.out.println("posicion: "+pos);
 					switch (pos) {
 					case 0:
 						fichaLogica.setDireccion(1,0);
@@ -135,6 +138,10 @@ public class TableroKD extends GridPane {
 						}
 						break;
 					case 3:
+						System.out.println("terreno1: "+ terreno1);
+						System.out.println("terreno2: "+ terreno2);
+						System.out.println("posx: "+x);
+						System.out.println("posy: "+y);
 						fichaLogica.setDireccion(0, 1);
 						if(tableroLogico.insertarFicha(fichaLogica, y, x)) {	
 						casillas[x][y].setCasilla(terreno1);
@@ -145,16 +152,16 @@ public class TableroKD extends GridPane {
 					default:
 						break;
 					}
-					
 					if(success) {
 						ViewPartida.actualizarPuntos();
+						setFichaColocada(true);
+						//updated = false;
 					}
-					
+					System.out.println("-------------------------------");
 					tableroLogico.mostrarTablero();
-
+				
 					//success = true;
 				}
-
 				// let the source know whether the image was successfully transferred and used
 				event.setDropCompleted(success);
 				event.consume();
@@ -181,6 +188,10 @@ public class TableroKD extends GridPane {
 
 	}
 	
+	public double getTamFicha() {
+		return this.tamCasilla;
+	}
+	
 	public Tablero getTableroLogico() {
 		return this.tableroLogico;
 	}
@@ -192,5 +203,19 @@ public class TableroKD extends GridPane {
 	public void setTurnoActual(int turnoActual) {
 		this.turnoActual = turnoActual;
 	}
+//
+//	public boolean isUpdated() {
+//		return updated;
+//	}
+//	public void setUpdate(boolean valor) {
+//			this.updated = valor;
+//	}
 
+	public boolean isFichaColocada() {
+		return isFichaColocada;
+	}
+
+	public void setFichaColocada(boolean isFichaColocada) {
+		this.isFichaColocada = isFichaColocada;
+	}
 }
