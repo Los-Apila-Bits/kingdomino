@@ -334,7 +334,6 @@ public class ViewPartida {
 			sigJugador.setDisable(true);
 			jugadoresLabel.get(jugadores.get(jugActual).getId()).setText("Jugador " + jugadores.get(jugActual).getId() + " (ESPERANDO)");
 			jugActual++;
-			jugadoresLabel.get(jugadores.get(jugActual).getId()).setText("Jugador " + jugadores.get(jugActual).getId() + " (JUGANDO)");
 			if (jugActual == jugadores.size()) { // Debo armar una nueva pila de fichas
 				List<int[]> fichas = new ArrayList<int[]>();
 				
@@ -351,6 +350,7 @@ public class ViewPartida {
 				jugActual = 0;
 				turnoActual++;
 			}
+			jugadoresLabel.get(jugadores.get(jugActual).getId()).setText("Jugador " + jugadores.get(jugActual).getId() + " (JUGANDO)");
 			// cuadroTablero.getChildren().clear();
 			jugadores.get(jugActual).getTablero().setDisable(false);
 			// cuadroTablero.add(jugadores.get(jugActual).getTablero(), 0, 0, 5, 5);
