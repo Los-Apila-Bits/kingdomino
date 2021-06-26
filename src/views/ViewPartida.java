@@ -233,6 +233,8 @@ public class ViewPartida {
 			fichas1.add(mazo.sacarFicha());
 		}
 		addFichas(fichas1);
+		
+		fichasTurno.setDisable(true);
 
 		// Botones de salida
 		
@@ -259,7 +261,7 @@ public class ViewPartida {
 				return;
 			}
 			jugActualTablero.setDisable(true);
-			//seleccionarFicha.setDisable(true);
+			seleccionarFicha.setDisable(true);
 			fichasTurno.setDisable(false);
 		});
 
@@ -270,14 +272,19 @@ public class ViewPartida {
 			}
 			jugadores.get(jugActual).getTablero().setFichaColocada(false);
 			previsualizacionFicha.getChildren().clear();
+			seleccionarFicha.setDisable(false);
 			sigJugador.setDisable(true);
 			jugActual++;
 			if (jugActual == jugadores.size()) { // Debo armar una nueva pila de fichas
 				List<int[]> fichas = new ArrayList<int[]>();
 				
-				if(mazo.getSize() >= 4)
-				for (int i = 0; i < 4; i++) {
-					fichas.add(mazo.sacarFicha());
+				if(mazo.getSize() >= 4) {
+					for (int i = 0; i < 4; i++) {
+						fichas.add(mazo.sacarFicha());
+					}			
+				}
+				else {
+					showWinner();
 				}
 				fichasTurno.getChildren().clear();
 				addFichas(fichas);
@@ -431,7 +438,6 @@ public class ViewPartida {
 		anchorPaneTablero.setTop(infoPartida);
 		anchorPaneTablero.setCenter(contenedorFichas);
 		anchorPaneTablero.setBottom(buttonPane);
-		// jugar();
 
 	}
 
@@ -443,7 +449,6 @@ public class ViewPartida {
 				this.fichasTurno.add(new Ficha(vec[1], vec[2], vec[3], vec[4], TAM_PREV), j, i);
 			}
 		}
-		fichasTurno.setGridLinesVisible(true);
 	}
 
 	public void actualizarPuntos() {
