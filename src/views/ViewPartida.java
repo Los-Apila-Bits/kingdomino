@@ -29,7 +29,6 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
-import components.KDSubScene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.DragEvent;
@@ -49,7 +48,7 @@ public class ViewPartida {
 	public static final int TAM_PREV = 70;
 	private int turnoActual;
 
-	private static ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
+	private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
 
 	private Settings settings;
 	private AnchorPane gamePane;
@@ -146,7 +145,7 @@ public class ViewPartida {
 			anchorPaneTablero.setMinHeight(backgroundHeight);
 			anchorPaneTablero.setBackground(new Background(tableroBackground));
 			double jugadorTablero = tableroHeight * 0.75;
-			jugador.createTablero(jugadorTablero);
+			jugador.createTablero(jugadorTablero, this);
 			TableroKD tablero = jugador.getTablero();
 			tablero.setLayoutX(tableroWidth/2 - jugadorTablero / 2);
 			AnchorPane.setTopAnchor(tablero, 100d);
@@ -304,6 +303,7 @@ public class ViewPartida {
 			public void handle(ActionEvent event) {
 				gameStage.close();
 				menuStage.show();
+				settings.applySettings(menuStage, THEME);
 			}
 		});
 		quitButton.setClickSound(CONFIRM_SOUND);
@@ -407,27 +407,6 @@ public class ViewPartida {
 
 	}
 
-//	private void jugar() {
-//		try {
-//			mazo = new Mazo();
-//		} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		List<int[]> fichas = new ArrayList<int[]>();
-//		while (!mazo.mazoVacio()) {
-//			for (int i = 0; i < 4; i++) {
-//				fichas.add(mazo.sacarFicha());
-//			}
-//			addFichas(fichas);
-//			System.out.println(jugadores.size());
-//			for (Jugador jugador : this.jugadores) {
-//				jugador.jugar();
-//			}
-//			fichas.clear();
-//		}
-//	}
-
 	private void addFichas(List<int[]> fichas) {
 		fichas.sort((ficha1, ficha2) -> ficha1[0] - ficha2[0]);
 		for (int i = 0; i < 2; i++) {
@@ -439,7 +418,7 @@ public class ViewPartida {
 		fichasTurno.setGridLinesVisible(true);
 	}
 
-	public static void actualizarPuntos() {
+	public void actualizarPuntos() {
 		for(int i = 0; i<jugadores.size(); i++) {
 			Jugador jugador = jugadores.get(i);
 			jugador.getLabelPuntos()

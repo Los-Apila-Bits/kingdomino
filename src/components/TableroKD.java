@@ -23,7 +23,7 @@ public class TableroKD extends GridPane {
 	private double tamCasilla;
 //	private boolean updated = true;
 
-	public TableroKD(double tam, int colorCastillo) {
+	public TableroKD(double tam, int colorCastillo, ViewPartida partida) {
 		tamCasilla = tam / TAM_TABLERO;
 		setGridLinesVisible(false);
 		setMaxHeight(tam);
@@ -153,7 +153,7 @@ public class TableroKD extends GridPane {
 						break;
 					}
 					if(success) {
-						ViewPartida.actualizarPuntos();
+						partida.actualizarPuntos();
 						setFichaColocada(true);
 						//updated = false;
 					}
