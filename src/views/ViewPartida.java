@@ -300,7 +300,12 @@ public class ViewPartida {
 		buttonPane.setAlignment(Pos.CENTER);
 
 		double buttonWidth = imageWidth * 0.25;
-
+		
+		KDButton borrarFicha = new KDButton("BORRAR FICHA", buttonWidth, "violet", 14);
+		borrarFicha.setClickSound(CONFIRM_SOUND);
+		borrarFicha.setHoverSound(HOVER_SOUND);
+		borrarFicha.setTranslateY(- imageHeight * 0.05);
+		
 		KDButton seleccionarFicha = new KDButton("SELECT FICHA", buttonWidth, "violet", 14);
 		seleccionarFicha.setClickSound(CONFIRM_SOUND);
 		seleccionarFicha.setHoverSound(HOVER_SOUND);
@@ -312,6 +317,65 @@ public class ViewPartida {
 		sigJugador.setTranslateY(-imageHeight * 0.05);
 
 		sigJugador.setDisable(true);
+		
+		borrarFicha.setOnDragDropped((new EventHandler<DragEvent>() {
+			public void handle(DragEvent event) {
+				// Data dropped
+				// If there is an image on the dragboard, read it and use it
+				Dragboard db = event.getDragboard();
+				boolean success = false;
+				Node node = event.getPickResult().getIntersectedNode();
+				if (db.hasString()) {
+					success = true;
+					sigJugador.setDisable(false);
+					jugadores.get(jugActual).getTablero().setFichaColocada(true);
+					
+				}
+				// let the source know whether the image was successfully transferred and used
+				event.setDropCompleted(success);
+				event.consume();
+			}
+
+		}));
+		
+		borrarFicha.setOnDragEntered(new EventHandler<DragEvent>() {
+			public void handle(DragEvent event) {
+				// The drag-and-drop gesture entered the target
+				// show the user that it is an actual gesture target
+				if (event.getGestureSource() != borrarFicha && event.getDragboard().hasString()) {
+					// source.setVisible(false);
+					borrarFicha.setOpacity(0.7);
+					//System.out.println("Drag entered");
+				}
+				event.consume();
+			}
+		});
+		
+		borrarFicha.setOnDragExited(new EventHandler<DragEvent>() {
+			public void handle(DragEvent event) {
+				// mouse moved away, remove graphical cues
+				// source.setVisible(true);
+				borrarFicha.setOpacity(1);
+
+				event.consume();
+			}
+		});
+		
+		// Drag over event handler is used for the receiving node to allow movement
+		borrarFicha.setOnDragOver(new EventHandler<DragEvent>() {
+			public void handle(DragEvent event) {
+				// data is dragged over to target
+				// accept it only if it is not dragged from the same node
+				// and if it has image data
+
+				if (event.getGestureSource() != borrarFicha && event.getDragboard().hasString()) {
+					// allow for moving
+					event.acceptTransferModes(TransferMode.MOVE);
+				}
+				event.consume();
+
+			}
+		});
 
 		seleccionarFicha.setOnMouseClicked(event -> {
 			TableroKD jugActualTablero = jugadores.get(jugActual).getTablero();
@@ -319,6 +383,7 @@ public class ViewPartida {
 				return;
 			}
 			jugActualTablero.setDisable(true);
+			borrarFicha.setDisable(true);
 			seleccionarFicha.setDisable(true);
 			fichasTurno.setDisable(false);
 		});
@@ -330,6 +395,7 @@ public class ViewPartida {
 			}
 			jugadores.get(jugActual).getTablero().setFichaColocada(false);
 			previsualizacionFicha.getChildren().clear();
+			borrarFicha.setDisable(false);
 			seleccionarFicha.setDisable(false);
 			sigJugador.setDisable(true);
 			jugadoresLabel.get(jugadores.get(jugActual).getId()).setText("Jugador " + jugadores.get(jugActual).getId() + " (ESPERANDO)");
@@ -360,33 +426,7 @@ public class ViewPartida {
 			// info.setCenter(previsualizacionFicha);
 		});
 		
-		KDButton borrarFicha = new KDButton("BORRAR FICHA", buttonWidth, "violet", 14);
-		borrarFicha.setClickSound(CONFIRM_SOUND);
-		borrarFicha.setHoverSound(HOVER_SOUND);
-		borrarFicha.setTranslateY(- imageHeight * 0.05);
-		borrarFicha.setOnMouseClicked(event -> {
-			previsualizacionFicha.getChildren().clear();
-			jugadores.get(jugActual).setFichaSeleccionada(null);
-			sigJugador.setDisable(true);
-			jugadores.get(jugActual).getTablero().setFichaColocada(true);
-			jugActual++;
-			if (jugActual == jugadores.size()) {
-				List<int[]> fichas = new ArrayList<int[]>();
-				if(mazo.getSize() >= 4)
-					
-					for (int i = 0; i < 4; i++) {
-						fichas.add(mazo.sacarFicha());
-					}
-					fichasTurno.getChildren().clear();
-					addFichas(fichas);
-					jugActual = 0;
-					turnoActual++;
-			};
-			jugadores.get(jugActual).getTablero().setDisable(false);
-			if (jugadores.get(jugActual).getFichaSeleccionada() != null) {
-				previsualizacionFicha.getChildren().add(jugadores.get(jugActual).getFichaSeleccionada());
-			}
-		});
+
 		
 		KDButton disconnectButton = new KDButton("DESCONECTARSE", buttonWidth, "red", 14);
 		KDButton quitButton = new KDButton("SALIR", buttonWidth, "red", 14);
