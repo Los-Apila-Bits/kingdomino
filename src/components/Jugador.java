@@ -3,6 +3,7 @@ package components;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import utils.PlayerColor;
+import views.ViewPartida;
 
 public class Jugador {
 
@@ -17,8 +18,8 @@ public class Jugador {
 		this.color = color;
 	}
 	
-	public void createTablero(double tam) {
-		this.tablero = new TableroKD(tam, color);
+	public void createTablero(double tam, ViewPartida partida) {
+		this.tablero = new TableroKD(tam, color, partida);
 	}
 	
 	public TableroKD getTablero() {

@@ -17,6 +17,9 @@ import javafx.scene.text.Font;
 import static utils.ButtonsPaths.*;
 import static utils.Materials.GAME_PANEL_2;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 public class KDButton extends Button{
 	
 	private final String FONT_PATH = "/resources/playfair_font.ttf";
@@ -27,6 +30,7 @@ public class KDButton extends Button{
 	private double height;
 	
 	public KDButton(String text, double width, String color, int tamFont) {
+		
 		this.color = color;
 		Image backgroundImage = new Image(BUTTONS.get(color));
 		double imageWidth = backgroundImage.getWidth();
@@ -45,9 +49,7 @@ public class KDButton extends Button{
 	}
 
 	private void setButtonFont(int tamFont) {
-		
 		setFont(Font.loadFont(getClass().getResourceAsStream(FONT_PATH), tamFont));
-		
 	}
 	
 	private void setButtonPressedStyle() {

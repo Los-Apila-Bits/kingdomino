@@ -16,6 +16,7 @@ import components.Ficha;
 import components.InfoLabel;
 import components.Jugador;
 import components.KDButton;
+import components.KDSubScene;
 import components.TableroKD;
 import settings.Settings;
 import javafx.scene.Node;
@@ -29,7 +30,6 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
-import components.KDSubScene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.DragEvent;
@@ -52,7 +52,7 @@ public class ViewPartida {
 	public static final int TAM_PREV = 70;
 	private int turnoActual;
 
-	private static ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
+	private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
 
 	private Settings settings;
 	private AnchorPane gamePane;
@@ -211,7 +211,7 @@ public class ViewPartida {
 			anchorPaneTablero.setMinHeight(backgroundHeight);
 			anchorPaneTablero.setBackground(new Background(tableroBackground));
 			double jugadorTablero = tableroHeight * 0.75;
-			jugador.createTablero(jugadorTablero);
+			jugador.createTablero(jugadorTablero, this);
 			TableroKD tablero = jugador.getTablero();
 			tablero.setLayoutX(tableroWidth / 2 - jugadorTablero / 2);
 			AnchorPane.setTopAnchor(tablero, 100d);
@@ -270,7 +270,7 @@ public class ViewPartida {
 		backgroundImage = new Image(FICHA_PAPER);
 		imageWidth = backgroundImage.getWidth();
 		imageHeight = backgroundImage.getHeight();
-		double contenedorWidth = imageWidth;
+		double contenedorWidth = backgroundWeight * 0.78;
 		double contenedorHeight = contenedorWidth * imageHeight / imageWidth;
 		background = new BackgroundImage(new Image(FICHA_PAPER, contenedorWidth, contenedorHeight, false, false),
 				BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, null);
@@ -280,8 +280,8 @@ public class ViewPartida {
 		previsualizacionFicha.setMaxHeight(contenedorHeight);
 		previsualizacionFicha.setMinHeight(contenedorHeight);
 		previsualizacionFicha.setMinWidth(contenedorWidth);
-		previsualizacionFicha.setPadding(new Insets(tam_ficha / 2, 0, 10, previsualizacionFicha.getMinWidth() / 3));
-
+		previsualizacionFicha.setPadding(new Insets(previsualizacionFicha.getMinHeight() / 2 - tam_ficha, 100, previsualizacionFicha.getMinHeight() / 2 - tam_ficha, 100));
+		
 		fichasTurno.setMinHeight(300);
 		fichasTurno.setAlignment(Pos.CENTER);
 		fichasTurno.setVgap(15);
@@ -301,6 +301,8 @@ public class ViewPartida {
 			fichas1.add(mazo.sacarFicha());
 		}
 		addFichas(fichas1);
+		
+		fichasTurno.setDisable(true);
 
 		// Botones de salida
 
@@ -327,7 +329,7 @@ public class ViewPartida {
 				return;
 			}
 			jugActualTablero.setDisable(true);
-			// seleccionarFicha.setDisable(true);
+			seleccionarFicha.setDisable(true);
 			fichasTurno.setDisable(false);
 		});
 
@@ -338,15 +340,20 @@ public class ViewPartida {
 			}
 			jugadores.get(jugActual).getTablero().setFichaColocada(false);
 			previsualizacionFicha.getChildren().clear();
+			seleccionarFicha.setDisable(false);
 			sigJugador.setDisable(true);
 			jugActual++;
 			if (jugActual == jugadores.size()) { // Debo armar una nueva pila de fichas
 				List<int[]> fichas = new ArrayList<int[]>();
-
-				if (mazo.getSize() >= 4)
+				
+				if(mazo.getSize() >= 4) {
 					for (int i = 0; i < 4; i++) {
 						fichas.add(mazo.sacarFicha());
-					}
+					}			
+				}
+				else {
+					showWinner();
+				}
 				fichasTurno.getChildren().clear();
 				addFichas(fichas);
 				jugActual = 0;
@@ -360,7 +367,35 @@ public class ViewPartida {
 			}
 			// info.setCenter(previsualizacionFicha);
 		});
-
+		
+		KDButton borrarFicha = new KDButton("BORRAR FICHA", buttonWidth, "violet", 14);
+		borrarFicha.setClickSound(CONFIRM_SOUND);
+		borrarFicha.setHoverSound(HOVER_SOUND);
+		borrarFicha.setTranslateY(- imageHeight * 0.05);
+		borrarFicha.setOnMouseClicked(event -> {
+			previsualizacionFicha.getChildren().clear();
+			jugadores.get(jugActual).setFichaSeleccionada(null);
+			sigJugador.setDisable(true);
+			jugadores.get(jugActual).getTablero().setFichaColocada(true);
+			jugActual++;
+			if (jugActual == jugadores.size()) {
+				List<int[]> fichas = new ArrayList<int[]>();
+				if(mazo.getSize() >= 4)
+					
+					for (int i = 0; i < 4; i++) {
+						fichas.add(mazo.sacarFicha());
+					}
+					fichasTurno.getChildren().clear();
+					addFichas(fichas);
+					jugActual = 0;
+					turnoActual++;
+			};
+			jugadores.get(jugActual).getTablero().setDisable(false);
+			if (jugadores.get(jugActual).getFichaSeleccionada() != null) {
+				previsualizacionFicha.getChildren().add(jugadores.get(jugActual).getFichaSeleccionada());
+			}
+		});
+		
 		KDButton disconnectButton = new KDButton("DESCONECTARSE", buttonWidth, "red", 14);
 		KDButton quitButton = new KDButton("SALIR", buttonWidth, "red", 14);
 		disconnectButton.setClickSound(CONFIRM_SOUND);
@@ -371,6 +406,7 @@ public class ViewPartida {
 			public void handle(ActionEvent event) {
 				gameStage.close();
 				menuStage.show();
+				settings.applySettings(menuStage, THEME);
 			}
 		});
 		quitButton.setClickSound(CONFIRM_SOUND);
@@ -383,9 +419,9 @@ public class ViewPartida {
 				gameStage.close();
 			}
 		});
-
-		buttonPane.getChildren().addAll(seleccionarFicha, sigJugador, disconnectButton, quitButton);
-
+		
+		buttonPane.getChildren().addAll(seleccionarFicha, sigJugador, borrarFicha, disconnectButton, quitButton);
+		
 		previsualizacionFicha.setOnDragEntered(new EventHandler<DragEvent>() {
 			public void handle(DragEvent event) {
 				// The drag-and-drop gesture entered the target
@@ -472,30 +508,8 @@ public class ViewPartida {
 		anchorPaneTablero.setTop(infoPartida);
 		anchorPaneTablero.setCenter(contenedorFichas);
 		anchorPaneTablero.setBottom(buttonPane);
-		// jugar();
 
 	}
-
-//	private void jugar() {
-//		try {
-//			mazo = new Mazo();
-//		} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		List<int[]> fichas = new ArrayList<int[]>();
-//		while (!mazo.mazoVacio()) {
-//			for (int i = 0; i < 4; i++) {
-//				fichas.add(mazo.sacarFicha());
-//			}
-//			addFichas(fichas);
-//			System.out.println(jugadores.size());
-//			for (Jugador jugador : this.jugadores) {
-//				jugador.jugar();
-//			}
-//			fichas.clear();
-//		}
-//	}
 
 	private void addFichas(List<int[]> fichas) {
 		fichas.sort((ficha1, ficha2) -> ficha1[0] - ficha2[0]);
@@ -505,11 +519,10 @@ public class ViewPartida {
 				this.fichasTurno.add(new Ficha(vec[1], vec[2], vec[3], vec[4], TAM_PREV), j, i);
 			}
 		}
-		fichasTurno.setGridLinesVisible(true);
 	}
 
-	public static void actualizarPuntos() {
-		for (int i = 0; i < jugadores.size(); i++) {
+	public void actualizarPuntos() {
+		for(int i = 0; i<jugadores.size(); i++) {
 			Jugador jugador = jugadores.get(i);
 			jugador.getLabelPuntos()
 					.setText("Jugador " + jugador.getId() + ": " + jugador.getTablero().getTableroLogico().getPuntos());

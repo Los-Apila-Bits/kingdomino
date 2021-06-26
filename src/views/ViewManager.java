@@ -61,6 +61,8 @@ public class ViewManager {
 	private Settings settings;
 
 	private KDSubScene sceneToHide;
+	
+	private ViewPartida partida;
 
 	List<KDButton> menuButtons;
 
@@ -422,18 +424,19 @@ public class ViewManager {
 		createCreditsButton();
 		createExitButton();
 	}
+	
+	public void createNewGame() {
+		partida = new ViewPartida(settings);
+		partida.createNewGame(mainStage);
+	}
 
 	private void createStartButton() {
 		KDButton startButton = new KDButton("JUGAR", buttonWidth, "yellow", 30);
 		AddMenuButtons(startButton);
-
 		startButton.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
-				ViewPartida partida = new ViewPartida(settings);
-				partida.createNewGame(mainStage);
-	
+				createNewGame();
 			}
 		});
 	}
