@@ -126,6 +126,11 @@ public class ViewPartida {
 		
 		winnerSubscene = new KDSubScene(0.45);
 		gamePane.getChildren().add(winnerSubscene);
+		VBox vboxWinner = new VBox (10);
+		vboxWinner.setPrefHeight(winnerSubscene.getHeight());
+		vboxWinner.setPrefWidth(winnerSubscene.getWidth());
+		vboxWinner.setAlignment(Pos.TOP_CENTER);
+		vboxWinner.setPadding(new Insets(winnerSubscene.getHeight() * 0.1, 0, 0, 0));
 		double panelWidth = winnerSubscene.getWidth();
 		double panelHeight = winnerSubscene.getHeight();
 
@@ -139,38 +144,18 @@ public class ViewPartida {
 		winnersTitle.setX(panelWidth / 2 - textWidth / 2);
 		winnersTitle.setFill(Color.YELLOW);
 		winnersTitle.setEffect(g);
-
-		Text textPlayer1 = null;
-		Text textPlayer2 = null;
-		Text textPlayer3 = null;
-		Text textPlayer4 = null;
-
-		for (int i = jugadores.size() - 1; i >= 0; i--) {
-			if (i == 0) {
-				textPlayer1 = createWinnersText(
-						"El jugador" + jugadores.get(i).getId() + " es el ganador con ("
-								+ jugadores.get(i).getTablero().getTableroLogico().getPuntos() + ") puntos!",
-						panelWidth, panelHeight, g, 0.30);
-
-			} else if (i == 1) {
-				textPlayer2 = createWinnersText(
-						"El jugador" + jugadores.get(i).getId() + " finalizo con ("
-								+ jugadores.get(i).getTablero().getTableroLogico().getPuntos() + ") puntos!",
-						panelWidth, panelHeight, g, 0.40);
-			} else if (i == 2) {
-				textPlayer3 = createWinnersText(
-						"El jugador" + jugadores.get(i).getId() + " finalizo con ("
-								+ jugadores.get(i).getTablero().getTableroLogico().getPuntos() + ") puntos!",
-						panelWidth, panelHeight, g, 0.50);
-			} else {
-				textPlayer4 = createWinnersText(
-						"El jugador" + jugadores.get(i).getId() + " finalizo con ("
-								+ jugadores.get(i).getTablero().getTableroLogico().getPuntos() + ") puntos!",
-						panelWidth, panelHeight, g, 0.60);
-			}
-		}
 		
-		winnerSubscene.getPane().getChildren().addAll(winnersTitle, textPlayer1, textPlayer2);
+		vboxWinner.getChildren().add(winnersTitle);
+		
+		for (Jugador jugador : jugadores) {
+			Text textPlayer = createWinnersText(
+					"El jugador" + jugador.getId() + " finalizo con ("
+						+ jugador.getTablero().getTableroLogico().getPuntos() + ") puntos!",
+					panelWidth, panelHeight, g, 0.60);
+			vboxWinner.getChildren().add(textPlayer);
+		}
+
+		winnerSubscene.getPane().getChildren().addAll(vboxWinner);
 		winnerSubscene.moveSubScene();
 
 	}
@@ -280,7 +265,7 @@ public class ViewPartida {
 		previsualizacionFicha.setMaxHeight(contenedorHeight);
 		previsualizacionFicha.setMinHeight(contenedorHeight);
 		previsualizacionFicha.setMinWidth(contenedorWidth);
-		previsualizacionFicha.setPadding(new Insets(previsualizacionFicha.getMinHeight() / 2 - tam_ficha, 100, previsualizacionFicha.getMinHeight() / 2 - tam_ficha, 100));
+		previsualizacionFicha.setPadding(new Insets(previsualizacionFicha.getMinHeight() / 2 - tam_ficha, 0 ,0, previsualizacionFicha.getMinWidth() /2 + tam_ficha/4));
 		
 		fichasTurno.setMinHeight(300);
 		fichasTurno.setAlignment(Pos.CENTER);
