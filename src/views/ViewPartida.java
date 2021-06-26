@@ -212,7 +212,7 @@ public class ViewPartida {
 		previsualizacionFicha.setMaxHeight(contenedorHeight);
 		previsualizacionFicha.setMinHeight(contenedorHeight);
 		previsualizacionFicha.setMinWidth(contenedorWidth);
-		previsualizacionFicha.setPadding(new Insets(tam_ficha / 2, 0, 10, previsualizacionFicha.getMinWidth() / 3));
+		previsualizacionFicha.setPadding(new Insets(previsualizacionFicha.getMinHeight() / 2 - tam_ficha, 0 ,0, previsualizacionFicha.getMinWidth() /2- tam_ficha/2));
 		
 		fichasTurno.setMinHeight(300);
 		fichasTurno.setAlignment(Pos.CENTER);
@@ -240,6 +240,35 @@ public class ViewPartida {
 		buttonPane.setAlignment(Pos.CENTER);
 				
 		double buttonWidth = imageWidth * 0.25;
+		
+		KDButton borrarFicha = new KDButton("BORRAR FICHA", buttonWidth, "violet", 14);
+		borrarFicha.setClickSound(CONFIRM_SOUND);
+		borrarFicha.setHoverSound(HOVER_SOUND);
+		borrarFicha.setTranslateY(- imageHeight * 0.05);
+		borrarFicha.setOnMouseClicked(event -> {
+			previsualizacionFicha.getChildren().clear();
+			jugadores.get(jugActual).setFichaSeleccionada(null);
+			sigJugador.setDisable(true);
+			jugadores.get(jugActual).getTablero().setFichaColocada(true);
+			jugActual++;
+			if (jugActual == jugadores.size()) {
+				List<int[]> fichas = new ArrayList<int[]>();
+				if(mazo.getSize() >= 4)
+					
+					for (int i = 0; i < 4; i++) {
+						fichas.add(mazo.sacarFicha());
+					}
+					fichasTurno.getChildren().clear();
+					addFichas(fichas);
+					jugActual = 0;
+					turnoActual++;
+			};
+			jugadores.get(jugActual).getTablero().setDisable(false);
+			if (jugadores.get(jugActual).getFichaSeleccionada() != null) {
+				previsualizacionFicha.getChildren().add(jugadores.get(jugActual).getFichaSeleccionada());
+			}
+		});
+		
 		
 		KDButton seleccionarFicha = new KDButton("SELECT FICHA", buttonWidth, "violet", 14);
 		seleccionarFicha.setClickSound(CONFIRM_SOUND);
@@ -317,7 +346,7 @@ public class ViewPartida {
 			}
 		});
 		
-		buttonPane.getChildren().addAll(seleccionarFicha, sigJugador, disconnectButton, quitButton);
+		buttonPane.getChildren().addAll(seleccionarFicha, sigJugador, borrarFicha, disconnectButton, quitButton);
 		
 		previsualizacionFicha.setOnDragEntered(new EventHandler<DragEvent>() {
 			public void handle(DragEvent event) {
