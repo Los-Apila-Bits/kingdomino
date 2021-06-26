@@ -203,7 +203,7 @@ public class ViewPartida {
 		backgroundImage = new Image(FICHA_PAPER);
         imageWidth = backgroundImage.getWidth();
 		imageHeight = backgroundImage.getHeight();
-		double contenedorWidth = imageWidth;
+		double contenedorWidth = backgroundWeight * 0.78;
 		double contenedorHeight = contenedorWidth * imageHeight / imageWidth;
 		background = new BackgroundImage(new Image(FICHA_PAPER, contenedorWidth, contenedorHeight, false, false), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, null);
 		StackPane previsualizacionFicha = new StackPane();
