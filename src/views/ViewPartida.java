@@ -7,7 +7,6 @@ import java.util.List;
 
 import javafx.event.ActionEvent;
 
-
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -23,6 +22,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
@@ -40,6 +40,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import utils.PlayerColor;
 
 import static utils.Sounds.*;
@@ -53,6 +56,8 @@ public class ViewPartida {
 
 	private Settings settings;
 	private AnchorPane gamePane;
+	private KDSubScene winnerSubscene;
+	private final String FONT_PATH = "/resources/playfair_font.ttf";
 	private Scene gameScene;
 	private Stage gameStage;
 	private Stage menuStage;
@@ -70,7 +75,7 @@ public class ViewPartida {
 		// int cantJugadores = jugadores.size();
 		initializeStage();
 	}
-	
+
 	private void initializeStage() {
 		gamePane = new AnchorPane();
 		gameScene = new Scene(gamePane, settings.getWidth(), settings.getHeight());
@@ -86,7 +91,7 @@ public class ViewPartida {
 		});
 		settings.applySettings(gameStage, INGAME_THEME);
 	}
-	
+
 	public void createNewGame(Stage menuStage) {
 		dockPane = new HBox(-1);
 		dockPane.setAlignment(Pos.CENTER_LEFT);
@@ -94,37 +99,94 @@ public class ViewPartida {
 		this.menuStage.hide();
 		createTablero();
 		createInfoPanel();
-		gamePane.getChildren().addAll(dockPane);
+		gamePane.getChildren().add(dockPane);
 		gameStage.show();
 	}
-	
-	public void showWinner() {
-		
-		Collections.sort(jugadores, (a,b)->a.getTablero().getTableroLogico().getPuntos() - b.getTablero().getTableroLogico().getPuntos());
-		
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Information Dialog");
-		alert.setHeaderText(null);
-		
-		alert.setContentText("El podio es: \n" + "Jugador" +
-		jugadores.get(1).getId() + " con (" + jugadores.get(1).getTablero().getTableroLogico().getPuntos() + ")"  + " \n" + "Jugador" 
-				+ jugadores.get(0).getId() + " con(" + jugadores.get(0).getTablero().getTableroLogico().getPuntos() + ")"
-				+ "\nFelicitaciones, el Jugador" + jugadores.get(1).getId() + " es el victorioso!!!");
 
-		alert.showAndWait();
-				
+	public Text createWinnersText(String name, double panelWidth, double panelHeight, GaussianBlur g,
+			double heightMultiplier) {
+
+		Text winnersText = new Text();
+		winnersText.setText(name);
+		winnersText.setFont(Font.loadFont(getClass().getResourceAsStream(FONT_PATH), 26));
+		double winnersTextWidth = winnersText.getLayoutBounds().getWidth();
+		winnersText.setX(panelWidth * 0.5 - winnersTextWidth / 2);
+
+		winnersText.setY(panelHeight * heightMultiplier);
+		winnersText.setFill(Color.YELLOW);
+		winnersText.setEffect(g);
+
+		return winnersText;
 	}
-	
+
+	public void showWinner() {
+
+		Collections.sort(jugadores, (a, b) -> a.getTablero().getTableroLogico().getPuntos()
+				- b.getTablero().getTableroLogico().getPuntos());
+		
+		winnerSubscene = new KDSubScene(0.45);
+		gamePane.getChildren().add(winnerSubscene);
+		double panelWidth = winnerSubscene.getWidth();
+		double panelHeight = winnerSubscene.getHeight();
+
+		Text winnersTitle = new Text();
+		GaussianBlur g = new GaussianBlur();
+		g.setRadius(1);
+		winnersTitle.setText("FIN DE LA PARTIDA");
+		winnersTitle.setY(panelHeight * 0.12);
+		winnersTitle.setFont(Font.loadFont(getClass().getResourceAsStream(FONT_PATH), 40));
+		double textWidth = winnersTitle.getLayoutBounds().getWidth();
+		winnersTitle.setX(panelWidth / 2 - textWidth / 2);
+		winnersTitle.setFill(Color.YELLOW);
+		winnersTitle.setEffect(g);
+
+		Text textPlayer1 = null;
+		Text textPlayer2 = null;
+		Text textPlayer3 = null;
+		Text textPlayer4 = null;
+
+		for (int i = jugadores.size() - 1; i >= 0; i--) {
+			if (i == 0) {
+				textPlayer1 = createWinnersText(
+						"El jugador" + jugadores.get(i).getId() + " es el ganador con ("
+								+ jugadores.get(i).getTablero().getTableroLogico().getPuntos() + ") puntos!",
+						panelWidth, panelHeight, g, 0.30);
+
+			} else if (i == 1) {
+				textPlayer2 = createWinnersText(
+						"El jugador" + jugadores.get(i).getId() + " finalizo con ("
+								+ jugadores.get(i).getTablero().getTableroLogico().getPuntos() + ") puntos!",
+						panelWidth, panelHeight, g, 0.40);
+			} else if (i == 2) {
+				textPlayer3 = createWinnersText(
+						"El jugador" + jugadores.get(i).getId() + " finalizo con ("
+								+ jugadores.get(i).getTablero().getTableroLogico().getPuntos() + ") puntos!",
+						panelWidth, panelHeight, g, 0.50);
+			} else {
+				textPlayer4 = createWinnersText(
+						"El jugador" + jugadores.get(i).getId() + " finalizo con ("
+								+ jugadores.get(i).getTablero().getTableroLogico().getPuntos() + ") puntos!",
+						panelWidth, panelHeight, g, 0.60);
+			}
+		}
+		
+		winnerSubscene.getPane().getChildren().addAll(winnersTitle, textPlayer1, textPlayer2);
+		winnerSubscene.moveSubScene();
+
+	}
+
 	public void createTablero() {
 		VBox content = new VBox(5);
 		content.setAlignment(Pos.CENTER);
-        ScrollPane scroller = new ScrollPane(content);
-        Image backgroundImage = new Image(GAME_PANEL_1);
-        double imageWidth = backgroundImage.getWidth();
+		ScrollPane scroller = new ScrollPane(content);
+		Image backgroundImage = new Image(GAME_PANEL_1);
+		double imageWidth = backgroundImage.getWidth();
 		double imageHeight = backgroundImage.getHeight();
 		double backgroundHeight = settings.getHeight();
 		double backgroundWeight = backgroundHeight * imageWidth / imageHeight;
-		BackgroundImage background = new BackgroundImage(new Image(GAME_PANEL_1, backgroundWeight, backgroundHeight, false, false), BackgroundRepeat.ROUND, BackgroundRepeat.ROUND, BackgroundPosition.DEFAULT, null);
+		BackgroundImage background = new BackgroundImage(
+				new Image(GAME_PANEL_1, backgroundWeight, backgroundHeight, false, false), BackgroundRepeat.ROUND,
+				BackgroundRepeat.ROUND, BackgroundPosition.DEFAULT, null);
 		content.setBackground(new Background(background));
 		scroller.setHbarPolicy(ScrollBarPolicy.NEVER);
 		content.setPrefWidth(backgroundWeight);
@@ -134,9 +196,12 @@ public class ViewPartida {
 		imageHeight = backgroundImage.getHeight();
 		double tableroWidth = backgroundWeight * 0.85;
 		double tableroHeight = tableroWidth * imageHeight / imageWidth;
-		BackgroundImage tableroBackground = new BackgroundImage(new Image(BOARD_MAP, tableroWidth, tableroHeight, false, false), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, null);
-		for(Jugador jugador : jugadores) {
-			InfoLabel playerLabel = new InfoLabel("Jugador " + jugador.getId(), backgroundHeight * .05, Pos.CENTER_LEFT, true);
+		BackgroundImage tableroBackground = new BackgroundImage(
+				new Image(BOARD_MAP, tableroWidth, tableroHeight, false, false), BackgroundRepeat.NO_REPEAT,
+				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, null);
+		for (Jugador jugador : jugadores) {
+			InfoLabel playerLabel = new InfoLabel("Jugador " + jugador.getId(), backgroundHeight * .05, Pos.CENTER_LEFT,
+					true);
 			playerLabel.setPlayerColor(jugador.getColor());
 			playerLabel.setTranslateY(backgroundHeight * 0.1);
 			AnchorPane anchorPaneTablero = new AnchorPane();
@@ -148,34 +213,36 @@ public class ViewPartida {
 			double jugadorTablero = tableroHeight * 0.75;
 			jugador.createTablero(jugadorTablero);
 			TableroKD tablero = jugador.getTablero();
-			tablero.setLayoutX(tableroWidth/2 - jugadorTablero / 2);
+			tablero.setLayoutX(tableroWidth / 2 - jugadorTablero / 2);
 			AnchorPane.setTopAnchor(tablero, 100d);
 			AnchorPane.setBottomAnchor(tablero, 100d);
 			tablero.setDisable(true);
 			anchorPaneTablero.getChildren().add(tablero);
 			content.getChildren().addAll(playerLabel, anchorPaneTablero);
 		}
-		//cuadroTablero.add(tablero = new TableroKD(), 0, 0, 5, 5);
+		// cuadroTablero.add(tablero = new TableroKD(), 0, 0, 5, 5);
 
 		dockPane.getChildren().add(scroller);
 	}
-	
+
 	public void createInfoPanel() {
 		BorderPane anchorPaneTablero = new BorderPane();
 		Image backgroundImage = new Image(GAME_PANEL_2);
-        double imageWidth = backgroundImage.getWidth();
+		double imageWidth = backgroundImage.getWidth();
 		double imageHeight = backgroundImage.getHeight();
 		double backgroundHeight = settings.getHeight();
 		double backgroundWeight = backgroundHeight * imageWidth / imageHeight;
-		BackgroundImage background = new BackgroundImage(new Image(GAME_PANEL_2, backgroundWeight, backgroundHeight, false, false), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, null);
+		BackgroundImage background = new BackgroundImage(
+				new Image(GAME_PANEL_2, backgroundWeight, backgroundHeight, false, false), BackgroundRepeat.REPEAT,
+				BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, null);
 		anchorPaneTablero.setBackground(new Background(background));
 		anchorPaneTablero.setPrefWidth(backgroundWeight);
 		anchorPaneTablero.setPrefHeight(backgroundHeight);
-		
+
 		VBox infoPartida = new VBox(backgroundHeight * 0.01);
 		infoPartida.setAlignment(Pos.CENTER);
 		infoPartida.setPadding(new Insets(10, 50, 10, 10));
-		
+
 		InfoLabel playerLabel = new InfoLabel("Puntaje de los Jugadores", backgroundHeight * .05, Pos.CENTER, true);
 		playerLabel.setTranslateY(imageHeight * 0.05);
 		GridPane pointsPane = new GridPane();
@@ -184,29 +251,29 @@ public class ViewPartida {
 		pointsPane.setPadding(new Insets(backgroundWeight * 0.1, 0, 0, backgroundWeight * 0.1));
 		int ix = 0;
 		int jx = 0;
-		for(Jugador jugador : jugadores) {
+		for (Jugador jugador : jugadores) {
 			jugador.setLabelPuntos(backgroundHeight * 0.05);
-			pointsPane.add(jugador.getLabelPuntos(),ix,jx);
+			pointsPane.add(jugador.getLabelPuntos(), ix, jx);
 			if (jx == 1) {
 				ix++;
 				jx = 0;
-			}
-			else
+			} else
 				jx++;
 		}
-		
+
 		infoPartida.getChildren().addAll(playerLabel, pointsPane);
-		
+
 		double tam_ficha = jugadores.get(jugActual).getTablero().getTamFicha();
-		
+
 		VBox contenedorFichas = new VBox();
 		// Panel para rotar ficha
 		backgroundImage = new Image(FICHA_PAPER);
-        imageWidth = backgroundImage.getWidth();
+		imageWidth = backgroundImage.getWidth();
 		imageHeight = backgroundImage.getHeight();
 		double contenedorWidth = imageWidth;
 		double contenedorHeight = contenedorWidth * imageHeight / imageWidth;
-		background = new BackgroundImage(new Image(FICHA_PAPER, contenedorWidth, contenedorHeight, false, false), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, null);
+		background = new BackgroundImage(new Image(FICHA_PAPER, contenedorWidth, contenedorHeight, false, false),
+				BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, null);
 		StackPane previsualizacionFicha = new StackPane();
 		previsualizacionFicha.setBackground(new Background(background));
 		previsualizacionFicha.setAlignment(Pos.CENTER);
@@ -214,13 +281,13 @@ public class ViewPartida {
 		previsualizacionFicha.setMinHeight(contenedorHeight);
 		previsualizacionFicha.setMinWidth(contenedorWidth);
 		previsualizacionFicha.setPadding(new Insets(tam_ficha / 2, 0, 10, previsualizacionFicha.getMinWidth() / 3));
-		
+
 		fichasTurno.setMinHeight(300);
 		fichasTurno.setAlignment(Pos.CENTER);
 		fichasTurno.setVgap(15);
 		fichasTurno.setHgap(25);
 		fichasTurno.setPadding(new Insets(0, 0, 30, 0));
-		
+
 		dockPane.getChildren().add(anchorPaneTablero);
 		try {
 			mazo = new Mazo();
@@ -236,31 +303,31 @@ public class ViewPartida {
 		addFichas(fichas1);
 
 		// Botones de salida
-		
+
 		HBox buttonPane = new HBox();
 		buttonPane.setAlignment(Pos.CENTER);
-				
+
 		double buttonWidth = imageWidth * 0.25;
-		
+
 		KDButton seleccionarFicha = new KDButton("SELECT FICHA", buttonWidth, "violet", 14);
 		seleccionarFicha.setClickSound(CONFIRM_SOUND);
 		seleccionarFicha.setHoverSound(HOVER_SOUND);
-		seleccionarFicha.setTranslateY(- imageHeight * 0.05);
-		
+		seleccionarFicha.setTranslateY(-imageHeight * 0.05);
+
 		KDButton sigJugador = new KDButton("SIG JUGADOR", buttonWidth, "violet", 14);
 		sigJugador.setClickSound(CONFIRM_SOUND);
 		sigJugador.setHoverSound(HOVER_SOUND);
-		sigJugador.setTranslateY(- imageHeight * 0.05);
+		sigJugador.setTranslateY(-imageHeight * 0.05);
 
 		sigJugador.setDisable(true);
 
 		seleccionarFicha.setOnMouseClicked(event -> {
 			TableroKD jugActualTablero = jugadores.get(jugActual).getTablero();
-			if(!jugActualTablero.isFichaColocada()) {
+			if (!jugActualTablero.isFichaColocada()) {
 				return;
 			}
 			jugActualTablero.setDisable(true);
-			//seleccionarFicha.setDisable(true);
+			// seleccionarFicha.setDisable(true);
 			fichasTurno.setDisable(false);
 		});
 
@@ -275,30 +342,30 @@ public class ViewPartida {
 			jugActual++;
 			if (jugActual == jugadores.size()) { // Debo armar una nueva pila de fichas
 				List<int[]> fichas = new ArrayList<int[]>();
-				
-				if(mazo.getSize() >= 4)
-				for (int i = 0; i < 4; i++) {
-					fichas.add(mazo.sacarFicha());
-				}
+
+				if (mazo.getSize() >= 4)
+					for (int i = 0; i < 4; i++) {
+						fichas.add(mazo.sacarFicha());
+					}
 				fichasTurno.getChildren().clear();
 				addFichas(fichas);
 				jugActual = 0;
 				turnoActual++;
 			}
-			//cuadroTablero.getChildren().clear();
+			// cuadroTablero.getChildren().clear();
 			jugadores.get(jugActual).getTablero().setDisable(false);
-			//cuadroTablero.add(jugadores.get(jugActual).getTablero(), 0, 0, 5, 5);
+			// cuadroTablero.add(jugadores.get(jugActual).getTablero(), 0, 0, 5, 5);
 			if (jugadores.get(jugActual).getFichaSeleccionada() != null) {
 				previsualizacionFicha.getChildren().add(jugadores.get(jugActual).getFichaSeleccionada());
 			}
-			//info.setCenter(previsualizacionFicha);
+			// info.setCenter(previsualizacionFicha);
 		});
-		
+
 		KDButton disconnectButton = new KDButton("DESCONECTARSE", buttonWidth, "red", 14);
 		KDButton quitButton = new KDButton("SALIR", buttonWidth, "red", 14);
 		disconnectButton.setClickSound(CONFIRM_SOUND);
 		disconnectButton.setHoverSound(HOVER_SOUND);
-		disconnectButton.setTranslateY(- imageHeight * 0.05);
+		disconnectButton.setTranslateY(-imageHeight * 0.05);
 		disconnectButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -308,7 +375,7 @@ public class ViewPartida {
 		});
 		quitButton.setClickSound(CONFIRM_SOUND);
 		quitButton.setHoverSound(HOVER_SOUND);
-		quitButton.setTranslateY(- imageHeight * 0.05);
+		quitButton.setTranslateY(-imageHeight * 0.05);
 		quitButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -316,9 +383,9 @@ public class ViewPartida {
 				gameStage.close();
 			}
 		});
-		
+
 		buttonPane.getChildren().addAll(seleccionarFicha, sigJugador, disconnectButton, quitButton);
-		
+
 		previsualizacionFicha.setOnDragEntered(new EventHandler<DragEvent>() {
 			public void handle(DragEvent event) {
 				// The drag-and-drop gesture entered the target
@@ -326,12 +393,12 @@ public class ViewPartida {
 				if (event.getGestureSource() != previsualizacionFicha && event.getDragboard().hasString()) {
 					// source.setVisible(false);
 					previsualizacionFicha.setOpacity(0.7);
-					//System.out.println("Drag entered");
+					// System.out.println("Drag entered");
 				}
 				event.consume();
 			}
 		});
-		
+
 		previsualizacionFicha.setOnDragExited(new EventHandler<DragEvent>() {
 			public void handle(DragEvent event) {
 				// mouse moved away, remove graphical cues
@@ -341,7 +408,7 @@ public class ViewPartida {
 				event.consume();
 			}
 		});
-		
+
 		// Drag over event handler is used for the receiving node to allow movement
 		previsualizacionFicha.setOnDragOver(new EventHandler<DragEvent>() {
 			public void handle(DragEvent event) {
@@ -357,7 +424,7 @@ public class ViewPartida {
 
 			}
 		});
-		
+
 		previsualizacionFicha.setOnDragDropped(new EventHandler<DragEvent>() {
 			public void handle(DragEvent event) {
 				// Data dropped
@@ -371,16 +438,18 @@ public class ViewPartida {
 					Integer rIndex = GridPane.getRowIndex(node);
 					int x = cIndex == null ? 0 : cIndex;
 					int y = rIndex == null ? 0 : rIndex;
-					
+
 					System.out.println(db.getString());
-					
+
 					String[] newFichaSeleccionada = new String[5];
 					newFichaSeleccionada = db.getString().split(" ");
 
-					Ficha newF = new Ficha(Integer.parseInt(newFichaSeleccionada[0]),Integer.parseInt(newFichaSeleccionada[1]), Integer.parseInt(newFichaSeleccionada[3]), Integer.parseInt(newFichaSeleccionada[4]), tam_ficha);
-					
+					Ficha newF = new Ficha(Integer.parseInt(newFichaSeleccionada[0]),
+							Integer.parseInt(newFichaSeleccionada[1]), Integer.parseInt(newFichaSeleccionada[3]),
+							Integer.parseInt(newFichaSeleccionada[4]), tam_ficha);
+
 					jugadores.get(jugActual).setFichaSeleccionada(newF);
-					
+
 //					PickRay pickRay = new PickRay((int) sigJugador.getLayoutX(), (int) sigJugador.getLayoutY(), 1.0, 1.0, 1.0);
 //					PickResultChooser pickResultChooser = new PickResultChooser();
 //					root.impl_pickNode(pickRay,  pickResultChooser);
@@ -440,10 +509,10 @@ public class ViewPartida {
 	}
 
 	public static void actualizarPuntos() {
-		for(int i = 0; i<jugadores.size(); i++) {
+		for (int i = 0; i < jugadores.size(); i++) {
 			Jugador jugador = jugadores.get(i);
 			jugador.getLabelPuntos()
-			.setText("Jugador " + jugador.getId() + ": " + jugador.getTablero().getTableroLogico().getPuntos());
+					.setText("Jugador " + jugador.getId() + ": " + jugador.getTablero().getTableroLogico().getPuntos());
 		}
 	}
 
