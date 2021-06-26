@@ -5,7 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import views.ViewPartida;
-
+import static utils.Materials.PLAYER_CASTLE;
 
 public class Terreno extends Label {
 
@@ -21,9 +21,9 @@ public class Terreno extends Label {
 		setTerreno(this.nombre, cantCoronas);
 	}
 	
-	Terreno(String colorCastillo, double tam){
+	Terreno(int colorCastillo, double tam){
 		this.tam = tam;
-		this.imagen = new Image("/resources/"+ colorCastillo + ".png");
+		this.imagen = new Image(PLAYER_CASTLE.get(colorCastillo));
 		ImageView view = new ImageView(this.imagen);
 		view.setFitHeight(tam);
 		view.setFitWidth(tam);

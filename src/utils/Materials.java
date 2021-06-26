@@ -18,6 +18,7 @@ public class Materials {
 	 public static final String FICHA_PAPER = "/resources/ficha_paper.png";
 	 public static final Map<Integer, String> PLAYER_BADGES = new HashMap<>();
 	 public static final Map<Integer, String> PLAYER_POINTS = new HashMap<>();
+	 public static final Map<Integer, String> PLAYER_CASTLE = new HashMap<>();
 	 
 	 static {
 		 PLAYER_BADGES.put(PlayerColor.RED, "/resources/red_player_on.png");
@@ -27,6 +28,11 @@ public class Materials {
 	 static {
 		 PLAYER_POINTS.put(PlayerColor.RED, "/resources/red_points.png");
 		 PLAYER_POINTS.put(PlayerColor.GREEN, "/resources/green_points.png");
+	 }
+	 
+	 static {
+		 PLAYER_CASTLE.put(PlayerColor.RED, "/resources/castillo_rojo.png");
+		 PLAYER_CASTLE.put(PlayerColor.GREEN, "/resources/castillo_verde.png");
 	 }
 	 
 }

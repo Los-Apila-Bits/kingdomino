@@ -1,19 +1,20 @@
 package components;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import utils.PlayerColor;
 
 public class Jugador {
 
 	private TableroKD tablero;
-	private Label puntosLabel;
+	private InfoLabel puntosLabel;
 	private int id;
-	private String color;
+	private int color;
 	Ficha fichaSeleccionada;
 	
-	public Jugador(int id, String color) {
+	public Jugador(int id, int color) {
 		this.id = id;
 		this.color = color;
-		this.puntosLabel = new Label("Jugador " + this.id + ": 0");
 	}
 	
 	public void createTablero(double tam) {
@@ -30,6 +31,15 @@ public class Jugador {
     
     public int getId() {
     	return this.id;
+    }
+    
+    public void setLabelPuntos (double height) {
+    	 this.puntosLabel = new InfoLabel("Jugador " + id + ": " + getTablero().getTableroLogico().getPuntos() , height, Pos.CENTER_LEFT, false);
+    	 puntosLabel.setPointsColor(this.color);
+    }
+    
+    public int getColor() {
+    	return this.color;
     }
 	
 	public Label getLabelPuntos() {

@@ -65,8 +65,8 @@ public class ViewPartida {
 	public ViewPartida(Settings settings) {
 		this.settings = settings;
 		this.turnoActual = 1;
-		jugadores.add(new Jugador(1, "AMARILLO"));
-		jugadores.add(new Jugador(2, "AZUL"));
+		jugadores.add(new Jugador(1, PlayerColor.RED));
+		jugadores.add(new Jugador(2, PlayerColor.GREEN));
 		// int cantJugadores = jugadores.size();
 		initializeStage();
 	}
@@ -137,7 +137,7 @@ public class ViewPartida {
 		BackgroundImage tableroBackground = new BackgroundImage(new Image(BOARD_MAP, tableroWidth, tableroHeight, false, false), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, null);
 		for(Jugador jugador : jugadores) {
 			InfoLabel playerLabel = new InfoLabel("Jugador " + jugador.getId(), backgroundHeight * .05, Pos.CENTER_LEFT, true);
-			playerLabel.setPlayerColor(PlayerColor.RED);
+			playerLabel.setPlayerColor(jugador.getColor());
 			playerLabel.setTranslateY(backgroundHeight * 0.1);
 			AnchorPane anchorPaneTablero = new AnchorPane();
 			anchorPaneTablero.setMaxHeight(backgroundHeight);
@@ -185,9 +185,8 @@ public class ViewPartida {
 		int ix = 0;
 		int jx = 0;
 		for(Jugador jugador : jugadores) {
-			InfoLabel pointsLabel = new InfoLabel("Jugador " + jugador.getId() + ": " + jugador.getPuntos() , backgroundHeight * .05, Pos.CENTER_LEFT, false);
-			pointsLabel.setPointsColor(PlayerColor.RED);
-			pointsPane.add(pointsLabel,ix,jx);
+			jugador.setLabelPuntos(backgroundHeight * 0.05);
+			pointsPane.add(jugador.getLabelPuntos(),ix,jx);
 			if (jx == 1) {
 				ix++;
 				jx = 0;
@@ -442,8 +441,9 @@ public class ViewPartida {
 
 	public static void actualizarPuntos() {
 		for(int i = 0; i<jugadores.size(); i++) {
-			jugadores.get(i).getLabelPuntos()
-			.setText("Jugador " + (i + 1) + ": " + jugadores.get(i).getTablero().getTableroLogico().getPuntos());
+			Jugador jugador = jugadores.get(i);
+			jugador.getLabelPuntos()
+			.setText("Jugador " + jugador.getId() + ": " + jugador.getTablero().getTableroLogico().getPuntos());
 		}
 	}
 
