@@ -3,7 +3,9 @@ package views;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javafx.event.ActionEvent;
 
@@ -53,6 +55,7 @@ public class ViewPartida {
 	private int turnoActual;
 
 	private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
+	private  Map<Integer, InfoLabel> jugadoresLabel = new HashMap<>();
 
 	private Settings settings;
 	private AnchorPane gamePane;
@@ -185,7 +188,8 @@ public class ViewPartida {
 				new Image(BOARD_MAP, tableroWidth, tableroHeight, false, false), BackgroundRepeat.NO_REPEAT,
 				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, null);
 		for (Jugador jugador : jugadores) {
-			InfoLabel playerLabel = new InfoLabel("Jugador " + jugador.getId(), backgroundHeight * .05, Pos.CENTER_LEFT,
+			System.out.println(jugActual);
+			InfoLabel playerLabel = new InfoLabel("Jugador " + jugador.getId() + (jugActual + 1 == jugador.getId() ? " (JUGANDO)" : " (ESPERANDO)"), backgroundHeight * .05, Pos.CENTER_LEFT,
 					true);
 			playerLabel.setPlayerColor(jugador.getColor());
 			playerLabel.setTranslateY(backgroundHeight * 0.1);
@@ -203,6 +207,7 @@ public class ViewPartida {
 			AnchorPane.setBottomAnchor(tablero, 100d);
 			tablero.setDisable(true);
 			anchorPaneTablero.getChildren().add(tablero);
+			jugadoresLabel.put(jugador.getId(), playerLabel);
 			content.getChildren().addAll(playerLabel, anchorPaneTablero);
 		}
 		// cuadroTablero.add(tablero = new TableroKD(), 0, 0, 5, 5);
@@ -327,7 +332,9 @@ public class ViewPartida {
 			previsualizacionFicha.getChildren().clear();
 			seleccionarFicha.setDisable(false);
 			sigJugador.setDisable(true);
+			jugadoresLabel.get(jugadores.get(jugActual).getId()).setText("Jugador " + jugadores.get(jugActual).getId() + " (ESPERANDO)");
 			jugActual++;
+			jugadoresLabel.get(jugadores.get(jugActual).getId()).setText("Jugador " + jugadores.get(jugActual).getId() + " (JUGANDO)");
 			if (jugActual == jugadores.size()) { // Debo armar una nueva pila de fichas
 				List<int[]> fichas = new ArrayList<int[]>();
 				
