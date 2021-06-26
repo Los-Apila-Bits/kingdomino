@@ -390,10 +390,7 @@ public class ViewPartida {
 		});
 
 		sigJugador.setOnMouseClicked(event -> {
-			if (turnoActual > 12) {
-				showWinner();
-				// mostrar dialog del ganador
-			}
+
 			jugadores.get(jugActual).getTablero().setFichaColocada(false);
 			previsualizacionFicha.getChildren().clear();
 			borrarFicha.setDisable(false);
@@ -408,12 +405,9 @@ public class ViewPartida {
 					for (int i = 0; i < 4; i++) {
 						fichas.add(mazo.sacarFicha());
 					}			
+					fichasTurno.getChildren().clear();
+					addFichas(fichas);
 				}
-				else {
-					showWinner();
-				}
-				fichasTurno.getChildren().clear();
-				addFichas(fichas);
 				jugActual = 0;
 				turnoActual++;
 			}
@@ -424,6 +418,12 @@ public class ViewPartida {
 			// cuadroTablero.add(jugadores.get(jugActual).getTablero(), 0, 0, 5, 5);
 			if (jugadores.get(jugActual).getFichaSeleccionada() != null) {
 				previsualizacionFicha.getChildren().add(jugadores.get(jugActual).getFichaSeleccionada());
+			}
+			
+			if (turnoActual > 12) {
+				showWinner();
+				return;
+				// mostrar dialog del ganador
 			}
 			// info.setCenter(previsualizacionFicha);
 		});
