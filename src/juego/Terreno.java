@@ -1,7 +1,7 @@
 package juego;
 
 public class Terreno {
-	
+
 	public static final int CASTILLO = 0;
 	public static final int CAMPO = 1;
 	public static final int BOSQUE = 2;
@@ -9,7 +9,7 @@ public class Terreno {
 	public static final int RIO = 4;
 	public static final int PANTANO = 5;
 	public static final int MINA = 6;
-
+	
 	private int tipo;
 	private int cantCoronas;
 	

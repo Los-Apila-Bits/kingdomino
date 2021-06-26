@@ -8,25 +8,33 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Mazo {
-	public List<Ficha> fichas = new ArrayList<Ficha>();
+	public List<int[]> fichas = new ArrayList<int[]>();
 
 	public Mazo() throws FileNotFoundException {
 		Scanner entrada = new Scanner(new File("mazo.txt"));
 		int i = 1;
+		int[] vec = new int[5];
 		while (entrada.hasNext()) {
-			fichas.add(new Ficha(i, new Terreno(entrada.nextInt(), entrada.nextInt()),
-				new Terreno(entrada.nextInt(), entrada.nextInt())));
+			vec[0] = i;
+			for (int j = 1; j < 5; j++) {
+				vec[j]= entrada.nextInt();
+			}
 			i++;
+			fichas.add(vec.clone());
 		}
 		entrada.close();
 		mezclar();
+	}
+	
+	public List<int[]> getFichas() {
+		return fichas;
 	}
 
 	private void mezclar() {
 		Collections.shuffle(fichas);
 	}
 
-	public Ficha sacarFicha() {
+	public int[] sacarFicha() {
 		return fichas.remove(0);
 	}
 	
@@ -34,4 +42,7 @@ public class Mazo {
 		return fichas.isEmpty();
 	}
 	
+	public int comparador(int[] ficha1, int[] ficha2) {
+		return ficha1[0]-ficha2[0];
+	}
 }

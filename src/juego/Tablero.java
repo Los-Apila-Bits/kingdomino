@@ -42,22 +42,26 @@ public class Tablero {
 	}
 
 	public boolean puedeInsertar(int posX, int posY, Ficha ficha) {
-		if (fueraDeTablero(posX, posY, ficha.getDireccion()[0], ficha.getDireccion()[1]))
+		if (fueraDeTablero(posX, posY, ficha.getDireccion()[0], ficha.getDireccion()[1])) {
 			return false;
+		}
 		
-		if((hayEspacio(posX, posY)&& hayEspacio(posX + ficha.getDireccion()[0], posY + ficha.getDireccion()[1])))
+		if((hayEspacio(posX, posY)&& hayEspacio(posX + ficha.getDireccion()[0], posY + ficha.getDireccion()[1]))) {
 			if ((compararTerrenoAledanio(posX, posY, ficha.getTerreno1()))
-					|| compararTerrenoAledanio(posX + ficha.getDireccion()[0], posY + ficha.getDireccion()[1],ficha.getTerreno2()))
+				|| compararTerrenoAledanio(posX + ficha.getDireccion()[0], posY + ficha.getDireccion()[1],ficha.getTerreno2())) {
 				return true;
+			}
+		}
 		return false;
 		// tenemos que validar que haya espacio donde tenemos que poner la
 		// ficha 
 	}
 
 	public boolean insertarFicha(Ficha ficha, int posX, int posY) {
+		
 		if (!puedeInsertar(posX, posY, ficha)) {
-			ficha.cambiarPivot();
-			if (!puedeInsertar(posX, posY, ficha))
+			//ficha.cambiarPivot();
+			//if (!puedeInsertar(posX, posY, ficha))
 				return false;
 		}
 		tablero[posX][posY] = ficha.getTerreno1();
@@ -144,7 +148,7 @@ public class Tablero {
 		if (terreno1.compararTerreno(tablero[posX + desplazamientoX][posY + desplazamientoY])) {
 			Integer[] posicionBuscada = { posX + desplazamientoX, posY + desplazamientoY };
 			for (CadenaTerrenos cadenaTerrenos : lista) {
-				if (cadenaTerrenos.contienePosicion(posicionBuscada)) {
+				if (cadenaTerrenos.contienePosicion(posicionBuscada)&& !cadenaTerrenos.contienePosicion(posicion)) {
 					if (cadena != null) {
 						cadena.fusionarCadenas(cadenaTerrenos);
 					} else {
@@ -191,6 +195,7 @@ public class Tablero {
 	}
 	
 	public int getPuntos() {
+		System.out.println(this.puntos);
 		return this.puntos;
 	}
 

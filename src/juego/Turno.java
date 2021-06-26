@@ -25,7 +25,7 @@ public class Turno {
 	public List<Ficha> sacarFichas(Mazo mazo){
 		var fichas = new LinkedList<Ficha>();
 		for (int i = 0; i < 4; i++) {
-			fichas.add(mazo.sacarFicha());
+			//fichas.add(mazo.sacarFicha());
 		}
 		return fichas;
 	}

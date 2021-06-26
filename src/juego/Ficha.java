@@ -13,27 +13,32 @@ public class Ficha {
 		this.ficha[1] = terreno2;
 		this.estado = true;
 	}
-
-	public int[] girarFicha() {
-		if (direccion[0] == 0 && direccion[1] == -1) {
-			direccion[0] = -1;
-			direccion[1] = 0;
-		} else {
-			if (direccion[0] == -1 && direccion[1] == 0) {
-				direccion[0] = 0;
-				direccion[1] = 1;
-			} else {
-				if (direccion[0] == 0 && direccion[1] == 1) {
-					direccion[0] = 1;
-					direccion[1] = 0;
-				} else {
-					direccion[0] = 0;
-					direccion[1] = -1;
-				}
-			}
-		}
-		return direccion;
+	
+	public void setDireccion(int x, int y) {
+		this.direccion[0] = x;
+		this.direccion[1] = y;
 	}
+
+//	public int[] girarFicha() {
+//		if (direccion[0] == 0 && direccion[1] == -1) {
+//			direccion[0] = -1;
+//			direccion[1] = 0;
+//		} else {
+//			if (direccion[0] == -1 && direccion[1] == 0) {
+//				direccion[0] = 0;
+//				direccion[1] = 1;
+//			} else {
+//				if (direccion[0] == 0 && direccion[1] == 1) {
+//					direccion[0] = 1;
+//					direccion[1] = 0;
+//				} else {
+//					direccion[0] = 0;
+//					direccion[1] = -1;
+//				}
+//			}
+//		}
+//		return direccion;
+//	}
 	
 	public boolean getEstado() {
 		return this.estado;

@@ -45,7 +45,7 @@ public class Partida {
 					eleccion = entrada.nextInt();
 					System.out.println(jugador.getFicha());
 					while(eleccion!=0) {
-						jugador.getFicha().girarFicha();
+//						jugador.getFicha().girarFicha();
 						System.out.print("Si desea girar la ficha escriba 1 en caso contrario 0: ");
 						eleccion = entrada.nextInt();
 						System.out.println(jugador.getFicha());
