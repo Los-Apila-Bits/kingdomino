@@ -86,13 +86,10 @@ public class ViewPartida {
 		alert.setTitle("Information Dialog");
 		alert.setHeaderText(null);
 		
-		Jugador j1 = jugadores.get(1);
-		j1.setNombre("Colo");
-		
-		Jugador j2 = jugadores.get(0);
-		j2.setNombre("Norman");
-		
-		alert.setContentText("El podio es: \n" + j1.getNombre() + " con (" + jugadores.get(1).getTablero().getTableroLogico().getPuntos() + ")"  + " \n" + j2.getNombre() + " con(" + jugadores.get(0).getTablero().getTableroLogico().getPuntos() + ")");
+		alert.setContentText("El podio es: \n" + "Jugador" +
+		jugadores.get(1).getId() + " con (" + jugadores.get(1).getTablero().getTableroLogico().getPuntos() + ")"  + " \n" + "Jugador" 
+				+ jugadores.get(0).getId() + " con(" + jugadores.get(0).getTablero().getTableroLogico().getPuntos() + ")"
+				+ "\nFelicitaciones, el Jugador" + jugadores.get(1).getId() + " es el victorioso!!!");
 
 		alert.showAndWait();
 				
