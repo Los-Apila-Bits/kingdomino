@@ -7,11 +7,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.transform.Rotate;
+import views.ViewPartida;
 
 public class Ficha extends Pane {
 	
@@ -39,7 +41,7 @@ public class Ficha extends Pane {
 		imageView.setY(0);
 		imageView2.setX(0);
 		imageView2.setY(height);
-		// setting the fit height and width of the image view
+
 		imageView.setFitHeight(height);
 		imageView.setFitWidth(width);
 		imageView2.setFitHeight(height);
@@ -59,12 +61,7 @@ public class Ficha extends Pane {
 
 		source.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-				// Drag was detected, start drap-and-drop gesture
-				// Allow any transfer node
-				// TransferMode.
 				Dragboard db = source.startDragAndDrop(TransferMode.ANY);
-
-				// Put ImageView on dragboard
 				ClipboardContent cbContent = new ClipboardContent();
 				cbContent.putString(terreno1.getNombre() + " " + terreno2.getNombre() + " " + cantRotaciones + " " + terreno1.getCantCoronas() + " " + terreno2.getCantCoronas());
 				db.setContent(cbContent);
@@ -74,8 +71,6 @@ public class Ficha extends Pane {
 
 		source.setOnDragDone(new EventHandler<DragEvent>() {
 			public void handle(DragEvent event) {
-				// the drag and drop gesture has ended
-				// if the data was successfully moved, clear it
 				if (event.getTransferMode() == TransferMode.MOVE) {
 					source.setVisible(false);
 				}
@@ -102,6 +97,7 @@ public class Ficha extends Pane {
 
 	public void enableRotate() {
 		this.setOnMouseClicked(event -> {
+			if(event.getButton() == MouseButton.SECONDARY)
 			this.rotate();
 		});
 	}
