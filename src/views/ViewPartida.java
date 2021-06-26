@@ -3,10 +3,12 @@ package views;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.sun.javafx.geom.PickRay;
 import com.sun.javafx.scene.input.PickResultChooser;
+
 
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -16,14 +18,18 @@ import javafx.stage.Stage;
 import juego.Mazo;
 import components.Ficha;
 import components.Jugador;
+import components.KDSubScene;
 import components.Terreno;
 import settings.Settings;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
@@ -32,6 +38,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -44,6 +51,9 @@ public class ViewPartida {
 	public static final int TAM_PREV = 70;
 	private static final int TURNOS_TOTALES = 12;
 	private int turnoActual;
+	
+	private final String FONT_PATH = "/resources/playfair_font.ttf";
+	private KDSubScene winnerSubscene;
 
 	private static ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
 
@@ -66,6 +76,26 @@ public class ViewPartida {
 //		for (int i = 0; i < cantJugadores; i++) {
 //			jugadores.add(new Jugador(i + 1, "AMARILLO"));
 //		}
+	}
+	
+	public void showWinner() {
+		
+		Collections.sort(jugadores, (a,b)->a.getTablero().getTableroLogico().getPuntos() - b.getTablero().getTableroLogico().getPuntos());
+		
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Information Dialog");
+		alert.setHeaderText(null);
+		
+		Jugador j1 = jugadores.get(1);
+		j1.setNombre("Colo");
+		
+		Jugador j2 = jugadores.get(0);
+		j2.setNombre("Norman");
+		
+		alert.setContentText("El podio es: \n" + j1.getNombre() + " con (" + jugadores.get(1).getTablero().getTableroLogico().getPuntos() + ")"  + " \n" + j2.getNombre() + " con(" + jugadores.get(0).getTablero().getTableroLogico().getPuntos() + ")");
+
+		alert.showAndWait();
+				
 	}
 
 	public void start(Stage primaryStage) throws IOException {
@@ -161,6 +191,7 @@ public class ViewPartida {
 
 		sigJugador.setOnMouseClicked(event -> {
 			if (turnoActual > 12) {
+				showWinner();
 				// mostrar dialog del ganador
 			}
 			jugadores.get(jugActual).getTablero().setFichaColocada(false);
@@ -169,6 +200,8 @@ public class ViewPartida {
 			jugActual++;
 			if (jugActual == jugadores.size()) { // Debo armar una nueva pila de fichas
 				List<int[]> fichas = new ArrayList<int[]>();
+				
+				if(mazo.getSize() >= 4)
 				for (int i = 0; i < 4; i++) {
 					fichas.add(mazo.sacarFicha());
 				}
@@ -176,6 +209,7 @@ public class ViewPartida {
 				addFichas(fichas);
 				jugActual = 0;
 				turnoActual++;
+				showWinner();
 			}
 			cuadroTablero.getChildren().clear();
 			cuadroTablero.setDisable(false);
