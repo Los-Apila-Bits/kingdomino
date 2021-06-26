@@ -69,6 +69,7 @@ public class ViewPartida {
 	private Mazo mazo;
 	BorderPane root = new BorderPane();
 	private int jugActual = 0;
+	private ScrollPane scroller;
 
 	public ViewPartida(Settings settings) {
 		this.settings = settings;
@@ -166,7 +167,7 @@ public class ViewPartida {
 	public void createTablero() {
 		VBox content = new VBox(5);
 		content.setAlignment(Pos.CENTER);
-		ScrollPane scroller = new ScrollPane(content);
+		scroller = new ScrollPane(content);
 		Image backgroundImage = new Image(GAME_PANEL_1);
 		double imageWidth = backgroundImage.getWidth();
 		double imageHeight = backgroundImage.getHeight();
@@ -416,6 +417,7 @@ public class ViewPartida {
 				jugActual = 0;
 				turnoActual++;
 			}
+			scroller.setVvalue(jugActual);
 			jugadoresLabel.get(jugadores.get(jugActual).getId()).setText("Jugador " + jugadores.get(jugActual).getId() + " (JUGANDO)");
 			// cuadroTablero.getChildren().clear();
 			jugadores.get(jugActual).getTablero().setDisable(false);
