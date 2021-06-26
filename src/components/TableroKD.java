@@ -17,7 +17,8 @@ public class TableroKD extends GridPane {
 	private Tablero tableroLogico;
 	private Casilla[][] casillas = new Casilla[5][5];
 	private int turnoActual = 1;
-	private boolean updated = true;
+	private boolean isFichaColocada = true;
+//	private boolean updated = true;
 
 	public TableroKD(String colorCastillo) {
 		
@@ -98,7 +99,8 @@ public class TableroKD extends GridPane {
 					int x = cIndex == null ? 0 : cIndex;
 					int y = rIndex == null ? 0 : rIndex;
 
-					String[] newFicha = new String[3];
+					//Si se rompe pasar a 3
+					String[] newFicha = new String[5];
 					newFicha = db.getString().split(" ");
 					
 					int cantRotaciones = Integer.parseInt(newFicha[2]);
@@ -154,7 +156,8 @@ public class TableroKD extends GridPane {
 					}
 					if(success) {
 						ViewPartida.actualizarPuntos();
-						updated = false;
+						setFichaColocada(true);
+						//updated = false;
 					}
 					System.out.println("-------------------------------");
 					tableroLogico.mostrarTablero();
@@ -198,11 +201,19 @@ public class TableroKD extends GridPane {
 	public void setTurnoActual(int turnoActual) {
 		this.turnoActual = turnoActual;
 	}
+//
+//	public boolean isUpdated() {
+//		return updated;
+//	}
+//	public void setUpdate(boolean valor) {
+//			this.updated = valor;
+//	}
 
-	public boolean isUpdated() {
-		return updated;
+	public boolean isFichaColocada() {
+		return isFichaColocada;
 	}
-	public void setUpdate(boolean valor) {
-			this.updated = valor;
+
+	public void setFichaColocada(boolean isFichaColocada) {
+		this.isFichaColocada = isFichaColocada;
 	}
 }
