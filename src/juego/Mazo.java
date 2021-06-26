@@ -38,6 +38,10 @@ public class Mazo {
 		return fichas.remove(0);
 	}
 	
+	public int getSize() {
+		return fichas.size();
+	}
+	
 	public boolean mazoVacio() {
 		return fichas.isEmpty();
 	}

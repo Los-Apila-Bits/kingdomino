@@ -2,9 +2,11 @@ package views;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javafx.event.ActionEvent;
+
 
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -27,6 +29,9 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
+import components.KDSubScene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -41,9 +46,7 @@ import static utils.Sounds.*;
 import static utils.Materials.*;
 
 public class ViewPartida {
-	public static final int TAM_CASILLA = 140;
 	public static final int TAM_PREV = 70;
-	private static final int TURNOS_TOTALES = 12;
 	private int turnoActual;
 
 	private static ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
@@ -64,7 +67,7 @@ public class ViewPartida {
 		this.turnoActual = 1;
 		jugadores.add(new Jugador(1, "AMARILLO"));
 		jugadores.add(new Jugador(2, "AZUL"));
-		int cantJugadores = jugadores.size();
+		// int cantJugadores = jugadores.size();
 		initializeStage();
 	}
 	
@@ -93,7 +96,23 @@ public class ViewPartida {
 		createInfoPanel();
 		gamePane.getChildren().addAll(dockPane);
 		gameStage.show();
+	}
+	
+	public void showWinner() {
+		
+		Collections.sort(jugadores, (a,b)->a.getTablero().getTableroLogico().getPuntos() - b.getTablero().getTableroLogico().getPuntos());
+		
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Information Dialog");
+		alert.setHeaderText(null);
+		
+		alert.setContentText("El podio es: \n" + "Jugador" +
+		jugadores.get(1).getId() + " con (" + jugadores.get(1).getTablero().getTableroLogico().getPuntos() + ")"  + " \n" + "Jugador" 
+				+ jugadores.get(0).getId() + " con(" + jugadores.get(0).getTablero().getTableroLogico().getPuntos() + ")"
+				+ "\nFelicitaciones, el Jugador" + jugadores.get(1).getId() + " es el victorioso!!!");
 
+		alert.showAndWait();
+				
 	}
 	
 	public void createTablero() {
@@ -248,6 +267,7 @@ public class ViewPartida {
 
 		sigJugador.setOnMouseClicked(event -> {
 			if (turnoActual > 12) {
+				showWinner();
 				// mostrar dialog del ganador
 			}
 			jugadores.get(jugActual).getTablero().setFichaColocada(false);
@@ -256,6 +276,8 @@ public class ViewPartida {
 			jugActual++;
 			if (jugActual == jugadores.size()) { // Debo armar una nueva pila de fichas
 				List<int[]> fichas = new ArrayList<int[]>();
+				
+				if(mazo.getSize() >= 4)
 				for (int i = 0; i < 4; i++) {
 					fichas.add(mazo.sacarFicha());
 				}
