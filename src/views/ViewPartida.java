@@ -209,7 +209,6 @@ public class ViewPartida {
 				addFichas(fichas);
 				jugActual = 0;
 				turnoActual++;
-				showWinner();
 			}
 			cuadroTablero.getChildren().clear();
 			cuadroTablero.setDisable(false);
